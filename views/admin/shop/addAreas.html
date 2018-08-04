@@ -1,0 +1,161 @@
+{extend name="common/base"}
+{block name="content"}
+<link rel="stylesheet" href="/static/admin/css/goods.css">
+<style>
+    .selectSheng{width: 170px;height: 30px;line-height: 30px;margin-right: 4px;font-size: 12px;color: #707070;padding-left: 10px;}
+    .sureAddAreas{cursor: pointer;background-color: #EC5151;color: #FFFFFF;font-size: 14px;display: inline-block;width: 78px;height: 32px;line-height: 32px;text-align: center;border-radius: 4px;margin-left: 320px;margin-top: 80px;}
+    .tr_first,.tr_second{line-height: 30px;line-height: 30px;}
+</style>
+<div class="st_container">
+    <div class="st_title">新增地区</div>
+    <div class="st_body">
+        <div class="st_tips">
+            <p>添加请选择一级地区</p>
+            <p>地区用于授权网点定位，请根据实际情况谨慎设置。</p>
+            <p>地区层级关系必须为省/直辖市→市暂只支持到二级地区其后不显示</p>
+        </div>
+        <div class="btns_div">
+            <select name="" class="selectSheng" >
+                <option>请选择</option>
+                {volist name='arlist' id='vo'}
+                <option value="{$vo['areaId']}">{$vo['areaName']}</option>
+                {/volist}
+            </select>
+            <a href="#" class="st_btn_h28" onclick="getSonAreas()">添加该地区</a>
+        </div>
+        <table>
+            <thead>
+            <tr>
+                <th style="width: 30px;"></th>
+                <th>地区名称</th>
+                <th style="text-align: left">所属层级</th>
+                <!--<th></th>-->
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td colspan="5" style="padding: 60px 0px;">请先添加地区信息 </td>
+            </tr>
+            </tbody>
+        </table>
+        <div>
+            <span class="sureAddAreas">确定</span>
+        </div>
+    </div>
+</div>
+<script src="/static/admin/js/plugins/layui/layui.js"></script>
+<script type="text/javascript" src="/static/admin/js/add/confirmBoxes.js"></script>
+<script type="text/javascript" src="/static/admin/js/add/base.js"></script>
+<script src="/static/admin/js/common.js"></script>
+<script>
+    $(document).on('click','.firstCheck',function () {
+        if($(this).is(':checked')){
+            $(".secondCheck").prop('checked',true);
+        }else{
+            $(".secondCheck").prop('checked',false)
+        }
+    });
+    $(document).on('click','.secondCheck',function () {
+        if($(this).is(':checked')){
+            $(".firstCheck").prop('checked',true);
+        }else{
+            var flag = false;
+            $(".secondCheck").each(function (i, item) {
+                if($(item).is(':checked')){
+                    flag = true;
+                }
+            });
+            if (flag){
+                $(".firstCheck").prop('checked',true);
+            }else{
+                $(".firstCheck").prop('checked',false);
+            }
+        }
+    });
+    //获取二级目录
+    function getSonAreas() {
+        var areaId=$(".selectSheng option:selected").val();
+        var areaName=$(".selectSheng option:selected").text();
+        $.post("{:url('admin/Shop/getSonAreas')}",{areaId:areaId},function (data) {
+//           console.log(data)
+            if(data.status == -1){
+                CB.tips({
+                    "title" : "信息提示",
+                    "text" : data.msg
+                });
+            }else if(data.status == -2){
+                CB.tips({
+                    "title" : "信息提示",
+                    "text" : data.msg
+                });
+            }else if(data.status == 1){
+                var dataMsg = data.son;
+                var html = '';
+                html +='<tr  class="tr_1 tr_first">'
+                html +='<td><input type="checkbox" data-id="'+areaId+'" data-name="'+areaName+'" class="firstCheck" checked></td>'
+                html +='<td>'+areaName+'</td>'
+                html +='<td style="text-align: left">一级</td>'
+                html +='</tr>'
+                    $(dataMsg).each(function (i,item) {
+                    html += '<tr  class="tr_1_11 tr_second" >'
+                    html += '<td><input type="checkbox" class="secondCheck" data-id="'+item.areaId+'" data-name="'+item.areaName+'" checked></td>'
+                    html += '<td><span class="glyphicon01"></span>'+item.areaName+'</td>'
+                    html += '<td style="text-align: left">二级</td>'
+                    html += '</tr>'
+                });
+                $('tbody').html(html);
+            }
+        })
+    }
+
+    //点击确定获取id
+    $(".sureAddAreas").on('click',function () {
+        var params1 = '';
+        var params2='';
+        if($('.firstCheck').is(':checked')){
+           var firstCheckId = $('.firstCheck').attr('data-id') +',';
+            firstCheckId += $('.firstCheck').attr('data-name') +';';
+            params1 +=firstCheckId;
+            $(".secondCheck").each(function (i, item) {
+                if($(item).is(':checked')){
+                    var secondCheckId = $(item).attr('data-id') +',';
+                    secondCheckId += $(item).attr('data-name') +';';
+                    params2 +=secondCheckId;
+                }
+            });
+            $.post("{:url('admin/Shop/AddShopAreas')}",{params1:params1,params2:params2},function (data) {
+
+                if(data.status==1){
+                    CB.tips({
+                        title: "提示",
+                        text: "<img src='/static/admin/images/u933.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>保存成功"
+                    }, function() {
+                        location.href="{:url('admin/Shop/areas')}";
+                    });
+                } else if(data.status==-2) {
+                    CB.tips({
+                        "title": "操作提示",
+                        "text": data.area+"已经添加过请勿重复添加",
+                    });
+                }else {
+                    CB.tips({
+                        "title": "操作提示",
+                        "text": "保存失败请刷新后重试",
+                    });
+                }
+
+            })
+
+        }else{
+            CB.tips({
+                "title" : "信息提示",
+                "text" : '请先选择地区并勾选'
+            });
+        }
+    });
+
+
+
+
+</script>
+{/block}

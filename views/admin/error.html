@@ -1,0 +1,14 @@
+{extend name="common/base"}
+{block name="content"}
+<link href="/static/admin/css/adminSet.css" rel="stylesheet" />
+<div class="st_container">
+    <!--window.history.go(-1);  //返回上一页-->
+    <!--window.history.back();  //返回上一页-->
+    <!--window.location.go(-1); //刷新上一页-->
+    <div style="text-align: center;padding-top: 400px;font-size: 16px;color: #333333;font-weight: 600;">抱歉，没有找到页面！</div>
+    <div onclick="history.go(-1)" style="text-align: center;font-size: 14px;color: #FFFFFF;background-color: #EC5151;border-radius: 4px;margin: 20px auto;width: 120px;height: 35px;line-height: 35px;text-align: center;cursor: pointer;">
+        返回上一级
+    </div>
+</div>
+
+{/block}

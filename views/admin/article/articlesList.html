@@ -1,0 +1,232 @@
+{extend name="common/base"} {block name="content"}
+<div class="st_container">
+    <div class="st_title">文章列表</div>
+    <div class="st_body">
+        <div class="st_tips">
+            <p>该页面展示所有分类下的文章</p>
+            <p>可通过搜索文章分类或标题进行搜索</p>
+        </div>
+        <div class="btns_div">
+            <div class="st_search_box">
+                <div class="st_label st_select_item">
+                    <select id="st_classify">
+                        <option value="0">全部分类</option>
+                        {volist name='$cats' id='cv'}
+                            <option value="{$cv['ac_id']}" {if $cat == $cv.ac_id } selected {/if} >{$cv['ac_name']}</option>
+                        {/volist}
+                    </select>
+                </div>
+                <div class="st_text_item">
+                    <input type="text" name="name" placeholder="文章标题" value="{$keyss}">
+
+                    <span id="st_search"></span>
+                </div>
+            </div>
+            <a href="{:url('admin/Article/articlesAdd',array('ty'=>1,'a_id'=>0))}" class="st_btn_h28">添加文章</a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        <!-- 请勿更改id或者class -->
+                        <input type="checkbox" name="inputCheckAll" id="inputCheckAll">
+                    </th>
+                    <th>编号</th>
+                    <th>文章标题</th>
+                    <th>文章分类</th>
+                    <th>文章重要性</th>
+                    <th>是否显示</th>
+                    <th>添加日期</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            <!--有数据-->
+            {if $list['total']>0}
+
+            {volist name="list['data']" id="vo" key="k"}
+                <tr>
+                    <td>
+                        <input type="checkbox" name="inputCheck" value="{$vo['a_id']}">
+                    </td>
+                    <td>{$k}</td>
+                    <td>{$vo['a_title']}</td>
+                    <td>{$vo['ac_name']}</td>
+                    <td>{if $vo['a_significance']==0}普通{else/}置顶{/if}</td>
+                    <td>
+                        <div class="st_switch {if $vo['a_is_show']==1}on{/if}" data-value="{$vo['a_id']}"><span></span></div>
+                    </td>
+                    <td>{$vo['a_create_time']|date='Y-m-d h:i:s'}</td>
+
+                    <td>
+                        <div class="st_btns">
+                            <a href="{:url('home/News/detail',array('id'=>$vo.a_id,'cid'=>$vo.ac_id))}" class="st_scan">查看</a>
+                            <a href="{:url('admin/Article/articlesAdd',array('a_id'=>$vo.a_id,'ty'=>1))}" class="st_edit">编辑</a>
+                            <a href="javascript:void(0);" class="st_del" data-value="{$vo['a_id']}">删除</a>
+                        </div>
+                    </td>
+                </tr>
+            {/volist}
+
+        {else/}
+                <!--没有数据-->
+                <tr>
+                    <td colspan="10" style="padding: 60px 0px;">没有找到任何记录 </td>
+                </tr>
+            {/if}
+            </tbody>
+
+            <tfoot>
+            <tr>
+                <td colspan="100">
+                    <div class="st_shangjia st_select_item">
+                        <select id="pl_type">
+                            <option value="1">批量删除</option>
+                            <option value="3">批量隐藏</option>
+                            <option value="2">批量显示</option>
+                        </select>
+                    </div>
+                    <!-- 请勿更改id或者class -->
+                    <a href="javascript:void(0);" class="st_btn_h28 disable" id="pl_ensure">确定</a>
+                    <div class="st_pages" >
+                        <p>总计{$list.total}条记录</p>
+                        {$page|raw}
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<script type="text/javascript" src="/static/admin/js/add/base.js"></script>
+<script type="text/javascript" src="/static/admin/js/add/confirmBoxes.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $(document).on("click", ".st_del", function() {
+        var val=$(this).attr('data-value');
+        CB.confirm({
+            "title": "操作提示",
+            "text": "您确定要删除此条记录？"
+        }, function() {
+            $.post("{:url('admin/Article/dellArticle')}", {Id:val}, function(data) {
+                if (data.status==-1) {
+                    CB.tips({
+                        "title": "操作提示",
+                        "text": "删除失败请刷新重试",
+                        "btn": false
+                    },function () {
+                        location.reload();
+                    });
+                }else {
+                    CB.tips({
+                        "title": "操作提示",
+                        "text": "删除成功",
+                        "btn": false
+                    },function () {
+                        location.href="{:url('admin/Article/articlesList')}";
+                    });
+
+                }
+
+            })
+
+
+        });
+    });
+    $(document).on("click", ".st_switch", function() {
+        var close = false;
+        if ($(this).hasClass("on")) {
+            close = true;
+        }
+        var st=1;
+        var id=$(this).attr('data-value');
+        if(close){
+            st=0
+        }
+        $.post("{:url('Admin/Article/closeArticle')}",{st:st,id:id},function (data) {
+            if(data.status==1){
+                CB.tips({
+                    title: "提示",
+                    text: "<img src='/static/admin/images/u933.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>操作成功"
+                }, function() {
+                    location.reload();
+                });
+            }else {
+                {
+                    CB.tips({
+                        title: "提示",
+                        text: "<img src='/static/admin/images/u951.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>操作失败,请刷新后尝试"
+                    });
+                }
+            }
+        })
+    });
+    // 全选
+    $('#inputCheckAll').click(function() {
+        $("input[name='inputCheck']").prop("checked", $(this).prop('checked'));
+    });
+    // 单选
+    $("input[name='inputCheck']").click(function() {
+        if ($(this).prop('checked')) {
+            var flag = true;
+            $("input[name='inputCheck']").each(function() {
+                if (!$(this).prop("checked")) {
+                    flag = false;
+                }
+            });
+            $('#inputCheckAll').prop("checked", flag);
+        } else {
+            $('#inputCheckAll').prop("checked", false);
+        }
+    });
+
+    //搜素操作
+
+    //分类st_classify
+    $("#st_classify").change(function() {
+        var val = $(this).val();
+        console.log(val);
+    });
+    // 搜索
+    $("#st_search").click(function() {
+        var val = $(this).siblings("input[name='name']").val();
+        var cats=$("#st_classify option:selected").val();
+        location.href="{:url('admin/Article/articlesList')}?key="+val+"&cats="+cats;
+    });
+
+
+
+    // 批量操作
+    $("#pl_ensure").click(function() {
+        var type = $("#pl_type").val();
+        var ids=[];
+        $("input[name='inputCheck']").each(function() {
+            if ($(this).prop("checked")) {
+                ids.push($(this).val());
+            }
+        });
+        if(ids.length>0){
+            $.post("{:url('admin/Article/ChangesArticles')}",{ids:ids,ty:type},function (data) {
+                //批量操作返回值
+                if(data.status==1){
+                    CB.tips({
+                        title: "提示",
+                        text: "<img src='/static/admin/images/u933.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>操作成功"
+                    }, function() {
+                        location.reload();
+                    });
+                }else {
+                    {
+                        CB.tips({
+                            title: "提示",
+                            text: "<img src='/static/admin/images/u951.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>操作失败,请刷新后尝试"
+                        });
+                    }
+                }
+            })
+        }
+
+    });
+});
+</script>
+{/block}

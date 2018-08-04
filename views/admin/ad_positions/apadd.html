@@ -1,0 +1,85 @@
+{extend name="common/base"}
+{block name="content"}
+<link href="/static/admin/css/adminSet.css" rel="stylesheet" />
+<div class="st_container">
+    <!--window.history.go(-1);  //返回上一页-->
+    <!--window.history.back();  //返回上一页-->
+    <!--window.location.go(-1); //刷新上一页-->
+    <link href="/static/admin/css/adminSet.css" rel="stylesheet" />
+    <!-- 图片上传 webuploader 引入 -->
+    <script type="text/javascript" src="/static/admin/js/plugins/webuploader/webuploader.min.js"></script>
+    <!-- 图片上传 webuploader 引入结束 -->
+    <div class="st_container">
+        <div class="st_title">添加广告位</div>
+        <div class="st_body">
+            <div class="st_tips">
+                <p>标识“*”的选项为必填项，其余为选填项。</p>
+                <p>请设置合适的广告位名称和图片尺寸。</p>
+            </div>
+        </div>
+        <div class="addAdminMsg">
+            <!--<form  name="addAdmin" id="addAdmin">-->
+            <input type="hidden" name="token" id="token" value="{$token}">
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"><em>*</em> 广告位名称 ：</div>&nbsp;
+                <div class="fr textL addAdminItemR">
+                    <input name="ap_name" id="addAdTitleName" type="text"></div>
+            </div>
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"><em>*</em> 宽度 ：</div>&nbsp;
+                <div class="fr textL addAdminItemR">
+                    <input name="ap_width" id="addAdWidth" type="number"><span style="margin-left: 10px;color: #999999;">像素</span></div>
+            </div>
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"><em>*</em> 高度 ：</div>&nbsp;
+                <div class="fr textL addAdminItemR">
+                    <input name="ap_height" id="addAdHeight" type="number"><span style="margin-left: 10px;color: #999999;">像素</span></div>
+            </div>
+            <!-- <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"><em>*</em> 广告位代码 ：</div>&nbsp;
+                <div class="fr textL addAdminItemR">
+                    <input name="ap_code" id="addAdHtml" type="text"></div>
+            </div> -->
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"> 广告位描述 ：</div>&nbsp;
+                <div class="fr textL addAdminItemR">
+                    <input name="ap_describe" id="addAdDescribe" type="text"></div>
+            </div>
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"></div>&nbsp;
+                <div class="fr textL addAdminItemR"> <button id="addAdminSuccess">确定</button></div>
+            </div>
+
+            <!--</form>-->
+        </div>
+    </div>
+
+</div>
+<script>
+    $("#addAdminSuccess").on('click',function () {
+        var params = {};
+        params.ap_name = $("#addAdTitleName").val();
+        params.ap_width = $("#addAdWidth").val();
+        params.ap_height = $("#addAdHeight").val();
+        params.ap_code = $("#addAdHtml").val();
+        params.ap_describe = $("#addAdDescribe").val();
+        params.token = $("#token").val();
+        if( params.ap_name ==  '' ||  params.ap_width == ''  ||  params.ap_height == '' || params.ap_code ==''){
+            popupTip('请将必填项填写完整',false);
+            return;
+        }
+        $.post("{:url('admin/AdPositions/apadd')}",params,function (data) {
+            if(data.status==1){
+                popupTip(data.msg,true,function () {
+                    location.href="{:url('admin/AdPositions/aplist')}";
+                });
+            }else if(data.status==-999){
+                popupTip(data.msg,false);
+            }else{
+                popupTip(data.msg,false);
+            }
+        });
+    });
+</script>
+
+{/block}

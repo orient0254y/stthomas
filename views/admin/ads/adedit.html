@@ -1,0 +1,183 @@
+{extend name="common/base"} {block name="content"}
+<link href="/static/admin/css/adminSet.css" rel="stylesheet" />
+<!-- 图片上传 webuploader 引入 -->
+<script type="text/javascript" src="/static/admin/js/plugins/webuploader/webuploader.min.js"></script>
+<!-- 图片上传 webuploader 引入结束 -->
+<div class="st_container">
+    <div class="st_title">添加广告</div>
+    <div class="st_body">
+        <div class="st_tips">
+            <p>标识“*”的选项为必填项，其余为选填项。</p>
+            <p>请设置合适的广告位名称和图片尺寸。</p>
+        </div>
+    </div>
+    <div class="addAdminMsg">
+        <!--<form  name="addAdmin" id="addAdmin">-->
+        <input type="hidden" name="token" id="token" value="{$token}">
+        <div class="fn-clear addAdminItem">
+            <div class="fl textR addAdminItemL"><em>*</em> 广告标题 ：</div>
+            <div class="fr textL addAdminItemR">
+                <input name="addAdTitle" value="{$data.a_name}" type="text" id="addAdTitle">
+            </div>
+        </div>
+        <div class="fn-clear addAdminItem">
+            <div class="fl textR addAdminItemL"><em>*</em> 广告位置 ：</div>
+            <div class="fr textL addAdminItemR">
+                <select name="" id="addAdPosition">
+                    <option value="0">请选择</option>
+                    {volist name="apList" id="vo"}
+                    <option {if $data.a_positions_id eq $vo.ap_id}selected="selected"{/if} value="{$vo.ap_id}" data-width="{$vo.ap_width}" data-height="{$vo.ap_height}">{$vo.ap_name}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+        <div class="fn-clear addAdminItem">
+            <div class="fl textR addAdminItemL"> 广告链接：</div>
+            <div class="fr textL addAdminItemR">
+                <input name="addAdLianJie" value="{$data.a_url}" type="text" id="addAdLianJie" placeholder="http://">
+                <span style="margin-left: 10px;color: #999999;">请以http或https开头</span>
+            </div>
+
+        </div>
+        <div class="st_msg_line clearfix">
+            <div class="st_msg_line_left" style="width: 29%;">
+                <div style="float: right;">
+                    <em class="important fl">*</em><span class="left">上传广告图片</span><i class="fenge">:</i>
+                </div>
+            </div>
+            <div class="st_msg_line_right webuploader-container" style="margin-left: 12px;">
+                <div class="st_uploadImg" id="picker">上传图片</div>
+                <div id="imgContainer" class="imgContainer"><img src="/static/admin/images/u645.png" data-src="{$data.a_img}" class="st_img_hover"></div>
+                <div style="position: absolute;left: 316px;top: 0;height: 30px;white-space: nowrap;">
+                    <style type="text/css">
+                    #imgTipsTip {
+                        color: #f00;
+                        padding-left: 20px;
+                        margin-left: 10px;
+                        background-position-y: 7px;
+                    }
+
+                    #imgTipsTip.onCorrect {
+                        color: #333;
+                    }
+                    </style>
+                    <input type="text" name="img" value="{$data.a_img}" id="imgTips" style="visibility: hidden;width:1px;height: 30px;">
+                </div>
+            </div>
+            <span id="sizeTips" style="margin-left: 20px;line-height:30px; color: #999999;">上传该广告的图片</span>
+        </div>
+        <!-- 单选选择框 -->
+        <div class="st_msg_line clearfix">
+            <div class="st_msg_line_left" style="width: 29%;">
+                <div style="float: right;">
+                    <span class="left">是否开启</span><i class="fenge">:</i>
+                </div>
+            </div>
+            <div class="st_msg_line_right" style="margin-left: 12px;">
+                <label class="st_normal_radio">
+                    <input type="radio" name="importantLevel" value="1" {if $data.a_status eq 1}checked{/if}><span> 显示</span>
+                </label>
+                <label class="st_normal_radio">
+                    <input type="radio" name="importantLevel" value="0" {if $data.a_status eq 0}checked{/if}><span> 不显示</span>
+                </label>
+                <!-- <span class="line_tips"></span> -->
+            </div>
+        </div>
+        <div class="fn-clear addAdminItem">
+            <div class="fl textR addAdminItemL"><em>*</em> 排序 ：</div>
+            <div class="fr textL addAdminItemR">
+                <input class="paiXu" name="paiXu" value="{$data.a_sort}" type="number" id="paiXu" placeholder="0">
+            </div>
+        </div>
+        <div class="fn-clear addAdminItem">
+            <div class="fl textR addAdminItemL"></div>
+            <div class="fr textL addAdminItemR">
+                <button id="addAdminSuccess">提交</button>
+            </div>
+        </div>
+        <!--</form>-->
+    </div>
+</div>
+<script type="text/javascript" src="/static/admin/js/add/base.js"></script>
+<script type="text/javascript" src="/static/admin/js/add/confirmBoxes.js"></script>
+<script>
+    $(function(){
+        var selected = $('#addAdPosition option:selected');
+        var dWidth = selected.attr("data-width");
+        var dHeight = selected.attr("data-height");
+        $("#sizeTips").text("上传该广告的图片，尺寸为："+dWidth+"*"+dHeight);
+    })
+    $("#addAdPosition").on('change',function(){
+        var selected = $('#addAdPosition option:selected');
+        var index = this.selectedIndex;
+        if(index > 0){
+            var dWidth = selected.attr("data-width");
+            var dHeight = selected.attr("data-height");
+            // widthSize = dWidth;
+            // heightSize = dHeight;
+            $("#sizeTips").text("上传该广告的图片，尺寸为："+dWidth+"*"+dHeight);
+        }else{
+            $("#sizeTips").text("上传该广告的图片，请选择广告位置");
+        }
+    })
+    zhengZhengShuIn('paiXu');
+    $("#addAdminSuccess").on('click',function () {
+        var params = {};
+        params.adTitle = $("#addAdTitle").val();
+        params.adPosition = $("#addAdPosition option:selected").val();
+        params.adLianJie = $("#addAdLianJie").val();
+        params.adImg = ($("#imgTips").val()).trim();
+        params.type = $("input:radio:checked").val();
+        params.paiXu = $("#paiXu").val();
+        if( params.adTitle ==  '' ||  params.adPosition == 0  ||  params.adImg == undefined || params.paiXu ==''){
+            popupTip('请将必填项填写完整',false);
+            return;
+        }else{
+            if (hasUploadImg) {
+                if (state === 'uploading') {
+                    uploader.stop();
+                } else {
+                    uploader.upload();
+                }
+            } else {
+                stSubmit();
+            }
+        }
+    });
+    function stSubmit() {
+        var params = {};
+        var adTitle = $("#addAdTitle").val();
+        var adPosition = $("#addAdPosition option:selected").val();
+        var adLianJie = $("#addAdLianJie").val();
+        var adImg = ($("#imgTips").val()).trim();
+        var type = $("input:radio:checked").val();
+        var paiXu = $("#paiXu").val();
+        var token = $("#token").val();
+        $.post("{:url('admin/ads/adedit')}", { 'id':{$data.a_id},adTitle: adTitle,adPosition: adPosition,adLianJie: adLianJie,paiXu: paiXu,type: type,adImg: adImg,token:token }, function(data) {
+        if (data.status == 1) {
+            CB.tips({
+                title: "提示",
+                text: "<img src='/static/admin/images/u933.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>保存成功"
+            }, function() {
+                location.href="{:url('admin/ads/adList')}";
+            });
+        } else {
+            CB.tips({
+                title: "提示",
+                text: "<img src='/static/admin/images/u951.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>" + data.msg
+            });
+        }
+    });
+    }
+// 上传图片js设置
+var imgWidth, imgHeight, uploader, state = 'pending',
+    hasUploadImg = false;
+//上传图片最大占用存储
+var maxSize = 10,
+    widthSize,
+    heightSize;
+// 初始化Web Uploader
+    var uploadServer = '{:url("admin/ads/webupload")}';
+</script>
+<script type="text/javascript" src="/static/admin/js/add/uploadImg.js"></script>
+{/block}

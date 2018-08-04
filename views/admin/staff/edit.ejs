@@ -1,0 +1,114 @@
+<%- include ../common/base.ejs %>
+    <link href="/css/admin/adminSet.css" rel="stylesheet" />
+
+    <div class="st_container">
+        <div class="st_title">编辑管理员</div>
+        <div class="st_body">
+            <div class="st_tips">
+                <p>可从管理平台手动添加一名新管理员，并填写相关信息。</p>
+                <p>标识“*”的选项为必填项。</p>
+                <p>新增管理员后可从管理员列表中找到该条数据，并再次进行编辑操作。</p>
+            </div>
+        </div>
+        <div class="addAdminMsg">
+            <form name="addAdmin" id="addAdmin">
+                <input type="hidden" name="token" id="token" value="{$token}">
+                <input type="hidden" name="id" id="id" value="{$data['s_id']}">
+                <div class="fn-clear addAdminItem">
+                    <div class="fl textR addAdminItemL">
+                        <i>*</i> 用户名：</div>&nbsp;
+                    <div class="fr textL addAdminItemR">
+                        <input name="addAdminUserName" type="text" id="addAdminUserName" value="{$data['s_login_name']}">
+                    </div>
+                </div>
+                <div class="fn-clear addAdminItem">
+                    <div class="fl textR addAdminItemL">
+                        <i>*</i> Email地址：</div>&nbsp;
+                    <div class="fr textL addAdminItemR">
+                        <input name="addAdminUserEmail" type="text" id="addAdminUserEmail" value="{$data['s_email']}">
+                    </div>
+                </div>
+
+                <div class="fn-clear addAdminItem">
+                    <div class="fl textR addAdminItemL">
+                        <i>*</i> 请选择角色：</div>&nbsp;
+                    <div class="fr textL addAdminItemR">
+                        <select name="addAdminUserSelect" id="addAdminUserSelect">
+                            <option value="1">请选择</option>
+                            {volist name='roleList' id='vo'}
+                            <option value="{$vo.r_id}" {if $vo.r_id==$data[ 's_r_id']} selected {/if}>{$vo.r_name}</option>
+                            {/volist}
+
+                        </select>
+                    </div>
+                </div>
+                <div class="fn-clear addAdminItem">
+                    <div class="fl textR addAdminItemL"></div>&nbsp;
+                    <div class="fr textL addAdminItemR">
+                        <button id="addAdminSuccess">提交</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        function edit() {
+            var params = {};
+            params.token = $('#token').val();
+            params.name = $("#addAdminUserName").val();
+            params.email = $("#addAdminUserEmail").val();
+            params.roleId = $("#addAdminUserSelect").val();
+            params.id = $("#id").val();
+            $.post("{:url('admin/Staff/staffEdit')}", params, function (data) {
+                if (data.status == 1) {
+                    popupTip(data.msg, true, function () {
+                        location.href = "{:url('admin/Staff/staffList')}";
+                    });
+                } else if (data.status == -999) {
+                    popupTip(data.msg, false);
+                } else {
+                    popupTip(data.msg, false);
+                }
+            })
+        }
+        $.formValidator.initConfig({
+            theme: 'Default', mode: 'AutoTip', formID: "addAdmin", debug: true, submitOnce: true, onSuccess: function () {
+                edit();
+                return false;
+            }, onError: function (msg) {
+            }
+        });
+        $("#addAdminUserName").formValidator({ onFocus: "输入用户名", onCorrect: "输入正确", }).inputValidator({ min: 1, max: 20, onError: "用户名不能为空" });
+        $("#addAdminUserEmail").formValidator({ onFocus: "输入Email地址", onCorrect: "输入正确", }).inputValidator({ min: 1, max: 20, onError: "Email地址不能为空" })
+            .inputValidator({ min: 1, onError: "邮箱不可以为空,请确认" })
+            .inputValidator({ min: 6, max: 100, onError: "你输入的邮箱长度非法" })
+            .regexValidator({ regExp: "email", dataType: "enum", onError: "Email地址格式不正确" });
+        //        $("#addAdminUserPassWorld").formValidator({onFocus:"最多20个字符",onCorrect:"输入正确",}).inputValidator({min:6,max:20,onErrorMin:"密码长度不能小于六位",onError:"确认密码不能为空"});
+        //    $("#addAdminUserOldPassWorld").formValidator({onFocus:"最多20个字符",onCorrect:""}).inputValidator({min: 1, onError: "确认密码不能为空"}).inputValidator({min:6,max:20,empty:{leftempty:false,rightempty:false,emptyError:"确认密码两边不能有空格"},onErrorMin:"密码长度不能小于六位"});
+        $("#addAdminUserNewPassWorld").formValidator({ onFocus: "最多20个字符", onCorrect: "输入正确" }).inputValidator({ min: 1, onError: "确认密码不能为空" }).inputValidator({ min: 6, max: 20, empty: { leftempty: false, rightempty: false, emptyError: "确认密码两边不能有空格" }, onErrorMin: "密码长度不能小于六位" });
+        $("#addAdminUserSurePassWorld").formValidator({ onFocus: "最多20个字符", onCorrect: "输入正确" }).compareValidator({ desID: "addAdminUserNewPassWorld", operateor: "=", dataType: "string", onError: "确证密码不一致" }).inputValidator({ min: 6, max: 20, empty: { leftempty: false, rightempty: false, emptyError: "确认密码两边不能有空格" }, onError: "确认密码不能为空" })
+        $("#addAdminUserSelect").formValidator({ onFocus: "请选择角色", onCorrect: "输入正确" }).inputValidator({ min: 1, onError: "请选择角色" });
+
+        //    假数据 原密码是123456
+        var oldPassworldNum = 123456;
+        $("#addAdminUserOldPassWorld").on('focus', function () {
+            $(".addAdminUserOldPassWorldYanZheng").show();
+            $(".addAdminUserOldPassWorldYanZheng").css({ 'background': 'url("/static/admin/images/onFocus.png") 0 6px no-repeat', 'color': '#707070' });
+            $(".addAdminUserOldPassWorldYanZheng").html('输入旧密码');
+        });
+        $("#addAdminUserOldPassWorld").on('blur', function () {
+            var passworld = $("#addAdminUserOldPassWorld").val();
+            if (passworld == '') {
+                $(".addAdminUserOldPassWorldYanZheng").css({ 'background': 'url("/static/admin/images/onError.png") 0 6px no-repeat', 'color': '#EC5151' });
+                $(".addAdminUserOldPassWorldYanZheng").html('旧密码不能为空');
+            } else if (passworld != oldPassworldNum) {
+                $(".addAdminUserOldPassWorldYanZheng").css({ 'background': 'url("/static/admin/images/onError.png") 0 6px no-repeat', 'color': '#EC5151' })
+                $(".addAdminUserOldPassWorldYanZheng").html('旧密码不正确');
+            } else {
+                $(".addAdminUserOldPassWorldYanZheng").css('background', 'url("/static/admin/images/onCorrect.png")  0 6px  no-repeat', 'color', '#707070');
+                $(".addAdminUserOldPassWorldYanZheng").html('输入正确');
+            }
+        })
+
+    </script>
+    <%- include ../common/base_bottom.ejs %>

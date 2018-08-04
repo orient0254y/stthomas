@@ -1,0 +1,91 @@
+{extend name="common/base"} {block name="content"}
+<div class="st_container">
+    <div class="st_title">门店列表</div>
+    <div class="st_body">
+    	<div class="st_tips">
+            <p>该页面展示了平台所有的下线门店。</p>
+        </div>
+        <div class="btns_div">
+            <a href="{:url('admin/Shop/openShops')}" class="st_btn_h30_blue" id="addShop">新增门店</a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>所属地区</th>
+                    <th>门店名称</th>
+                    <th>服务电话</th>
+                    <th>详细地址</th>
+                    <th>经纬度</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            {if $list['total']>0} {volist name='list["data"]' id='vo'}
+            <tr>
+                <td>{$vo.s_id}</td>
+                <td>{$vo.name1}--{$vo.name2}</td>
+                <td>{$vo.s_store_name}</td>
+                <td>{$vo.s_store_phone}</td>
+                <td>{$vo.s_store_areas}</td>
+                <td>{$vo.s_store_longitude},{$vo['s_store_latitude']}</td>
+                <td>
+                    <div class="st_btns">
+
+                        <a href="{:url('admin/Shop/openShops',array('id'=>$vo.s_id))}" class="st_edit">编辑</a>
+                        <a href="javascript:void(0);" class="st_del" data-value="{$vo.s_id}">删除</a>
+                    </div>
+                </td>
+            </tr>
+            {/volist} {else /}
+            <tr>
+                <td colspan="5" style="padding: 60px 0px;">没有找到任何记录 </td>
+            </tr>
+            {/if}
+
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="100">
+                    <div class="st_pages" id="wst-pager">
+                    </div>
+                    <div style="float: right;height: 50px;line-height: 50px;margin-right: 15px;">总计{$list['total']}条记录</div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<script type="text/javascript" src="/static/admin/js/add/base.js"></script>
+<script type="text/javascript" src="/static/admin/js/add/confirmBoxes.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+	    $(document).on("click", ".st_del", function() {
+	        var id=$(this).attr('data-value');
+		    CB.confirm({
+		        "title": "操作提示",
+		        "text": "您确定要删除此条记录？"
+		    }, function() {
+		        $.post("{:url('admin/Shop/delShops')}",{id:id},function (data) {
+
+                    if(data.status==1){
+                        CB.tips({
+                            title: "提示",
+                            text: "<img src='/static/admin/images/u933.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>保存成功"
+                        }, function() {
+                            location.reload();
+                        });
+                    }else {
+                        CB.tips({
+                            "title": "操作提示",
+                            "text": "删除失败请刷新后重试",
+                            "btn": true
+                        });
+                    }
+                })
+		    });
+		})
+	});
+</script>
+{/block}

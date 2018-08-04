@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html style="height: 100%;">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>圣托玛斯网站管理系统</title>
+    <!-- FontAwesome Styles-->
+    <link href="/admin/images/favicon.ico" rel="shortcut icon" />
+    <link href="/css/admin/font-awesome.css" rel="stylesheet" />
+    <!-- Custom Styles-->
+    <link href="/css/admin/index-base.css" rel="stylesheet" />
+    <link href="/css/admin/base.css" rel="stylesheet" />
+    <script type="text/javascript" src="/js/common/jquery.min.js"></script>
+    <script src="/js/admin/index-base.js"></script>
+    <style type="text/css">
+        body {
+            line-height: 24px;
+            font: 12px "Microsoft Yahei", "Arial";
+        }
+
+        a {
+            color: initial;
+        }
+
+        a:hover {
+            color: initial;
+        }
+
+        /*修改layer分页样式*/
+
+        #wst-pager .layui-laypage a {
+            height: 26px;
+            line-height: 26px;
+            padding: 0px 13px;
+            margin-bottom: 0px;
+        }
+
+        #wst-pager .layui-laypage span {
+            height: 26px;
+            line-height: 26px;
+            padding: 0px 13px;
+            ;
+            margin-bottom: 0px;
+        }
+
+        #wst-pager .layui-laypage .layui-laypage-total {
+            height: 26px;
+            line-height: 26px;
+            background-color: #F2F2F2;
+            margin-top: 2px;
+        }
+
+        #wst-pager .layui-laypage input {
+            height: 26px;
+            line-height: 26px;
+        }
+
+        #wst-pager .layui-laypage button {
+            height: 26px;
+            line-height: 26px;
+        }
+    </style>
+</head>
+
+<body style="height: 100%;">
+    <div id="wrapper">
+        <!--<div></div>-->
+        <div class="nav-left">
+            <div class="nav-control" style="cursor: pointer">
+                <!--<img src="/images/admin/left3.png" alt="">-->
+                <i></i>
+            </div>
+            <ul>
+                <li <%if(mark==="shezhi" ){%>
+                    class="active"
+                    <%}%>>
+                        <a href="/admin/web">
+                            <div class="sheZhi01">
+                                <i></i>
+                            </div>
+                            <div>设置</div>
+                        </a>
+                </li>
+                <li <%if(mark==="pinpai" ){%>
+                    class="active"
+                    <%}%>>
+                        <a href="/admin/brands/brandsDevelopments">
+                            <div class="pinPai01">
+                                <i></i>
+                            </div>
+                            <div>品牌</div>
+                        </a>
+                </li>
+                <li <%if(mark==="wenzhang" ){%>
+                    class="active"
+                    <%}%>>
+                        <a href="/admin/article/aclist">
+                            <div class="wenZhang01">
+                                <i></i>
+                            </div>
+                            <div>文章</div>
+                        </a>
+                </li>
+                <li <%if(mark==="chanpin" ){%>
+                    class="active"
+                    <%}%>>
+                        <a href="/admin/goods/list">
+                            <div class="chanPin01">
+                                <i></i>
+                            </div>
+                            <div>产品</div>
+                        </a>
+                </li>
+                <li <%if(mark==="gunaggao" ){%>
+                    class="active"
+                    <%}%>>
+                        <a href="/admin/ad/adlist">
+                            <div class="guangGao01">
+                                <i></i>
+                            </div>
+                            <div>广告</div>
+                        </a>
+                </li>
+                <li <%if(mark==="xiaoguo" ){%>
+                    class="active"
+                    <%}%>>
+                        <a href="/admin/attribute/alist">
+                            <div class="xiaoGuoTu01">
+                                <i></i>
+                            </div>
+                            <div>效果图</div>
+                        </a>
+                </li>
+                <li <%if(mark==="fuwu" ){%>
+                    class="active"
+                    <%}%>>
+                        <a href="/admin/service/list">
+                            <div class="fuWu01">
+                                <i></i>
+                            </div>
+                            <div>服务</div>
+                        </a>
+                </li>
+                <li <%if(mark==="mendian" ){%>
+                    class="active"
+                    <%}%>>
+                        <a href="/admin/shops/areas">
+                            <div class="menDian01">
+                                <i></i>
+                            </div>
+                            <div>门店</div>
+                        </a>
+                </li>
+            </ul>
+        </div>
+        <div class="nav-top fn-clear">
+            <div class="nav-top-left">
+                <img src="/images/admin/stthomas-single.png" alt="">
+                <span>网站管理系统</span>
+            </div>
+            <div class="nav-top-right">
+                <div class="signOut">
+                    <a href="/stthomas/logout.html">安全退出
+                        <img src="/images/admin/signOut.png" alt="">
+                    </a>
+                </div>
+                <div class="userName">123456
+                    <img src="/images/admin/userName.png" alt="">
+                </div>
+                <div class="homePage">
+                    <a href="/" target="_blank">
+                        <img src="/images/admin/homePage.png" alt="">首页</a>
+                </div>
+            </div>
+            <div class="userMsg" style="display: none">
+                <div>角色：系统管理员</div>
+                <div>
+                    <p>最后登录时间</p>
+                    <p>2018-07-30 10:45:23</p>
+                </div>
+                <div>IP：127.0.0.1</div>
+
+                <div>
+                    <a style="color: #1989FA;cursor: pointer" href="/stthomas/staff/editPwdShow.html">修改密码</a>
+                </div>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="sheZhi ul-wrapper <%if(mark==='shezhi'){%>active<%}%>">
+                <div class="nav-right-title">系统设置</div>
+                <ul>
+                    <li <%if(filename==='setting' ) {%>
+                        class="nav-right-active"
+                        <%}%>>
+                            <a href="/admin/setting">网站信息</a>
+                    </li>
+                    <li <%if(filename==='staffList' ) {%>
+                        class="nav-right-active"
+                        <%}%>>
+                            <a href="/admin/staff/list">管理员列表</a>
+                    </li>
+                    <li <%if(filename==='roleList' ) {%>
+                        class="nav-right-active"
+                        <%}%>>
+                            <a href="/admin/role/list">角色管理</a>
+                    </li>
+                    <li <%if(filename==='logList' ) {%>
+                        class="nav-right-active"
+                        <%}%>>
+                            <a href="/admin/log/list">管理员日志</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="pinPai ul-wrapper <%if(mark==='pinpai'){%>active<%}%>">
+                <div class="nav-right-title">企业品牌</div>
+                <ul>
+                    <li <%if(filename==='bdlist'){%>class="nav-right-active"<%}%>>
+                        <a href="/admin/brands/brandsDevelopments">发展历程</a>
+                    </li>
+                    <li <%if(filename==='bhlist'){%>class="nav-right-active"<%}%>>
+                        <a href="/admin/brands/brandsHonors">企业荣誉</a>
+                    </li>
+                    <li <%if(filename==='belist'){%>class="nav-right-active"<%}%>>
+                        <a href="/admin/brands/brandsEngineering">工程案例</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="wenZhang ul-wrapper <%if(mark==='wenzhang'){%>active<%}%>">
+                <div class="nav-right-title">新闻中心</div>
+                <ul>
+                    <li>
+                        <a href="/stthomas/article/aclist.html">文章分类</a>
+                    </li>
+                    <li>
+                        <a href="/stthomas/article/articlesList.html">文章列表</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="chanPin ul-wrapper <%if(mark==='chanpin'){%>active<%}%>">
+                <div class="nav-right-title">产品中心</div>
+                <ul>
+                    <li>
+                        <a href="/stthomas/goods/list.html">产品列表</a>
+                    </li>
+                    <li>
+                        <a href="/stthomas/cate/list.html">产品分类</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="guangGao ul-wrapper <%if(mark==='guanggao'){%>active<%}%>">
+                <div class="nav-right-title">广告管理</div>
+                <ul>
+                    <li>
+                        <a href="/stthomas/ad/adlist.html">广告列表</a>
+                    </li>
+                    <li>
+                        <a href="/stthomas/ap/aplist.html">广告位置</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="xiaoGuoTu ul-wrapper <%if(mark==='xiaoguo'){%>active<%}%>">
+                <div class="nav-right-title">效果图管理</div>
+                <ul>
+                    <li>
+                        <a href="/stthomas/attribute/alist.html">效果图属性</a>
+                    </li>
+                    <li>
+                        <a href="/stthomas/effect/list.html">效果图列表</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="fuWu ul-wrapper <%if(mark==='fuwu'){%>active<%}%>">
+                <div class="nav-right-title">服务支持</div>
+                <ul>
+                    <li>
+                        <a href="/stthomas/service/list.html">售后支持</a>
+                    </li>
+                    <li>
+                        <a href="/stthomas/service/mjlist.html">招商加盟</a>
+                    </li>
+                    <div style="display: none">暂无权限</div>
+                </ul>
+            </div>
+            <div class="menDian ul-wrapper <%if(mark==='mendian'){%>active<%}%>">
+                <div class="nav-right-title">授权网点</div>
+                <ul>
+                    <li>
+                        <a href="/stthomas/shops/areas.html">地区列表</a>
+                    </li>
+                    <li>
+                        <a href="/stthomas/shops/shoplist.html">授权网点</a>
+                    </li>
+                    <li>
+                        <a href="/stthomas/shops/shoponline.html">线上商城管理</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /. PAGE WRAPPER  -->
+        <div id="page-wrapper">

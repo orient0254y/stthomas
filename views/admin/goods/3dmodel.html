@@ -1,0 +1,229 @@
+{extend name="common/base"} {block name="content"}
+<link href="/static/admin/css/goods.css" rel="stylesheet" />
+<link href="/static/admin/css/adminSet.css" rel="stylesheet" />
+<script type="text/javascript" src="/static/admin/js/plugins/formValidator/formValidator-4.1.3.js"></script>
+<script type="text/javascript" src="/static/admin/js/plugins/layer/laydate/laydate.js"></script>
+<script type="text/javascript" src="/static/admin/js/plugins/webuploader/webuploader.min.js"></script>
+<script src="/static/admin/js/jquery.form.js"></script>
+<style>
+    /*样式1*/
+    .a-upload {
+        padding: 4px 10px;
+        height: 20px;
+        line-height: 20px;
+        position: relative;
+        cursor: pointer;
+        color: #888;
+        background: #fafafa;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        overflow: hidden;
+        display: inline-block;
+        *display: inline;
+        *zoom: 1
+    }
+
+    .a-upload  input {
+        position: absolute;
+        font-size: 100px;
+        right: 0;
+        top: 0;
+        opacity: 0;
+        filter: alpha(opacity=0);
+        cursor: pointer
+    }
+
+    .a-upload:hover {
+        color: #444;
+        background: #eee;
+        border-color: #ccc;
+        text-decoration: none
+    }
+    /*样式2*/
+    .file {
+        position: relative;
+        display: inline-block;
+        background: #D0EEFF;
+        border: 1px solid #99D3F5;
+        border-radius: 4px;
+        padding: 4px 12px;
+        overflow: hidden;
+        color: #1E88C7;
+        text-decoration: none;
+        text-indent: 0;
+        line-height: 20px;
+    }
+    .file input {
+        position: absolute;
+        font-size: 100px;
+        right: 0;
+        top: 0;
+        opacity: 0;
+    }
+    .file:hover {
+        background: #AADFFD;
+        border-color: #78C3F3;
+        color: #004974;
+        text-decoration: none;
+    }
+    #pickerPreview .webuploader-pick{width: 100%;}
+    #modelForm .addAdminItem  .addAdminItemR  input{  width: 240px;  height: 26px;line-height: 26px;border: 0px;}
+    #modelForm .addAdminItem  .addAdminItemR  #addModelName{  width: 320px;  height: 30px;line-height: 30px;border: 1px solid #EAEAEA;}
+    .addAdminItem  .addAdminItemR  #saveModel{ background-color: #FF3333;border-radius: 4px;color: #FFFFFF;height: 32px;width: 100px;cursor: pointer;}
+</style>
+
+<div class="st_container">
+    <div class="st_title">添加产品 - 添加3D模型</div>
+    <div class="st_body">
+        <div class="st_tips">
+            <p>标识“*”的选项为必填项，其余为选填项。</p>
+            <p>模型所需的 .mtl，.drc，.贴图，预览图 文件需一并上传</p>
+        </div>
+        <form id="modelForm" name="modelForm" method="post" action="" enctype="multipart/form-data">
+            <input type="hidden" name="__token__" value="{$Request.token}" />
+            <input type="hidden" name="token" value="{$token}">
+            <input type="hidden" name="id" value="{$id}">
+            <div class="ib_content3DModel" style="margin-top: 40px;">
+                 <div class="fn-clear addAdminItem">
+               <div class="fl textR addAdminItemL"><em> * </em>模型名称：</div>&nbsp;
+               <div class="fr textL addAdminItemR">
+                   <input  name="addModelName" id="addModelName" type="text">
+               </div>
+           </div>
+           <!--表单提交获取模型信息-->
+           <!--预览图-->
+                <div class="fn-clear addAdminItem" style="margin-top: 20px;">
+               <div class="fl textR addAdminItemL"> <em> * </em>设置预览图文件：</div>&nbsp;
+               <div class="fr textL addAdminItemR">
+                   <input type="file" name="previewImg" accept="image/*"  class="previewFile">
+               </div>
+           </div>
+               <!--drc-->
+               <div class="fn-clear addAdminItem" style="margin-top: 20px;">
+                   <div class="fl textR addAdminItemL"> <em> * </em>设置drc文件：</div>&nbsp;
+                   <div class="fr textL addAdminItemR">
+                           <input type="file" name="file[]" multiple="multiple" class="drcFile">
+                   </div>
+               </div>
+               <!--mtl-->
+               <div class="fn-clear addAdminItem" style="margin-top: 20px;">
+                   <div class="fl textR addAdminItemL"> <em> * </em>设置mtl文件：</div>&nbsp;
+                   <div class="fr textL addAdminItemR">
+                       <input type="file" name="file[]"  class="mtlFile">
+                   </div>
+               </div>
+               <!--mtl-->
+               <div class="fn-clear addAdminItem" style="margin-top: 20px;">
+                   <div class="fl textR addAdminItemL"> <em> * </em>设置贴图文件：</div>&nbsp;
+                   <div class="fr textL addAdminItemR">
+                       <input type="file" name="file[]" accept="image/*" multiple="multiple" class="imgFile">
+                   </div>
+               </div>
+
+
+           <!--drc-->
+
+            </div>
+        </form>
+        <div class="fn-clear addAdminItem" style="margin-top: 20px;">
+            <div class="fl textR addAdminItemL"></div>&nbsp;
+            <div class="fr textL addAdminItemR">
+                <input type="button" value="保存模型" id="saveModel" >
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/static/admin/js/add/base.js"></script>
+<script type="text/javascript" src="/static/admin/js/add/confirmBoxes.js"></script>
+<script>
+   $(function () {
+       var ajaxFormOption = {
+           type: "post",  //提交方式
+           dataType: "json", //数据类型
+           data: '',//自定义数据参数，视情况添加
+           url: "{:url('admin/Goods/webuploadModel')}", //请求url
+           success: function (data) { //提交成功的回调函数
+              if(data.status==-999){
+                  popupTip(data.msg,false);
+              }else if(data.status==1){
+                  popupTip(data.msg,true,function () {
+                      location.href="{:url('admin/Goods/goodsModelList',array('id'=>$id))}";
+                  })
+              }else{
+                  popupTip(data.msg,false);
+              }
+           }
+       };
+
+       //form中有submit按钮——方式1
+       $("#saveModel").click(function () {
+           var firstName = '';
+           var middleName = '';
+           var modelName = $("#addModelName").val();
+           var previewFiles = $(".previewFile")[0].files;
+           var drcRex = '.drc'
+           var mtlRex = '.mtl'
+           var drcFile = $(".drcFile")[0].files;
+           var mtlFile = $(".mtlFile")[0].files[0];
+           var imgFile = $(".imgFile")[0].files;
+           if(modelName == ''){
+               popupTip('请将模型名称填写完整',false);
+               return false;
+           }
+           if(previewFiles.length == 0){
+               popupTip('请添加预览图文件',false);
+               return false;
+           }
+           if(drcFile.length == 0){
+               popupTip('请添加drc文件',false);
+               return false;
+           }
+           var params = {}
+           //获取middleName
+           var drcFlag = false;
+           $(drcFile).each(function (i,drcItem) {
+               if(drcItem.name.indexOf(drcRex) !=-1){
+                   var arr = drcItem.name.split('.');
+                   middleName += arr[1] + ',';
+               }else {
+                   drcFlag = true;
+               }
+           });
+           if (drcFlag) {
+               popupTip('请添加正确drc文件',false);
+               return false;
+           }
+           if(middleName.length > 0){
+               middleName = middleName.slice(0,middleName.length-1)
+           }
+
+           if(mtlFile == undefined){
+               popupTip('请添加mtl文件',false);
+               return false;
+           }
+           //        获取firstName
+           if(mtlFile.name.indexOf(mtlRex) !=-1){
+               var arr = mtlFile.name.split('.');
+               firstName = arr[0];
+           }
+
+           if(firstName ==''){
+               popupTip('请添加正确mtl文件',false);
+               return false;
+           }
+           if(imgFile.length == 0){
+               popupTip('请添加贴图文件',false);
+               return false;
+           }
+
+
+           params.firstName = firstName;
+           params.middleName = middleName;
+           ajaxFormOption.data = params;
+           $("#modelForm").ajaxSubmit(ajaxFormOption);
+           return false;
+       });
+   })
+
+</script>
+{/block}

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        <%= title %>
+    </title>
+    <style type="text/css">
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+            font-size: 12px;
+            font-family: "Microsoft Yahei", "Arial";
+        }
+
+        html,
+        body,
+        div,
+        img,
+        input,
+        a,
+        span,
+        p {
+            margin: 0;
+            padding: 0;
+        }
+
+        input {
+            outline: none;
+        }
+
+        input:-webkit-autofill,
+        textarea:-webkit-autofill,
+        select:-webkit-autofill {
+            background-color: transparent;
+            box-shadow: 0 0 0px 1000px white inset !important;
+            -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+        }
+
+        img {
+            border: none;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .clearfix:after {
+            display: block;
+            content: "";
+            height: 0;
+            visibility: visible;
+            clear: both;
+        }
+
+        .clearfix {
+            zoom: 1;
+        }
+
+        .container {
+            height: 100%;
+            background-image: url('/images/admin/u0.jpg');
+            -webkit-background-size: cover;
+            background-size: cover;
+            background-position: center center;
+        }
+
+        .login_box {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate3d(-50%, -50%, 0);
+            width: 650px;
+            height: 270px;
+            background-color: #fff;
+            border-radius: 4px;
+        }
+
+        .login_left {
+            padding-top: 70px;
+            padding-left: 20px;
+            float: left;
+            position: relative;
+        }
+
+        .login_left a {
+            display: block;
+        }
+
+        .login_left a img {
+            display: block;
+        }
+
+        .login_left p {
+            position: absolute;
+            font-size: 16px;
+            line-height: 24px;
+            top: 140px;
+            left: 88px;
+        }
+
+        .login_middle {
+            width: 29px;
+            height: 167px;
+            float: left;
+            margin-top: 51px;
+            background-image: url('/images/admin/u6.png');
+        }
+
+        .login_right {
+            padding-top: 43px;
+            padding-left: 17px;
+            float: left;
+        }
+
+        .username,
+        .password,
+        .checkmark {
+            width: 298px;
+            height: 34px;
+            border: 1px solid #a1a1a1;
+            border-radius: 3px;
+            margin-bottom: 15px;
+        }
+
+        .focus {
+            border: 1px solid #1989FA;
+        }
+
+        .username span,
+        .password span,
+        .checkmark span {
+            display: block;
+            width: 22px;
+            height: 22px;
+            margin: 6px;
+            background-image: url('/images/admin/st_icons.png');
+            float: left;
+        }
+
+        .username span {
+            background-position: 0 0;
+        }
+
+        .password span {
+            background-position: -32px 0;
+        }
+
+        .checkmark span {
+            background-position: -64px 0;
+        }
+
+        .username input,
+        .password input,
+        .checkmark input {
+            float: left;
+            border: none;
+            width: 243px;
+            border-left: 1px solid #999;
+            height: 18px;
+            line-height: 18px;
+            margin-top: 8px;
+            padding-left: 10px;
+            font-family: "Microsoft Yahei";
+        }
+
+        .checkmark {
+            width: 154px;
+            float: left;
+        }
+
+        .checkmark input {
+            width: 100px;
+        }
+
+        .checkmark_img {
+            float: left;
+            width: 124px;
+            height: 32px;
+            margin-left: 14px;
+            margin-top: 2px;
+        }
+
+        .checkmark_img img {
+            width: 124px;
+            height: 32px;
+            display: block;
+            cursor: pointer;
+        }
+
+        .st_login_btn {
+            display: block;
+            width: 300px;
+            height: 36px;
+            line-height: 36px;
+            background-color: #1989FA;
+            color: #fff;
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 8px;
+            border-radius: 3px;
+        }
+
+        .login_tips {
+            color: #f00;
+            height: 18px;
+            line-height: 18px;
+            display: none;
+        }
+
+        .login_tips:after {
+            display: block;
+            content: "";
+            float: left;
+            width: 16px;
+            height: 16px;
+            margin: 1px 5px 1px 1px;
+            background-image: url('/images/admin/st_icons.png');
+            background-position: -92px 0;
+        }
+    </style>
+    <script type="text/javascript" src="/js/common/jquery.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="login_box">
+            <div class="login_left">
+                <a href="javascript:void(0);">
+                    <img src="/images/admin/logo.png" width="220" height="100">
+                </a>
+                <p>网站管理系统</p>
+            </div>
+            <div class="login_middle"></div>
+            <div class="login_right">
+                <input type="hidden" name="token" id="token" value="">
+                <div class="username input_box">
+                    <span></span>
+                    <input type="text" name="username" placeholder="请输入用户名" id="username">
+                </div>
+                <div class="password input_box">
+                    <span></span>
+                    <input type="password" name="password" placeholder="请输入密码" id="password">
+                </div>
+                <div class="checkmark_box clearfix">
+                    <div class="checkmark input_box">
+                        <span></span>
+                        <input type="text" name="checkmark" placeholder="验证码" id="checkmark">
+                    </div>
+                    <div class="checkmark_img">
+                        <canvas width="124" height="32" id="verifyCanvas"></canvas>
+                    </div>
+                    <!-- <div class="checkmark_img"><img src="/images/admin/u36.png" class="verifyImg"></div> -->
+                </div>
+                <a href="javascript:void(0);" class="st_login_btn" id="st_login_btn">登录</a>
+                <p class="login_tips" id="login_tips">账户名或密码错误</p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/js/common/verify.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var Verify = new window.Verify("verifyCanvas", "checkmark");
+            $('.input_box').click(function () {
+                $('.input_box').removeClass('focus');
+                $(this).addClass('focus');
+                $(this).find('input').focus();
+            });
+            $('.input_box').find('input').blur(function () {
+                $(this).parent().removeClass('focus');
+            });
+            // 登录
+            $('#st_login_btn').click(function () {
+                login();
+            });
+            // st_login_btn
+            $(document).on("keyup", function (e) {
+                if (e.keyCode === 13) {
+                    login();
+                }
+            })
+            function login() {
+                var username = ($('#username').val()).trim();
+                var password = ($('#password').val()).trim();
+                var checkmark = ($('#checkmark').val()).trim();
+                var token = ($("#token").val()).trim();
+                if (username === '') {
+                    setTips('用户名不能为空 ');
+                    return false;
+                }
+                if (password === '') {
+                    setTips('密码不能为空 ');
+                    return false;
+                }
+                if (checkmark === '') {
+                    setTips('验证码不能为空 ');
+                    return false;
+                }
+                var verifyCode = Verify.check();
+                if (!verifyCode) {
+                    setTips('验证码不正确');
+                    return false;
+                }
+                $("#login_tips").hide();
+                var params = {
+                    'name': username,
+                    'password': password,
+                    'token': token
+                };
+                $.post("/admin/login/doLogin", params, function (data) {
+                    console.log(data);
+
+                    if (data.status == 1) {
+                        location.href="/admin/setting";
+                        console.log(document.cookie);
+
+                    } else if (data.status == -999) {
+                        setTips(data.msg);
+                    } else {
+                        setTips(data.msg);
+                        Verify.reset();
+                    }
+                });
+            }
+            function setTips(text) {
+                $("#login_tips").show().html(text);
+            }
+        });
+        function getVerify() {
+            // $('.verifyImg').attr('src','{:captcha_src()}?rand='+Math.random());
+        }
+    </script>
+</body>
+
+</html>

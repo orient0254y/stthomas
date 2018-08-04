@@ -1,0 +1,175 @@
+{extend name="common/base"} {block name="content"}
+<div class="st_container">
+    <div class="st_title">线上商城设置</div>
+    <div class="st_body">
+    	<div class="st_tips">
+            <p>线上销售平台设置</p>
+        </div>
+        <!-- 信息展示栏目 -->
+        <div class="st_content">
+            <form id="st_form">
+                <input type="hidden" name="token" id="token" value="{$token}">
+                <input type="hidden" name="id" id="id" value="{$obj['s_id']}">
+                <!-- 普通input信息框 -->
+                <div class="st_msg_line clearfix">
+                    <div class="st_msg_line_left">
+                        <div style="float: right;">
+                            <span class="left">是否开启</span><i class="fenge">:</i>
+                        </div>
+                    </div>
+                    <div class="st_msg_line_right">
+                        <div class="st_switch"></div>
+                    </div>
+                </div>
+                <!-- 普通input信息框 -->
+                <div class="st_msg_line clearfix">
+                    <div class="st_msg_line_left">
+                        <div style="float: right;">
+                            <em class="important fl">*</em><span class="left">名称</span><i class="fenge">:</i>
+                        </div>
+                    </div>
+                    <div class="st_msg_line_right">
+                        <input type="text" name="netName" class="st_normal_input" id="netName" disabled value="{$obj['s_name']}">
+                        <!-- 不需验证时带的提示 -->
+                        <!-- <span class="line_tips">网站标题将显示在浏览器的标题栏</span> -->
+                    </div>
+                </div>
+                <!-- 时间信息框 -->
+                <div class="st_msg_line clearfix">
+                    <div class="st_msg_line_left">
+                        <div style="float: right;">
+                            <em class="important fl">*</em><span class="left">链接网址</span><i class="fenge">:</i>
+                        </div>
+                    </div>
+                    <div class="st_msg_line_right">
+                        <input type="text" name="netHref" class="st_normal_input" data-id="{$obj['s_is_open']}" id="netHref" disabled value="{$obj['s_https']}" ><span class="line_tips">链接网址必须以https::开头</span>
+                    </div>
+                </div>
+	            <div class="st_msg_line clearfix">
+	                <div class="st_msg_line_left"></div>
+	                <div class="st_msg_line_right">
+	                    <div style="height: 15px;"></div>
+	                    <input type="submit" name="" value="确定" class="st_ensure">
+	                </div>
+	            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/static/admin/js/add/base.js"></script>
+<script type="text/javascript" src="/static/admin/js/add/confirmBoxes.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+	    $(document).on("click", ".st_del", function() {
+		    CB.confirm({
+		        "title": "操作提示",
+		        "text": "您确定要删除此条记录？"
+		    }, function() {
+		        //如果该分类下还有文章
+		        if (1) {
+		            CB.tips({
+		                "title": "操作提示",
+		                "text": "该分类下已有效果图，不允许删除非空分类",
+		                "btn": true
+		            });
+		        }
+		    });
+		})
+	});
+
+
+// 带图片验证时设置
+$.formValidator.initConfig({
+    theme: 'Default',
+    mode: 'AutoTip',
+    formID: "st_form",
+    debug: true,
+    submitOnce: true,
+    onSuccess: function() {
+        stSubmit();
+        return false;
+    },
+    onError: function(msg) {
+    }
+});
+var f$;
+if ($ && $.formValidator) {
+    f$ = $;
+    f$.formValidator = $.formValidator;
+    f$.unFormValidator = $.unFormValidator;
+}
+//开关切换
+    var is=$("#netHref").attr('data-id');
+if(is==1){
+    var switchFlag = true;
+    $(".st_switch").addClass('on')
+    $("#netName").attr("disabled", false);
+    $("#netHref").attr("disabled", false);
+    f$('#netName').formValidator({ onCorrect: "输入正确", onShow: "（如：官网商城）" }).inputValidator({ min: 1, onError: "名称不能为空" });
+    f$('#netHref').formValidator({ onCorrect: "输入正确" }).inputValidator({ min: 1, onError: "连接网址不能为空" });
+}else {
+    $(".st_switch").removeClass('on');
+}
+
+
+$(document).on("click",".st_switch",function(){
+	var close = false;
+	if ($(this).hasClass("on")) {
+		close = true;
+	}
+	var scope = this;
+	// $.ajax(0,{"close" : close},function(data){
+	// 	if (data.status) {
+			if (close) {
+				//当前为开，点击关闭
+				$(scope).attr("class", "st_switch");
+				$("#netName").attr("disabled", true);
+				$("#netHref").attr("disabled", true);
+				f$('#netName').unFormValidator(true);
+				f$('#netHref').unFormValidator(true);
+			}else{
+				//当前关闭，点开打开
+				$(scope).attr("class", "st_switch on");
+				$("#netName").attr("disabled", false);
+				$("#netHref").attr("disabled", false);
+				f$('#netName').formValidator({ onCorrect: "输入正确", onShow: "（如：官网商城）" }).inputValidator({ min: 1, onError: "名称不能为空" });
+				f$('#netHref').formValidator({ onCorrect: "输入正确" }).inputValidator({ min: 1, onError: "连接网址不能为空" });
+			}
+			switchFlag = false;
+	// 	}
+	// });
+});
+// 提交
+function stSubmit() {
+
+	var switchOn = $(".st_switch").hasClass("on") ? 1 : 0;
+    var name = ($('#netName').val()).trim();
+    var ehref = ($('#netHref').val()).trim();
+    var token = ($('#token').val()).trim();
+    var id=$("#id").val();
+    var params = {
+    	'switchOn': switchOn,
+        'Onlinename': name,
+        'ehref': ehref,
+        'token': token,
+        'id':id,
+    };
+// console.log(params);return;
+    $.post("{:url('admin/Shop/addOnline')}",params, function(data){
+        if (data.status==1) {
+            CB.tips({
+                title: "提示",
+                text: "<img src='/static/admin/images/u933.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>保存成功"
+            }, function() {
+                location.reload();
+            });
+        } else {
+            CB.tips({
+                title: "提示",
+                text: "<img src='/static/admin/images/u951.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>保存失败"
+            });
+        }
+    });
+}
+</script>
+{/block}

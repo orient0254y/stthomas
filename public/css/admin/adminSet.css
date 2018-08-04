@@ -1,0 +1,47 @@
+.addAdminMsg{padding-top: 40px;}
+.addAdminItem{margin-bottom: 14px;color: #707070;}
+.addAdminItem div:nth-child(1){width: 29% ;height: 30px;line-height: 30px;}
+.addAdminItem div:nth-child(2){width: 70%}
+.addAdminItem div i{color: #EC5151;font-family: 微软雅黑;}
+.addAdminItem div em{color: #EC5151;font-family: 微软雅黑;}
+.addAdminItem div input{width: 320px;height: 30px;line-height: 30px;padding-left: 4px;}
+.addAdminItem div select{width: 326px;height: 30px;line-height: 30px;padding-left: 4px;border-color: #DBDBDB}
+.addAdminItem .textL .onError{ padding-left: 20px;  margin-left: 14px;  background-position-y: 7px;width: 50%;color: #EC5151;}
+.addAdminItem .textL .onCorrect{  padding-left: 20px;  margin-left: 14px;  background-position-y: 7px;  width: 50%; color: #90b71b;}
+.addAdminItem .textL .onShow{ padding-left: 20px;  margin-left: 14px;  background-position-y: 7px;width: 50%;color: #707070;}
+.addAdminItem .textL .onFocus{  padding-left: 20px;  margin-left: 14px;  background-position-y: 7px;  width: 40%;color: #999;}
+#addAdminSuccess{width: 80px;height: 35px;line-height: 35px;color: #FFFFFF;text-align: center;background-color: #EC5151;border-radius: 4px;margin-top: 20px;cursor: pointer;}
+.addAdminItem .addAdminItemR .addAdminUserOldPassWorldYanZheng{display: inline-block;height: 30px;line-height: 30px;padding-left: 20px;margin-left: 14px;width: 40%;}
+.addAdminUserOldPassWorldYanZheng{background: url("/static/admin/images/onFocus.png") no-repeat;background-position: 0px 5px;}
+
+/*角色添加部分*/
+.addAdminItemR .describeJuese{padding: 2px;border-color: #DBDBDB;}
+.addAdminItem .addAdminItemR .addRoleNameTip{display: inline-block;height: 30px;line-height: 30px;padding-left: 20px;margin-left: 14px;width: 40%;}
+.addRoleNameTip{background: url("/static/admin/images/onError.png") no-repeat;background-position: 0px 5px;color: #EC5151;}
+.addRoleNameTipLess{background: url("/static/admin/images/onError.png") no-repeat;background-position: 0px 5px;text-align: left;color: #EC5151;display: inline-block;height: 30px;line-height: 30px;padding-left: 20px;margin-left: 14px;width: 16%;}
+.selectItem{padding-left: 15px;}
+.selectItem input{vertical-align: text-bottom;margin-bottom: 2px;margin-right: 4px;}
+.selectItem .selectItem01{height: 40px;line-height: 40px;padding-left: 18px;background-color: #F2F2F2;}
+.selectItem  .selectItem02 ul{height: 80px;line-height: 80px;}
+.selectItem  .selectItem02 ul li{margin-left: 100px;float: left;}
+.addRoleBottom{height: 170px;line-height: 160px;text-align: center}
+.addRoleBottom .selectAllItem{display: inline-block;margin-right: 20px;}
+.addRoleBottom .selectAllItem input{vertical-align: text-bottom;margin-bottom: 2px;margin-right: 4px;}
+.addRoleBottom button{background-color: #EC5151;width: 80px;height: 35px;line-height: 35px;font-size: 14px;color: #FFFFFF;border-radius: 4px;}
+
+
+
+/*管理员日志*/
+.clearBottom{float: left;line-height: 48px; font-size: 12px;}
+.clearBottom input{vertical-align: text-bottom;margin-bottom: 2px;margin-right: 2px;}
+.clearBottom button{margin-left: 6px;width: 80px;height: 26px;line-height: 26px;border-radius: 4px;color: #FFFFFF; border:none; font-size: 12px;}
+.clearBottom .clearRzNo{background-color: #8E8E8E;cursor: not-allowed; }
+.clearBottom .clearRzYes{background-color: #1989FA;cursor: pointer;}
+
+
+
+
+
+
+
+

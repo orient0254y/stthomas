@@ -1,0 +1,105 @@
+{extend name="common/base"}
+{block name="content"}
+<link href="/static/admin/css/goods.css" rel="stylesheet" />
+<link href="/static/admin/css/adminSet.css" rel="stylesheet" />
+<div class="st_container">
+    <div class="st_title">添加产品 - 选择产品分类</div>
+    <div class="st_body">
+        <div class="st_tips">
+            <p>标识“*”的选项为必填项，其余为选填项。</p>
+            <p>请按提示栏信息进行商品添加。</p>
+        </div>
+    </div>
+    <div class="goodsMsgCont">
+        <div class="goodsMsgContTitle">
+            <span>选择产品分类</span>
+        </div>
+        <div class="fn-clear goodsMsgContMsg">
+            <div class="fl flCommon">
+                <div class="flCommonName">请选择一级分类</div>
+                <ul class="firstFl">
+                    {volist name='data' id='vo' }
+                    <li style="cursor: pointer;" data-id="{$vo.gc_id}">{$vo.gc_name}</li>
+                    {/volist}
+                </ul>
+            </div>
+            <div class="fl flCommonMind"><img src="/static/admin/images/jTRight.png" alt=""></div>
+            <div class="fl flCommon flSecond">
+                <div class="flCommonName">请选择二级分类</div>
+                <ul  class="goodsSecondType">
+
+                </ul>
+
+            </div>
+        </div>
+        <div class="tipCont">
+            <span class="tipContTitle">您当前选择的产品类别是：</span>
+            <span class="tipContFirstName" style="color: #FF3333;"></span>
+            <!--<div style="display: inline-block;" class="tipContSecond" >-->
+                <span class="tipContSecond" style="font-family: simsun;padding: 0px 10px;display: none;">></span>
+                <span class="tipContSecondName" style="color: #FF3333;"></span>
+            <!--</div>-->
+        </div>
+    </div>
+    <div style="width: 100%;">
+        <div class="nextAddMsg">下一步，填写产品信息</div>
+    </div>
+</div>
+<script>
+
+    //点击一级分类
+    $(".firstFl").find('li').each(function () {
+        $(this).on('click',function () {
+            $(".goodsSecondType").html('');
+            $(".tipContSecond").hide();
+            $(".tipContSecondName").html('');
+            $(".tipContSecondName").attr('data-second','');
+            var catId = $(this).attr('data-id');
+            var val = $(this).html();
+            $(".tipContFirstName").html(val);
+            $(".tipContFirstName").attr('data-first',$(this).attr('data-id'));
+           $(this).parent().find('li').removeClass('firstActive');
+            $(this).addClass('firstActive');
+            $.post("{:url('admin/Goods/getGoodsCate')}",{id:catId},function (data) {
+                // console.log(data);
+                if(data.length>0){
+                    var html = '';
+                    for (var i = 0 ; i < data.length ; i++){
+                        html += '<li style="cursor: pointer;" onclick="selectSecond(this)" data-id="'+data[i].gc_id+'">'+data[i].gc_name+'</li>'
+                    }
+                    $(".goodsSecondType").html(html);
+                }
+            })
+        });
+    });
+    //点击二级分类
+    function selectSecond (obj){
+            $(".tipContSecond").show();
+            $(".tipContSecondName").show();
+            var val = $(obj).html();
+            $(obj).parent().find('li').removeClass('secondActive');
+            $(obj).addClass('secondActive');
+            $(".tipContSecondName").html(val);
+            $(".tipContSecondName").attr('data-second',$(obj).attr('data-id'));
+    }
+
+    //点击下一步
+    $(".nextAddMsg").on('click',function () {
+        if($(".tipContFirstName").html() == ''){
+            popupTip('请至少选择一级产品分类',false);
+            return false;
+        }
+        var  firstCat = $(".tipContFirstName").attr('data-first');
+        var  secondCat = $(".tipContSecondName").attr('data-second');
+        var str = [];
+        str.push('cateId1=>'+firstCat);
+        if(secondCat != undefined &&  secondCat != ''){
+            location.href="{:url('admin/Goods/goodsAddInfo')}?cateId="+secondCat;
+        }else{
+            location.href="{:url('admin/Goods/goodsAddInfo')}?cateId="+firstCat;
+        }
+    });
+
+</script>
+
+{/block}

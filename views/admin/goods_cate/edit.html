@@ -1,0 +1,269 @@
+{extend name="common/base"}
+{block name="content"}
+<link href="/static/admin/css/adminSet.css" rel="stylesheet" />
+<!-- 图片上传 webuploader 引入 -->
+<script type="text/javascript" src="/static/admin/js/plugins/webuploader/webuploader.min.js"></script>
+<!-- 图片上传 webuploader 引入结束 -->
+<div class="st_container">
+    <div class="st_title">添加产品分类</div>
+    <div class="st_body">
+        <div class="st_tips">
+            <p>标识“*”的选项为必填项。</p>
+        </div>
+    </div>
+    <div class="addAdminMsg">
+        <form id="st_form">
+            <input type="hidden" name="token" id="token" value="{$token}">
+            <input type="hidden" name="cateId" id="cateId" value="{$cateId}">
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"><em>*</em> 分类名称 ：</div>&nbsp;
+                <div class="fr textL addAdminItemR">
+                    <input name="addAdminUserName" type="text" id="addAdminUserName" value="{$data.gc_name}">
+                </div>
+            </div>
+            <div class="st_msg_line clearfix">
+                <div class="st_msg_line_left" style="width: 29%;">
+                    <div style="float: right;">
+                        <span class="left">分类图片</span><i class="fenge">:</i>
+                    </div>
+                </div>
+                <div class="st_msg_line_right webuploader-container" style="margin-left: 12px;">
+                    <div class="st_uploadImg" id="picker">上传图片</div>
+                    <div id="imgContainer" class="imgContainer">
+                        <!--添加的图片显示 没有图片-->
+                        {empty name='data.gc_img'}
+                        <img>
+                        {else /}
+                        <!--结束-->
+                        <!--有图片-->
+                        <img src="/static/admin/images/u645.png" data-src="{$data.gc_img}" class="st_img_hover">
+                        {/empty}
+                        <!--结束-->
+                    </div>
+                    <div style="position: absolute;left: 316px;top: 0;height: 30px;white-space: nowrap;">
+                        <style type="text/css">
+                            #imgTipsTip {
+                                color: #f00;
+                                padding-left: 20px;
+                                margin-left: 10px;
+                                background-position-y: 7px;
+                            }
+
+                            #imgTipsTip.onCorrect {
+                                color: #333;
+                            }
+                        </style>
+                        <input type="text" name="img" id="imgTips" style="visibility: hidden;width:1px;height: 30px;">
+                    </div>
+                </div>
+                <span style="margin-left: 10px;color: #999999;">上传图片格式必须是gif,jpg,jpeg,png;图片大小在2mb之内</span>
+            </div>
+            <!-- 单选选择框 -->
+            <div class="st_msg_line clearfix">
+                <div class="st_msg_line_left" style="width: 29%;">
+                    <div style="float: right;">
+                        <span class="left">是否显示</span><i class="fenge">:</i>
+                    </div>
+                </div>
+                <div class="st_msg_line_right" style="margin-left: 12px;">
+                    <label class="st_normal_radio">
+                        <input type="radio" name="importantLevel" value="1" {if $data.gc_is_show==1} checked {/if}><span> 显示</span>
+                    </label>
+                    <label class="st_normal_radio">
+                        <input type="radio" name="importantLevel" value="0" {if $data.gc_is_show==0} checked {/if}><span> 不显示</span>
+                    </label>
+                    <!-- <span class="line_tips"></span> -->
+                </div>
+            </div>
+            <!-- 添加减少信息框 -->
+            <div class="st_msg_line clearfix">
+                <div class="st_msg_line_left" style="width: 29%;margin-right: 12px;">
+                    <div style="float: right;">
+                        <span class="left">属性值</span><i class="fenge">:</i>
+                    </div>
+                </div>
+                <div class="st_msg_line_right">
+                    <div id="add_attr_box">
+                        {volist name='data.attrs' id='vo' key='i'}
+                        <div class="add_attr_line">
+                            <!--只有第一条是加号-->
+                            {if $i==1}
+                            <span class="add_btn sttr_btn unselectable">[+]</span>
+                            {else /}
+                            <!--第二条-->
+                            <span class="sttr_btn unselectable sub_btn" onselectstart="return false;" unselectable="on">[-]</span>
+                            {/if}
+                            <!--结束-->
+                            <input type="text" name="attrVal" class="st_normal_input_add" id="attrVal_0" data-id="{$vo['ca_id']}" value="{$vo['ca_name']}">
+
+                        </div>
+                        {/volist}
+                        <!-- <div class="add_attr_line">
+                            <span class="sub_btn sttr_btn unselectable">[-]</span><input type="text" name="attrVal" class="st_normal_input_add" id="attrVal_1">
+                        </div>
+                        <div class="add_attr_line">
+                            <span class="sub_btn sttr_btn unselectable">[-]</span><input type="text" name="attrVal" class="st_normal_input_add" id="attrVal_2">
+                        </div> -->
+                    </div>
+                </div>
+                <span style="margin-left: 10px;color: #EC5151;display: none;" class="addTypeMore">至少添加一条属性</span>
+                <span style="margin-left: 10px;color: #999999;width: 310px;">（如：马桶的 排水方式，坐便器类型，坐便冲水量 等）</span>
+            </div>
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL">排序：</div>&nbsp;
+                <div class="fr textL addAdminItemR">
+                    <input name="addAdminUserPassWorld" class="paiXu" type="number" id="addAdminUserPassWorld" placeholder="0" value="{$data.gc_sort}">
+                </div>
+            </div>
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"></div>&nbsp;
+                <div class="fr textL addAdminItemR">
+                    <button id="addAdminSuccess">确定</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="/static/admin/js/add/base.js"></script>
+<script type="text/javascript" src="/static/admin/js/add/confirmBoxes.js"></script>
+<script>
+
+    $.formValidator.initConfig({
+        theme: 'Default',
+        mode: 'AutoTip',
+        formID: "st_form",
+        debug: true,
+        submitOnce: true,
+        onSuccess: function() {
+            var atleastOneAttribute = false;
+            $(".st_normal_input_add").each(function () {
+                if($(this).val() != ''){
+                    atleastOneAttribute = true;
+                }
+            });
+            if (hasUploadImg && atleastOneAttribute) {
+                if (state === 'uploading') {
+                    uploader.stop();
+                } else {
+                    uploader.upload();
+                }
+            } else {
+                stSubmit();
+            }
+            return false;
+        },
+        onError: function(msg) {
+            CB.tips({
+                title: "提示",
+                text: "<img src='/static/admin/images/u951.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>保存失败"
+            }, function() {
+                if (msg === "请上传图片") {
+                    $("#imgTipsTip").removeClass("onFocus").addClass("onError").find("div").removeClass("onFocus").addClass("onError").html("请上传图片");
+                    $("#imgTips").val("");
+                }
+            });
+        }
+    });
+    $("#addAdminUserName").formValidator({onFocus:"输入分类名称",onCorrect:"输入正确",}).inputValidator({min:1,max:20,onError:"分类名称不能为空"});
+</script>
+<script>
+    //验证正整数
+    zhengZhengShuIn('paiXu');
+    function zhengZhengShuIn (className){
+        var rex = /^[1-9]{1}[0-9]*$/;//正整数
+        $("."+className).keyup(function(event){
+            var event = event || window.event;
+            var value = $(this).val();
+            if(value.length>1){
+                var flagRex =/^0/;
+                if(flagRex.test(value)){
+                    layer.msg('首个字符不能为0',{time:1500});
+                    $(this).val('');
+                }
+            }
+        });
+
+        $("." + className).keypress(function(event) {
+            var event = event || window.event;
+            if (event.charCode == 46 && event.charCode !== 0 && event.charCode < 48 || event.charCode > 57) {
+                return false;
+            }
+            if (/\./.test($(this).val()) && event.charCode === 46) {
+                return false;
+            }
+            if ($(this).val() === "" && event.charCode === 46) {
+                return false;
+            }
+            var tails = ($(this).val()).split(".")[1];
+            if (tails && tails.length === 2 && event.charCode !== 0) {
+                return false;
+            }
+        });
+    }
+    //验证至少添加一条属性值
+    var atleastOneAttribute = false;
+    $(".st_normal_input_add").on('blur',function () {
+        $(".st_normal_input_add").each(function () {
+            if($(this).val() != ''){
+                atleastOneAttribute = true;
+            }
+        });
+        if(!atleastOneAttribute){
+            $(".addTypeMore").show();
+        }else{
+            $(".addTypeMore").hide();
+        }
+    });
+    $(".st_normal_input_add").on('focus',function () {
+        $(".addTypeMore").hide();
+    });
+
+    // 上传图片js设置
+    var imgWidth, imgHeight, uploader, state = 'pending',
+        hasUploadImg = false;
+    //上传图片最大占用存储
+    var maxSize = 2,
+        widthSize ,
+        heightSize ;
+    function stSubmit(res) {
+        if (res && res.status === 1) {
+            var img = res.msg;
+        }else{
+            var img = $(".st_img_hover").attr('data-src');
+        }
+        var parmars = {}
+        parmars.name = $("#addAdminUserName").val();
+        parmars.img = img;
+        parmars.radioVal = $('input:radio:checked').val();
+        parmars.num = $('#addAdminUserPassWorld').val();
+        parmars.token = $("#token").val();
+        parmars.cateId=$("#cateId").val();
+        var obj = {};
+        $(".st_normal_input_add").each(function () {
+            if ($(this).val() != '') {
+                obj[$(this).attr('data-id')] =$(this).val();
+            }
+        });
+        parmars.suxing = obj;
+        if (parmars.suxing.length == 0) {
+//            popupTip('至少添加一条属性', false);
+            $(".addTypeMore").show();
+            return false;
+        }
+        $.post("{:url('admin/GoodsCate/doEdit')}", parmars, function (data) {
+            if (data.status == -999) {
+                popupTip(data.msg, false);
+            } else if (data.status == 1) {
+                popupTip(data.msg, true, function () {
+                    location.href = "{:url('admin/GoodsCate/cateList')}";
+                })
+            } else {
+                popupTip(data.msg, false);
+            }
+        })
+    }
+    var uploadServer = '{:url("admin/GoodsCate/uploadPic")}';
+    // var delImg = '/static/admin/js/plugins/webuploader/delimg.php';
+</script>
+<script type="text/javascript" src="/static/admin/js/add/uploadImg.js"></script>
+{/block}

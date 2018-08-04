@@ -1,0 +1,204 @@
+{extend name="common/base"}
+{block name="content"}
+<link rel="stylesheet" href="/static/admin/css/goods.css">
+<div class="st_container">
+    <div class="st_title">地区列表</div>
+    <div class="st_body">
+        <div class="st_tips">
+            <p>在新增一级地区点击管理进入下一级地区，可进行删除和编辑。</p>
+            <p>地区用于授权网点定位，请根据实际情况谨慎设置。</p>
+            <p>地区层级关系必须为省/直辖市→市暂只支持到二级地区其后不显示</p>
+        </div>
+        <div class="btns_div">
+            <a href="{:url('admin/Shop/AddAreas')}" class="st_btn_h28" >新增地区</a>
+        </div>
+        <table>
+            <thead>
+            <tr>
+                <th>地区名称</th>
+                <th>所属层级</th>
+                <th>所属地区</th>
+                <th>排序</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <!--循环的时候 有要求循环第一级在里边循环第二级 并且对class有要求 ：例如：tr_1，tr_2 是一级别；tr_1_1,tr_2_1是第二级；-->
+            {if $list['total']>0}
+            {volist name="list['data']" id="v" key="k"}
+            <tr  class="tr_{$k} tr_first">
+                <td><span class="glyphicon glyphicon-plus" onclick='javascript:loadChildTree(this,null,"tr_{$k}")'></span><input onchange="editName(this)" data-id="{$v['a_id']}" class="fenLeiName" type="text" value="{$v['a_area_name']}"></td>
+                <td>一级</td>
+                <td>-</td>
+                <td><input onchange="editSort(this)" type="number" data-id="{$v['a_id']}" class="goodsNum" value="{$v['a_area_sort']}"></td>
+                <td>
+                    <div class="st_btns">
+                        <a href="{:url('admin/Shop/editAreas',array('id'=>$v.a_id))}" class="st_edit">编辑</a>
+                        <a href="javascript:void(0);" class="st_del" data-id="{$v['a_id']}">删除</a>
+                    </div>
+                </td>
+            </tr>
+                {volist name="v['son']" id="vo" key="ko"}
+                <tr  class="tr_{$k}_{$ko} tr_second" style="display: none;">
+                    <td><span class="glyphicon01"></span><input onchange="editName(this)" class="fenLeiName" data-id="{$vo['a_id']}" type="text" value="{$vo['a_area_name']}"></td>
+                    <td>二级</td>
+                    <td>{$v['a_area_name']}</td>
+                    <td><input type="number" onchange="editSort(this)" data-id="{$vo['a_id']}" class="goodsNum" value="{$vo['a_area_sort']}"></td>
+                    <td>
+                        <div class="st_btns">
+                            <a href="javascript:void(0);" class="st_del" data-id="{$vo['a_id']}">删除</a>
+                        </div>
+                    </td>
+                </tr>
+                {/volist}
+            {/volist}
+            {else /}
+            <tr>
+                <td colspan="5" style="padding: 60px 0px;">没有找到任何记录 </td>
+            </tr>
+            {/if}
+
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="100">
+                    <div class="st_pages" id="wst-pager">
+                    </div>
+                    <div style="float: right;height: 50px;line-height: 50px;margin-right: 15px;">总计{$list['total']}条记录</div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<script src="/static/admin/js/plugins/layui/layui.js"></script>
+<script src="/static/admin/js/common.js"></script>
+<script type='text/javascript'>
+    //    分类展开隐藏
+    function loadChildTree(obj, pid, objId) {
+        var str = objId.split("_");
+        level = (str.length - 2);
+        if ($(obj).hasClass('glyphicon-minus')) {
+            $(obj).removeClass('glyphicon-minus').addClass('glyphicon-plus');
+            $('tr[class^="' + objId + '"]').each(function () {
+                if($(this).hasClass('tr_second')){
+                    $(this).hide();
+                }
+            });
+        } else {
+            $(obj).removeClass('glyphicon-plus').addClass('glyphicon-minus');
+//        $('tr[class^="' + objId + '"]').show();
+            $('tr[class^="' + objId + '"]').each(function () {
+                if($(this).hasClass('tr_second')){
+                    $(this).show();
+                }
+            });
+        }
+    }
+    //修改地区名称
+    function editName(obj) {
+        var params={};
+        params.cateId = $(obj).attr('data-id');
+        params.val = $(obj).val();
+       $.post("{:url('admin/Shop/changeName')}",params,function (data) {
+           if(data.status==1){
+               popupTip(data.msg,true,function(){
+                    location.reload();
+               });
+           }else if(data.status==-999){
+               popupTip(data.msg,false,function(){
+                    location.reload();
+               });
+           }else{
+               popupTip(data.msg,false,function(){
+                    location.reload();
+               });
+           }
+       })
+
+    }
+    //修改地区排序
+    function editSort(obj) {
+        var params={};
+        params.cateId = $(obj).attr('data-id');
+        params.val = $(obj).val();
+       $.post("{:url('admin/Shop/changeSort')}",params,function (data) {
+           if(data.status==1){
+               popupTip('修改成功',true);
+           }else if(data.status==-2){
+               popupTip('排序重复 请重新输入',false,function(){
+                    location.reload();
+               });
+           }else{
+               popupTip('修改失败',false,function(){
+                    location.reload();
+               });
+           }
+       })
+
+    }
+//删除操作
+    $(document).on('click','.st_del',function () {
+        var that = $(this);
+        //询问框
+        layer.confirm('您确定要删除此条记录？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            var id = that.attr('data-id');
+            del(id);
+        });
+    });
+    function del(id) {
+        $.post("{:url('admin/Shop/delAreas')}",{id:id},function (data) {
+            if(data.status==1){
+                $(".layui-layer-dialog").hide();
+                $(".layui-layer-shade").hide();
+                popupTip(data.msg,true,function () {
+                    location.reload();
+                });
+            }else{
+                $(".layui-layer-dialog").hide();
+                $(".layui-layer-shade").hide();
+                popupTip(data.msg,false);
+            }
+        })
+    }
+
+
+    //验证正整数
+    zhengZhengShuIn('goodsNum');
+    function zhengZhengShuIn (className){
+        var rex = /^[1-9]{1}[0-9]*$/;//正整数
+        $("."+className).keyup(function(event){
+            var event = event || window.event;
+            var value = $(this).val();
+            if(value.length>1){
+                var flagRex =/^0/;
+                if(flagRex.test(value)){
+                    layer.msg('首个字符不能为0',{time:1500});
+                    $(this).val('');
+                }
+            }
+        });
+        $("."+className).keypress(function(event){
+            var event = event || window.event;
+            if (event.charCode == 46 && event.charCode !== 0 && event.charCode < 48 || event.charCode > 57) {
+                return false;
+            }
+            if (/\./.test($(this).val()) && event.charCode === 46) {
+                return false;
+            }
+            if ($(this).val() === "" && event.charCode === 46) {
+                return false;
+            }
+            var tails = ($(this).val()).split(".")[1];
+            if (tails && tails.length === 2 && event.charCode !== 0) {
+                return false;
+            }
+        });
+
+    }
+</script>
+<script type="text/javascript" src="/static/admin/js/add/base.js"></script>
+{/block}

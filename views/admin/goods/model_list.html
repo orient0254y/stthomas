@@ -1,0 +1,478 @@
+{extend name="common/base"} {block name="content"}
+<link href="/static/admin/css/goods.css" rel="stylesheet" />
+<!-- 设置作品图 -->
+<div id="infoBG" style="display: none">
+    <div id="info">
+        <div id="tipName">
+            <div class="fl threeDModelTip">预览模型</div>
+            <div class="fr close3DModdel">X</div>
+        </div>
+        <div id="container"></div>
+    </div>
+</div>
+<div class="st_container">
+    <div class="st_title">添加产品 - 3D模型设置</div>
+    <div class="st_body">
+        <div class="st_tips">
+            <p>可点击3D模型预览查看当前模型效果</p>
+            <p>已设置模型不可编辑，可删除后重新上传</p>
+        </div>
+        <div class="btns_div">
+            <a href="{:url('admin/Goods/goodsAddModel',array('id'=>$id))}" class="st_btn_h28">添加3D模型</a>
+        </div>
+        <table>
+            <thead>
+            <tr>
+                <th>模型名称</th>
+                <th>预览图</th>
+                <th>3D模型预览</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {notempty name='data'}
+            {volist name='data' id='vo'}
+            <tr>
+                <td>{$vo.m_name}</td>
+                <td><img class="st_img_hover" src="/static/admin/images/u645.png" data-src="{$vo.m_thumb_img}"></td>
+                <td><span data-url="{$vo.m_dir}" data-first="{$vo.m_first_name}" data-middle="{$vo.m_middle_name}" class="preview3dModdel">预览</span></td>
+                <td>
+                    <div class="st_btns">
+                        <a href="javascript:void(0);" class="st_del" data-id="{$vo.m_id}">删除</a>
+                    </div>
+                </td>
+            </tr>
+            {/volist}
+            {else /}
+            <tr>
+                <td colspan="100" style="padding: 60px 0px;">没有找到任何记录 </td>
+            </tr>
+            {/notempty}
+            </tbody>
+            <tfoot>
+            <!--<tr>-->
+                <!--<td colspan="100">-->
+                    <!--<div class="st_pages" id="wst-pager">-->
+                    <!--</div>-->
+                    <!--<div style="float: right;height: 50px;line-height: 50px;margin-right: 15px;">总计4条记录</div>-->
+                <!--</td>-->
+            <!--</tr>-->
+            </tfoot>
+        </table>
+    </div>
+</div>
+<script type="text/javascript" src="/static/admin/js/add/base.js"></script>
+<script type="text/javascript" src="/static/admin/js/add/confirmBoxes.js"></script>
+
+<script src="/static/admin/js/loaders/three.js"></script>
+<script src="/static/admin/js/loaders/draco_decoder.js"></script>
+<script src="/static/admin/js/loaders/DRACOLoader.js"></script>
+<script src="/static/admin/js/loaders/MTLLoader.js"></script>
+<script src="/static/admin/js/loaders/OrbitControls.js"></script>
+<script>
+    $(function () {
+        $(".st_del").on("click",function () {
+            var that =$(this)
+            layer.confirm('您确定要删除此模型？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                $(".layui-layer-shade").hide();
+                $(".layui-layer-dialog").hide();
+                var id=that.attr("data-id");
+                $.post("{:url('admin/Goods/delModel')}",{id:id},function (data) {
+                    if(data.status==-999){
+                        popupTip(data.msg,false);
+                    }else if(data.status==1){
+                        popupTip(data.msg,true,function () {
+                            location.reload();
+                        })
+                    }else{
+                        popupTip(data.msg,false);
+                    }
+                })
+
+            });
+        })
+        //关闭弹出层
+        $(".close3DModdel").on('click',function () {
+            $("#infoBG").hide();
+            scene.children[scene.children.length-1].children=[]
+//            scene.remove(scene.children[scene.children.length-1]);
+//            console.log(scene);
+        });
+        //点击预览
+        $(".preview3dModdel").on("click",function () {
+            $("#infoBG").show();
+            var url = $(this).attr('data-url')+'/';
+            var firstName = $(this).attr('data-first');
+            var middleName = $(this).attr('data-middle');
+            middleName = middleName.split(',')
+            loadThreeModel( url,firstName,middleName);
+//            console.log(scene);
+        });
+    })
+</script>
+<script>
+    var camera, scene, renderer,controls,container,modelObject,textureCube;
+    init();
+    animate();
+    function init() {
+        container = $("#container");
+        camera = new THREE.PerspectiveCamera( 35, $("#container").width() / $("#container").height(), 0.1, 15000 );
+        camera.position.set( 0.2, 0.0, 2.5 );
+        camera.lookAt( {x:0, y:0, z:0 } );//设置视野的中心坐标
+        controls = new THREE.OrbitControls( camera );
+        controls.minDistance = 1;
+        controls.maxDistance = 10;
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color( 0x443333 );
+//        scene.fog = new THREE.Fog( 0x443333, 1, 4 );
+        modelObject = new THREE.Object3D();
+        var skyRaius = 300;
+        /*环境贴图*/
+        textureCube = new THREE.CubeTextureLoader()
+        // .setPath('textures/skybox/')
+        // .load(['px.jpg', 'nx.jpg', 'py.jpg', 'ny.jpg', 'pz.jpg', 'nz.jpg'],function(texture){
+        // .setPath('textures/house/')
+        // .load(['px.jpg', 'nx.jpg', 'py.jpg', 'ny.jpg', 'pz.jpg', 'nz.jpg'],function(texture){
+            .setPath('/static/home/js/threejs/textures/shinei/')
+            .load(['shinei.right.jpg', 'shinei.left.jpg', 'shinei.top.jpg', 'shinei.bottom.jpg', 'shinei.front.jpg', 'shinei.back.jpg']);
+        // Ground
+//        var plane = new THREE.Mesh(
+//            new THREE.PlaneBufferGeometry( 8, 8 ),
+//            new THREE.MeshPhongMaterial( { color: 0x999999, specular: 0x101010 } )
+//        );
+//        plane.rotation.x = - Math.PI / 2;
+//        plane.position.y = 0.03;
+//        plane.receiveShadow = true;
+//			scene.add(plane);
+        // Lights
+        var light = new THREE.HemisphereLight( 0x443333, 0x111122 );
+//			scene.add( light );
+        var light = new THREE.SpotLight();
+        light.angle = Math.PI / 16;
+        light.penumbra = 0.5;
+        light.castShadow = true;
+        light.position.set( - 1, 1, 1 );
+//			scene.add( light );
+        var rectLight = new THREE.RectAreaLight( 0xffffff, 500, 10, 10 );
+        rectLight.position.set( 5, 5, 0 );
+        var rectLightHelper = new THREE.RectAreaLightHelper( rectLight );
+        // Lights
+        var light = new THREE.HemisphereLight(0xffffff, 0x4a5b65);
+        scene.add(light);
+        var directionalLight = new THREE.DirectionalLight(0xffffff,0.3);
+        directionalLight.position.set(20, 12, 100).normalize();
+        scene.add(directionalLight);
+
+        var spotLight = new THREE.SpotLight();
+        spotLight.angle = Math.PI / 16;
+        spotLight.penumbra = 0.5;
+        spotLight.intensity = 0.2;
+        spotLight.castShadow = true;
+        spotLight.position.set(-200, 100, -200);
+        // scene.add(spotLight);
+        var spotLight = new THREE.SpotLight();
+        spotLight.angle = Math.PI / 16;
+        spotLight.penumbra = 0.5;
+        spotLight.intensity = 0.3;
+        spotLight.castShadow = true;
+        spotLight.position.set(20, 12, 100);
+        scene.add(spotLight);
+
+        var axis = new THREE.AxisHelper();
+//        scene.add(axis);
+
+
+        renderer = new THREE.WebGLRenderer( { antialias: true } );
+        renderer.setPixelRatio( window.devicePixelRatio );
+        renderer.setSize($("#container").width() , $("#container").height() );
+        renderer.gammaInput = true;
+        renderer.gammaOutput = true;
+        renderer.shadowMap.enabled = true;
+        container.append( renderer.domElement );
+        window.addEventListener( 'resize', onWindowResize, false );
+    }
+    function onWindowResize() {
+        camera.aspect = $("#container").width() / $("#container").height();
+        camera.updateProjectionMatrix();
+        renderer.setSize( $("#container").width() ,$("#container").height());
+    }
+    function animate() {
+        render();
+        requestAnimationFrame( animate );
+    }
+    function render() {
+        controls.update();
+        camera.lookAt( new THREE.Vector3( 0, 0.1, 0 ) );
+        renderer.render( scene, camera );
+    }
+    var dracoLoader = new THREE.DRACOLoader();
+    function loadThreeModel(path,mtlName,drcArr) {
+        var loadNum = 0;
+        var mtlLoader = new THREE.MTLLoader();
+        mtlLoader.setPath( path );
+        mtlLoader.load(mtlName +'.mtl', function ( materials ) {
+//                var materials = materials;
+            materials.preload();
+//                console.log(materials);
+            //将素材加载到场景中回掉函数
+            var loaderCallback = function(bufferGeometry) {
+//                var material = null;
+
+                //修改材质
+                var material = new THREE.MeshStandardMaterial({envMap: textureCube});
+//                var material = new THREE.MeshStandardMaterial();
+                //镜子素材构建
+
+                var loadMaterial = materials.materials[drcArr[loadNum]];
+                var params = changeMaterial(drcArr[loadNum]);
+                if(loadMaterial.aoMapIntensity){
+                    material.aoMapIntensity = loadMaterial.aoMapIntensity;
+                }
+                if (loadMaterial.aoMap) {
+                    material.aoMap = loadMaterial.aoMap;
+                }
+
+                material.bumpScale = loadMaterial.bumpScale;
+                if (loadMaterial.bumpMap) {
+                    material.bumpMap = loadMaterial.bumpMap;
+                }
+
+                material.displacementBias = loadMaterial.displacementBias;
+                material.displacementScale = loadMaterial.displacementScale;
+                if (loadMaterial.displacementMap) {
+                    material.displacementMap = loadMaterial.displacementMap;
+                }
+
+                if (loadMaterial.emissiveMap) {
+                    material.emissiveMap = loadMaterial.emissiveMap;
+                }
+
+                material.flatShading = loadMaterial.flatShading;
+
+                material.lightMapIntensity = loadMaterial.lightMapIntensity;
+                if (loadMaterial.lightMap) {
+                    material.lightMap = loadMaterial.lightMap;
+                }
+
+                if (loadMaterial.map) {
+                    material.map = loadMaterial.map;
+                }
+
+                material.color = loadMaterial.color;
+
+                if (loadMaterial.metalnessMap) {
+                    material.metalnessMap = loadMaterial.metalnessMap;
+                }
+                material.normalScale = loadMaterial.normalScale;
+                if (loadMaterial.normalMap) {
+                    material.normalMap = loadMaterial.normalMap;
+                }
+                material.opacity = loadMaterial.opacity;
+
+                if (loadMaterial.roughnessMap) {
+                    material.roughnessMap = loadMaterial.roughnessMap;
+                }
+
+                material.side = loadMaterial.side;
+
+                material.shininess = loadMaterial.shininess;
+
+                material.specular = loadMaterial.specular;
+
+                material.transparent = loadMaterial.transparent;
+                material.reflectivity = params.reflectivity;
+                material.refractionRatio = params.refractionRatio;
+                material.metalness = params.metalness;
+                material.envMapIntensity = params.envMapIntensity;//0.8
+                material.roughness = params.roughness;//0.7;
+                material.emissive =  new THREE.Color(params.emissive);
+                material.emissiveIntensity = params.emissiveIntensity;
+                material.combine = THREE.MixOperation;
+
+//                if(loadNum === drcArr.length-1){
+//                    modelObject.name = mtlName;
+//                    scene.add(modelObject);
+//                }else{
+                var mesh = null;
+                if (bufferGeometry.index == null) {
+                    mesh = new THREE.Points(bufferGeometry, material);
+                } else {
+                    if (bufferGeometry.attributes.normal === undefined) {
+                        var geometryHelper = new GeometryHelper();
+                        geometryHelper.computeVertexNormals(bufferGeometry);
+                    }
+                    mesh = new THREE.Mesh(bufferGeometry, material);
+                    mesh.drawMode = dracoLoader.drawMode;
+                }
+                if (bufferGeometry.index !== null) {
+                    if (bufferGeometry.attributes.normal === undefined) {
+                        var geometryHelper = new GeometryHelper();
+                        geometryHelper.computeVertexNormals(bufferGeometry);
+                    }
+                }
+                bufferGeometry.computeBoundingBox();
+                if (bufferGeometry.attributes['position'].isQuantized) {
+                    // If the mesh is quantized, transform the bounding box to the dequantized
+                    // coordinates.
+                    var posAttribute = bufferGeometry.attributes['position'];
+                    var normConstant = posAttribute.maxRange / (1 << posAttribute.numQuantizationBits);
+                    var minPos = posAttribute.minValues;
+                    bufferGeometry.boundingBox.max.x = minPos[0] + bufferGeometry.boundingBox.max.x * normConstant;
+                    bufferGeometry.boundingBox.max.y = minPos[1] + bufferGeometry.boundingBox.max.y * normConstant;
+                    bufferGeometry.boundingBox.max.z = minPos[2] + bufferGeometry.boundingBox.max.z * normConstant;
+                    bufferGeometry.boundingBox.min.x = minPos[0] + bufferGeometry.boundingBox.min.x * normConstant;
+                    bufferGeometry.boundingBox.min.y = minPos[1] + bufferGeometry.boundingBox.min.y * normConstant;
+                    bufferGeometry.boundingBox.min.z = minPos[2] + bufferGeometry.boundingBox.min.z * normConstant;
+                }
+                var sizeX = bufferGeometry.boundingBox.max.x - bufferGeometry.boundingBox.min.x;
+                var sizeY = bufferGeometry.boundingBox.max.y - bufferGeometry.boundingBox.min.y;
+                var sizeZ = bufferGeometry.boundingBox.max.z - bufferGeometry.boundingBox.min.z;
+                var diagonalSize = Math.sqrt(sizeX * sizeX + sizeY * sizeY + sizeZ * sizeZ);
+                bufferGeometry.computeVertexNormals();
+//                    var midName = drcArr[loadNum].split('.')[1];
+                    var midName = drcArr[loadNum];
+//                    material = materials.materials[midName];
+//                    var mesh = new THREE.Mesh( bufferGeometry, material );
+                    mesh.castShadow = true;
+                    mesh.receiveShadow = true;
+                    mesh.name = midName;
+                    modelObject.add(mesh);
+                    loadNum++;
+                if(loadNum === drcArr.length){
+                    var size = getObjectHalfSize(modelObject);
+                    var radius = Math.sqrt(Math.pow(size.x, 2) + Math.pow(size.y, 2) + Math.pow(size.z, 2));
+                    modelObject.scale.multiplyScalar(0.5 / radius);
+                    modelObject.position.y = -size.y * (0.5 / radius);
+                    modelObject.name = mtlName;
+                    scene.add(modelObject);
+                }else {
+                    dracoLoader.load(path +  mtlName+'.'+drcArr[loadNum]+'.drc',loaderCallback,function(){});
+                }
+
+//                }
+                // item.halfSize = getObjectHalfSize(modelObject);
+
+            };
+            dracoLoader.load(path + mtlName+'.'+drcArr[0]+'.drc',loaderCallback,function(){});
+            //将素材加载到场景中回掉函数end
+        } );
+    }
+    var getObjectHalfSize = function(obj) {
+        var objectBox = new THREE.Box3();
+        objectBox.setFromObject(obj);
+        return objectBox.max.clone().sub(objectBox.min).divideScalar(2);
+    };
+    function changeMaterial(drcMidName){
+        var materialsList = {
+            "jingzi" : {
+                "regex" : /jingzi/g,
+                "reflectivity" : 1,
+                "refractionRatio" : 0.98,
+                "metalness" : 1,
+                "envMapIntensity" : 3,
+                "roughness" : 0.01
+            },
+            "muwen" : {
+                "regex" : /muwen/g,
+                "reflectivity" : 0.15,
+                "refractionRatio" : 0.98,
+                "metalness" : 0.4,
+                "envMapIntensity" : 0.2,
+                "roughness" : 0.4,
+                "emissive" : 0x34271b,
+                "emissiveIntensity" : 1
+            },
+            "rujiaoqi" : {
+                "regex" : /rujiaoqi/g,
+                "reflectivity" : 0.0001,
+                "refractionRatio" : 0.1,
+                "metalness" : 0.05,
+                "envMapIntensity" : 0.02,
+                "roughness" : 0.7
+            },
+            "dalishi" : {
+                "regex" : /dalishi/g,
+                "reflectivity" : 0.0784313725490196,
+                "refractionRatio" : 0.98,
+                "metalness" : 0.2,
+                "envMapIntensity" : 0.8,
+                "roughness" : 0.7
+            },
+            "jinshu" : {
+                "regex" : /jinshu/g,
+                "reflectivity" : 0.12549019607843137,
+                "refractionRatio" : 0.98,
+                "metalness" : 1,
+                "envMapIntensity" : 1,
+                "roughness" : 0.1
+            },
+            "taoci" : {
+                "regex" : /taoci/g,
+                "reflectivity" : 0.0784313725490196,
+                "refractionRatio" : 0.98,
+                "metalness" : 0.4,
+                "envMapIntensity" : 0.15,
+                "roughness" : 0.4
+            },
+            "suliao" : {
+                "regex" : /suliao/g,
+                "reflectivity" : 0.0392156862745098,
+                "refractionRatio" : 0.98,
+                "metalness" : 0.2,
+                "envMapIntensity" : 1.2,
+                "roughness" : 0.4
+            },
+            "boli" : {
+                "regex" : /boli/g,
+                "reflectivity" : 0.0784313725490196,
+                "refractionRatio" : 0.7,
+                "metalness" : 0.2,
+                "envMapIntensity" : 2,
+                "roughness" : 0.1
+            }
+        };
+        var name = null;
+        var params = {
+            "reflectivity" : 0.05,
+            "refractionRatio" : 0.98,
+            "metalness" : 0.2,
+            "envMapIntensity" : 1,
+            "emissive" : 0x000000,
+            "emissiveIntensity" : 1,
+            "roughness" : 0.7
+        };
+        for (prop in materialsList) {
+            if (materialsList.hasOwnProperty(prop)) {
+                if(materialsList[prop].regex.test(drcMidName)){
+                    name = prop;
+                    if (drcMidName.split("_")[1]) {
+                        params.reflectivity = parseFloat(drcMidName.split("_")[1] / 255);
+                    }else{
+                        params.reflectivity = materialsList[prop].reflectivity;
+                    }
+
+                    if (drcMidName.split("#")[1]) {
+                        params.refractionRatio = drcMidName.split("#")[1];
+                    }else{
+                        params.refractionRatio = materialsList[prop].refractionRatio;
+                    }
+
+                    params.metalness = materialsList[prop].metalness;
+                    params.envMapIntensity = materialsList[prop].envMapIntensity;
+                    params.roughness = materialsList[prop].roughness;
+                    if (materialsList[prop].emissive) {
+                        params.emissive = materialsList[prop].emissive;
+                    }
+                    if (materialsList[prop].emissiveIntensity) {
+                        params.emissiveIntensity = materialsList[prop].emissiveIntensity;
+                    }
+                    break;
+                };
+            }
+        }
+        return params;
+    }
+</script>
+{/block}

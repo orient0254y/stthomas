@@ -1,0 +1,849 @@
+{extend name="common/base"}
+{block name="content"}
+<link href="/static/admin/css/goods.css" rel="stylesheet" />
+<!-- 图片上传 webuploader 引入 -->
+<script type="text/javascript" src="/static/admin/js/plugins/webuploader/webuploader.min.js"></script>
+<!-- 图片上传 webuploader 引入结束 -->
+<!-- 富文本编辑器 UE 引入 -->
+<script type="text/javascript" charset="utf-8" src="/static/admin/js/plugins/ueditor-1.4.3.3/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/admin/js/plugins/ueditor-1.4.3.3/editor_api.js">
+</script>
+<!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+<!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+<script type="text/javascript" charset="utf-8" src="/static/admin/js/plugins/ueditor-1.4.3.3/lang/zh-cn/zh-cn.js"></script>
+<!-- 富文本编辑器 UE 引入结束 -->
+<script type="text/javascript" charset="utf-8" src="/static/admin/js/add/base.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/admin/js/goodsAdmin.js"></script>
+    <link href="/static/admin/css/adminSet.css" rel="stylesheet" />
+    <style>
+        .st_switchNewGoods.on {
+            background-color: #1989FA;
+        }
+        .on {
+            cursor: pointer;
+            background-color: #1989FA;
+        }
+        .st_switchNewGoods {
+            width: 38px;
+            height: 16px;
+            border-radius: 8px;
+            background-color: #ccc;
+            position: relative;
+            float: left;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .st_switchNewGoods.on span {
+            left: 22px;
+        }
+        .st_switchNewGoods span {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: block;
+            width: 14px;
+            height: 14px;
+            background-color: #fff;
+            margin: 1px;
+            border-radius: 7px;
+        }
+        .st_switchGongChengGoods span {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: block;
+            width: 14px;
+            height: 14px;
+            background-color: #fff;
+            margin: 1px;
+            border-radius: 7px;
+        }
+        .st_switchGongChengGoods.on {
+            background-color: #1989FA;
+        }
+        .on {
+            cursor: pointer;
+            background-color: #1989FA;
+        }
+        .st_switchGongChengGoods {
+            width: 38px;
+            height: 16px;
+            border-radius: 8px;
+            background-color: #ccc;
+            position: relative;
+            float: left;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .st_switchGongChengGoods.on span {
+            left: 22px;
+        }
+        /*st_switch3DModel*/
+        .st_switch3DModel span {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: block;
+            width: 14px;
+            height: 14px;
+            background-color: #fff;
+            margin: 1px;
+            border-radius: 7px;
+        }
+        .st_switch3DModel.on {
+            background-color: #1989FA;
+        }
+        .on {
+            cursor: pointer;
+            background-color: #1989FA;
+        }
+        .st_switch3DModel {
+            width: 38px;
+            height: 16px;
+            border-radius: 8px;
+            background-color: #ccc;
+            position: relative;
+            float: left;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .st_switch3DModel.on span {
+            left: 22px;
+        }
+    </style>
+    <div class="st_container">
+        <div class="st_title">添加产品 - 填写产品信息</div>
+        <div class="st_body">
+            <div class="st_tips">
+                <p>标识“*”的选项为必填项，其余为选填项。</p>
+                <p>请按提示栏信息进行商品添加。</p>
+            </div>
+        </div>
+        <div class="addGoodsInFoMsg" >
+            <input type="hidden" id="cateId" name="cateId" value="{$cateId}">
+            <input type="hidden" id="token" name="token" value="{$token}">
+            <div class="addGoodsInFoTitle">通用信息</div>
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL">产品分类：</div>&nbsp;
+                <div class="fr textL addAdminItemR">
+                    <span class="addGoodsInFoType">{notempty name='data.gc_name2'}{$data['gc_name2']}<span style="color: #000000;font-family: simSun;margin:0px 6px;">&gt;</span>{/notempty}{$data['gc_name']}</span>
+                    <span class="addGoodsInFoChange" onclick="window.history.go(-1)">修改</span>
+                </div>
+            </div>
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"><em>*</em> 产品名称 ：</div>&nbsp;
+                <div class="fr textL addAdminItemR">
+                    <input onkeyup="checkLength(this,'size01',45,1)" name="addGoodsName" id="addGoodsName" type="text">
+                    <span>还能输入 <span id="size01" style="color: #11A73F;">45</span> <span style="color: #11A73F;">字</span></span>
+                    <span class="addGoodsNameTip" style="color: #FF2833;margin-left: 6px;display: none;">产品名称不能为空</span>
+                </div>
+            </div>
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"> 产品型号 ：</div>&nbsp;
+                <div class="fr textL addAdminItemR">
+                    <input  name="addAdTitleName" id="addGoodsTypeNum" type="text">
+                </div>
+            </div>
+            <div class="goodsType">
+                <!--这里是循环出来的属性-->
+                {volist name='data.attrs' id='vo'}
+                <div class="fn-clear addAdminItem">
+                    <div class="fl textR addAdminItemL" data-id="{$vo.ca_id}"> {$vo.ca_name} ：</div>&nbsp;
+                    <div class="fr textL addAdminItemR">
+                        <input  class="addGoodsType_1" type="text">
+                    </div>
+                </div>
+                {/volist}
+
+            </div>
+            <!--上传图片-->
+            <div class="goodsImg">
+                <input type="hidden" id="goodsImgListShow">
+                <div class="fn-clear addAdminItem">
+                    <div class="fl textR addAdminItemL" style="height: 20px;line-height: 20px;padding-top: 6px;"> <em>*</em>  产品图片：<br> <span style="color: #999999;margin-right: 12px;margin-top: -4px;">至少一张</span></div>&nbsp;
+                    <div class="fr textL addAdminItemR">
+                       <div class="goodsImgList" style="width: 600px">
+                           <ul class="fn-clear der-con-r" style="width: 600px">
+                               <li>
+                                   <div class="img-controls">
+                                       <div class="move-left">&lt;</div>
+                                       <div class="move-right">&gt;</div>
+                                       <div class="img-delete">×</div>
+                                   </div>
+                                   <span>*主图</span>
+                               </li>
+                               <li>
+                                   <div class="img-controls">
+                                       <div class="move-left">&lt;</div>
+                                       <div class="move-right">&gt;</div>
+                                       <div class="img-delete">×</div>
+                                   </div>
+                                   <span>细节图</span>
+                               </li>
+                               <li>
+                                   <div class="img-controls">
+                                       <div class="move-left">&lt;</div>
+                                       <div class="move-right">&gt;</div>
+                                       <div class="img-delete">×</div>
+                                   </div>
+                                   <span>细节图</span>
+                               </li>
+                               <li>
+                                   <div class="img-controls">
+                                       <div class="move-left">&lt;</div>
+                                       <div class="move-right">&gt;</div>
+                                       <div class="img-delete">×</div>
+                                   </div>
+                                   <span>细节图</span>
+                               </li>
+                               <li>
+                                   <div class="img-controls">
+                                       <div class="move-left">&lt;</div>
+                                       <div class="move-right">&gt;</div>
+                                       <div class="img-delete">×</div>
+                                   </div>
+                                   <span>细节图</span>
+                               </li>
+                           </ul>
+                       </div>
+                    </div>
+                </div>
+
+                <div class="fn-clear addAdminItem" style="margin-top: 20px;">
+                    <div class="fl textR addAdminItemL"> </div>&nbsp;
+                    <div class="fr textL addAdminItemR">
+                        <div style="width: 100px;display: inline-block;" id="picker01" class="upLoadImgLocal fl">本地上传</div>
+                        <div class="fl" style="color: #999999;height: 30px;line-height: 30px;display: inline-block;margin-left: 10px;width: 600px;">一次可选多张，图片尺寸为800*800，单张大小不超过2M。仅支持jpg，jpeg，png格式，图片质量要清晰。</div>
+                    </div>
+                </div>
+            </div>
+            <!--产品颜色：-->
+            <div class="goodsColor">
+                <div class="fn-clear addAdminItem" style="margin-top: 40px;margin-bottom: 0px;">
+                    <div class="fl textR addAdminItemL">产品颜色： </div>&nbsp;
+                    <div class="fr textL addAdminItemR">
+                        <div style="width: 38px;height: 16px;line-height: 16px;margin-top: 7px;" class="st_switch on"><span></span></div>
+                    </div>
+                </div>
+                <div class="fn-clear addAdminItem" style="margin-top: 5px;">
+                    <div class="fl textR addAdminItemL"></div>&nbsp;
+                    <div class="fr textL addAdminItemR">
+                        <div class="colorType" style="width: 100%;">
+                            <div class="colorTypeItem fn-clear" style="width: 100%;margin-bottom: 5px;">
+                                <div class="add_btnCol fl" style="width: 20px;">[+]</div>
+                                <div class="fl" style="width: 296px;"> <input style="width: 292px;" type="text"></div>
+                                <div class="colorTypeUpLoadColorImg fl" style="width: 120px;margin-left: 15px;">
+                                    <div class="fl"  style="width:70px;" id="picker">上传图片</div>
+                                    <div class="fl picker"  style="width:40px;height: 30px;padding: 4px 0px 0px 6px;"></div>
+                                </div>
+                                <div class="fl colorTypeUpLoadColorTip">（颜色名 如：红色，白色，黑色）</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="addVideo">
+                <div class="fn-clear addAdminItem" style="margin-top: 20px;">
+                    <div class="fl textR addAdminItemL">产品视频：</div>&nbsp;
+                    <div class="fr textL addAdminItemR">
+                        <div class="fl" style="width: 100px;margin-right: 10px;"><div id="pickVideo" style="width: 100%;">上传视频</div></div>
+                        <div class="fl" style="position: relative;"><input style="display: none;padding-right: 40px;overflow: hidden;width: 236px;" id="pickVideoName" type="text"><span class="delVideoUpload" style="display: none;">X</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="goodsSpecial">
+                <!-- 添加减少信息框 -->
+                <div class="st_msg_line clearfix">
+                    <div class="st_msg_line_left" style="width: 30%;">
+                        <div style="float: right;">
+                            <span class="left">产品功能特色</span><i class="fenge">：</i>
+                        </div>
+                    </div>
+                    <div class="st_msg_line_right">
+                        <div id="add_attr_box">
+                            <div class="add_attr_line">
+                                <span class="add_btn sttr_btn unselectable">[+]</span><!--
+                                    --><input type="text" name="attrVal" class="st_normal_input_add" id="attrVal_0">
+                            </div>
+
+                        </div>
+                    </div>
+                    <span style="margin-left: 10px; line-height:32px; color: #707070;">产品功能特色不能出现 <em style="color: #FF3333">^</em>特殊字符</span>
+                </div>
+            </div>
+            <div>
+                <div class="fn-clear addAdminItem" style="margin-top: 20px;">
+                    <div class="fl textR addAdminItemL">线上购买网址： </div>&nbsp;
+                    <div class="fr textL addAdminItemR">
+                        <input type="text" class="lineAddress"><span style="margin-left: 10px;">填写商品详情网址以http或https开头</span>
+                    </div>
+                </div>
+                <div class="fn-clear addAdminItem" style="margin-top: 20px; display: none;">
+                    <div class="fl textR addAdminItemL">是否上传模型： </div>&nbsp;
+                    <div class="fr textL addAdminItemR">
+                        <div style="width: 38px;height: 16px;line-height: 16px;margin-top: 7px;" class="st_switch3DModel on"><span></span></div>
+                    </div>
+                </div>
+                <div class="fn-clear addAdminItem" style="margin-top: 20px;">
+                    <div class="fl textR addAdminItemL">新品： </div>&nbsp;
+                    <div class="fr textL addAdminItemR">
+                        <div style="width: 38px;height: 16px;line-height: 16px;margin-top: 7px;" class="st_switchNewGoods"><span></span></div>
+                    </div>
+                </div>
+                <!--<div class="fn-clear addAdminItem" style="margin-top: 20px;">-->
+                    <!--<div class="fl textR addAdminItemL">工程产品： </div>&nbsp;-->
+                    <!--<div class="fr textL addAdminItemR">-->
+                        <!--<div style="width: 38px;height: 16px;line-height: 16px;margin-top: 7px;" class="st_switchGongChengGoods"><span></span></div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            </div>
+            <div>
+                <div class="goodsDetailedDescription">详情描述</div>
+                <div>
+                    <div class="st_msg_line clearfix">
+                        <div class="st_msg_line_right" style="position: relative;width: 100%;">
+                             <div class="st_normal_input" id="bdTime"></div>
+                                <style type="text/css">
+                                    div#editor {
+                                        line-height: initial;
+                                    }
+
+                                    div#acContentTip {
+                                        float: left;
+                                        position: absolute;
+                                        top: -30px;
+                                        left: 540px;
+                                    }
+
+                                    #acContent {
+                                        display: none;
+                                        width: 1px;
+                                        height: 1px;
+                                    }
+                                </style>
+                                <script id="editor" type="text/plain" style="width:1159px;height:500px;margin-top: 15px;"></script>
+                                <input type="text" name="acContent" id="acContent">
+                        </div>
+                     </div>
+                </div>
+            </div>
+            <div class="addGoodsInfoBottom">
+                <div class="prevChouseGoogdType" onclick="window.history.go(-1)">上一步，选择产品分类</div>
+                <div class="successAdd">完成，发布产品</div>
+            </div>
+        </div>
+
+    </div>
+<script type="text/javascript" src="/static/admin/js/add/confirmBoxes.js"></script>
+<script>
+    //富文本编辑器
+    var ue = UE.getEditor('editor');
+    UE.getEditor('editor').focus();
+    // 获得内容
+    function getContent() {
+        var arr = [];
+        arr.push("使用editor.getContent()方法可以获得编辑器的内容");
+        arr.push("内容为：");
+        arr.push(UE.getEditor('editor').getContent());
+        alert(arr.join("\n"));
+    }
+    // 获得纯文本
+    function getContentTxt() {
+        var arr = [];
+        arr.push("使用editor.getContentTxt()方法可以获得编辑器的纯文本内容");
+        arr.push("编辑器的纯文本内容为：");
+        arr.push(UE.getEditor('editor').getContentTxt());
+        alert(arr.join("\n"));
+    }
+    // 获得带格式的纯文本
+    function getPlainTxt() {
+        var arr = [];
+        arr.push("使用editor.getPlainTxt()方法可以获得编辑器的带格式的纯文本内容");
+        arr.push("内容为：");
+        arr.push(UE.getEditor('editor').getPlainTxt());
+        alert(arr.join('\n'))
+    }
+    // 判断是否有内容
+    function hasContent() {
+        var arr = [];
+        arr.push("使用editor.hasContents()方法判断编辑器里是否有内容");
+        arr.push("判断结果为：");
+        arr.push(UE.getEditor('editor').hasContents());
+        alert(arr.join("\n"));
+    }
+    // 使编辑器获得焦点
+    function setFocus() {
+        UE.getEditor('editor').focus();
+    }
+    // 编辑器失去焦点
+    function setblur(e) {
+        UE.getEditor('editor').blur();
+        UE.dom.domUtils.preventDefault(e)
+    }
+var allIndex = 0;
+
+    //获取光标时候隐藏验证
+    $("#addGoodsName").on('focus',function () {
+        $(".addGoodsNameTip").hide();
+    });
+    var flagSuccess = true;
+    $(".successAdd").on('click',function () {
+        //验证产品名称必填
+        if($("#addGoodsName").val() == ''){
+            $(".addGoodsNameTip").show();
+            $("body").scrollTop(0);
+            return false;
+        }
+
+        //验证商品图片至少上传一张
+        if(!$(".goodsImgList").find('img').length){
+            popupTip('至少上传一张产品图片',false);
+            return false;
+        }
+        //获取详情验证
+        if(UE.getEditor('editor').getContent() == ''){
+            popupTip('请将详情描述填写完整',false);
+            return false;
+        }
+//        验证当产品颜色打开时验证
+        var flagColor = false;
+        if($(".st_switch").hasClass('on')){
+            $(".colorTypeItem ").each(function () {
+                if($(this).find('input').val() == ''){
+                    popupTip('请将颜色值填写完整',false);
+                    flagColor = true;
+                    return false;
+                }
+                if($(this).find('img').length == 0){
+                    popupTip('请将对应图片填写完整',false);
+                    flagColor = true;
+                    return false;
+                }
+            });
+        }
+        if(flagColor){
+            return;
+        }
+        if(flagSuccess){
+         flagSuccess = false;
+          allIndex = 0;
+                if(upLoadVideoS.getFiles().length){
+                    allIndex += 2 + upLoadArr.length;
+                    //        上传视频
+            upLoadVideoS.upload();
+                }else{
+                    allIndex +=  1 + upLoadArr.length;
+                }
+    //        上传视频
+    //             upLoadVideoS.upload();
+    //        上传产品图片
+                uploader.upload();
+
+    //        上传颜色图片
+                $(upLoadArr).each(function (i,item) {
+                    item.upload();
+                });
+            }
+        });
+
+    var serverId01 ="{:url('admin/Goods/webuploadImg')}";
+    addUpLoaderColorType('picker',serverId01);
+
+    // 上传视频
+    var serverId ="{:url('admin/Goods/webuploadVideo')}";
+    var upLoadVideoS = addUpLoaderVideoType('pickVideo',serverId);
+    //删除上传视频
+    $(".delVideoUpload").on('click',function () {
+        if(upLoadVideoS.getFiles().length){
+            for (var i = 0; i < upLoadVideoS.getFiles().length; i++) {
+                upLoadVideoS.removeFile(upLoadVideoS.getFiles()[i], true);
+            }
+        }
+        $("#pickVideoName").hide();
+        $(".delVideoUpload").hide();
+        $("#pickVideoName").val("");
+    });
+    $(".subId").click(function () {
+//        uploader.upload();
+
+    });
+    // 初始化Web Uploader
+    // 上传图片js设置mouseover与mouseenter
+    $(".der-con-r").find('li').each(function () {
+        $(this).on('mouseenter',function () {
+            $(this).find('.img-controls').css('bottom','0px');
+        });
+        $(this).on('mouseleave',function () {
+            $(this).find('.img-controls').css('bottom','-30px');
+        });
+    });
+    $(".move-left").click(function(){
+        var index = $(this).parent().parent().index();
+        var html = "";
+        var html2 = "";
+        if (index !== 0) {
+            html = $(this).parent().prev().prop("outerHTML");
+            html2 = $(this).parent().parent().prev().find(".img-controls").prev().prop("outerHTML");
+            $(this).parent().prev().remove();
+            $(this).parent().parent().prev().find(".img-controls").prev().remove();
+            $(this).parent().before(html2);
+            $(".der-con-r").find("li").eq(index-1).find(".img-controls").before(html);
+        }
+    });
+    $(".move-right").click(function(){
+        var index = $(this).parent().parent().index();
+        var html = "";
+        var html2 = "";
+        if (index !== $(this).parent().parent().siblings().length) {
+            html = $(this).parent().prev().prop("outerHTML");
+            html2 = $(this).parent().parent().next().find(".img-controls").prev().prop("outerHTML");
+            $(this).parent().prev().remove();
+            $(this).parent().parent().next().find(".img-controls").prev().remove();
+            $(this).parent().before(html2);
+            $(".der-con-r").find("li").eq(index+1).find(".img-controls").before(html);
+        }
+    });
+    //delImg
+    $(".img-delete").on('click',function () {
+        var files = uploader.getFiles();
+        var index = $(this).parent().parent().index();
+        $(this).parent().parent().find('img').remove();
+        if(files.length > 0){
+            uploader.removeFile( files[index] , true );
+        }
+
+    });
+//上传商品图片chushihua 初始化
+    var imgWidth, imgHeight, uploader, state = 'pending',
+        hasUploadImg = false;
+    //上传图片最大占用存储
+    var maxSize = 2,
+//        widthSize = 800,
+//        heightSize = 800;
+        widthSize ,
+        heightSize ;
+    uploader = WebUploader.create({
+
+        // 选完文件后，是否自动上传。
+        auto: false,
+
+        // swf文件路径
+        swf: '/static/admin/js/plugins/webuploader/Uploader.swf',
+
+        // 文件接收服务端。
+        server: '{:url("admin/Goods/webuploadImg")}',
+
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: {
+            id: '#picker01',
+            multiple: true
+        },
+        threads:6,//并发上传
+        // fileSizeLimit: maxSize * 1024 * 1024,
+        fileNumLimit: 5,
+
+        // fileSingleSizeLimit: maxSize * 1024 * 1024,
+
+        // 只允许选择图片文件。
+        accept: {
+            title: 'Images',
+            extensions: 'gif,jpg,jpeg,png',
+            mimeTypes: 'image/gif,image/jpg,image/jpeg,image/png'
+        },
+        thumb: {
+            // 图片质量，只有type为`image/jpeg`的时候才有效。
+            quality: 70,
+
+            // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
+            allowMagnify: true,
+
+            // 是否允许裁剪。
+            crop: true,
+
+            // 为空的话则保留原有图片格式。
+            // 否则强制转换成指定的类型。
+            // type: 'image/jpeg'
+        },
+
+        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+        resize: false
+    });
+
+    // 当有文件添加进来的时候
+
+    uploader.on('fileQueued', function(file) {
+        var $img = $('<img style="width: 100%;height: 100%;">');
+        // 清空添加省略图
+//        $("#imgContainer").html("").append($img);
+//        $(".goodsImgList").find('li').eq(0).prepend($img);
+        $(".goodsImgList").find('li').each(function () {
+            if($(this).find('img').length == 0){
+                $(this).prepend($img);
+                // 创建缩略图
+                // 如果为非图片文件，可以不用调用此方法。
+                // thumbnailWidth x thumbnailHeight 为 100 x 100
+//                setTimeout(function() {
+                    uploader.makeThumb(file, function(error, src) {
+                        if (error) {
+                            $img.replaceWith('<span>不能预览</span>');
+                            return;
+                        }
+                        if (widthSize && heightSize) {
+                            if (imgWidth !== widthSize || imgHeight !== heightSize) {
+                                $img.replaceWith('<span>不能预览</span>');
+                            }else{
+                                $img.attr( { 'src':src,'data-src':file.name});
+                            }
+                        }else{
+                            $img.attr({ 'src':src,'data-src':file.name});
+                        }
+                        //存入上传图片文件名称
+//                        $("#imgTips").val(file.name);
+//                        console.log(file.name);
+                    }, imgWidth, imgHeight);
+//                }, 200);
+                return false;
+            }
+        });
+
+
+    });
+    uploader.on('beforeFileQueued', function(file) {
+        hasUploadImg = true;
+        // 大小验证
+        if (file.size > maxSize * 1024 * 1024) {
+            CB.tips({
+                "title": "提示",
+                'text': "所选附件总大小不可超过" + maxSize + "M"
+            }, function() {
+                $("#imgTipsTip").attr("class", "onError").find("div").attr("class", "onError").html("所选附件总大小不可超过" + maxSize + "M");
+                $("#imgTips").val("");
+            });
+            return false;
+        }
+
+        uploader.makeThumb(file, function(error, src) {
+            imgWidth = file._info.width;
+            imgHeight = file._info.height;
+            if (widthSize && heightSize) {
+                if (imgWidth !== widthSize || imgHeight !== heightSize) {
+                    uploader.stop();
+                    // uploader.removeFile(file, true);
+                    for (var i = 0; i < uploader.getFiles().length; i++) {
+                        uploader.removeFile(uploader.getFiles()[i], true);
+                        uploader.cancelFile(uploader.getFiles()[i]);
+                        delete uploader.getFiles()[i];
+                    }
+                    CB.tips({
+                        "title": "提示",
+                        "text": "尺寸为 （" + widthSize + "*" + heightSize + "）"
+                    }, function() {
+                        $("#imgTipsTip").attr("class", "onError").find("div").attr("class", "onError").html("尺寸为 （" + widthSize + "*" + heightSize + "）");
+                        $("#imgTips").val("");
+                    });
+                    var name = file.name;
+                    //删除图片
+                    // $.post(delImg,{name: name},function(){});
+                    return;
+                } else {
+                    $("#imgTipsTip").attr("class", "onCorrect").find("div").attr("class", "onCorrect").html("格式正确");
+                    //存入上传图片文件名称
+                    $("#imgTips").val(file.name);
+                }
+            } else {
+                $("#imgTipsTip").attr("class", "onCorrect").find("div").attr("class", "onCorrect").html("格式正确");
+                //存入上传图片文件名称
+                $("#imgTips").val(file.name);
+            }
+        }, 1, 1);
+    });
+
+    uploader.on("error", function(type) {
+        if (type == "Q_TYPE_DENIED") {
+            CB.tips({
+                "title": "提示",
+                'text': "上传图片格式必须是gif,jpg,jpeg,png"
+            }, function() {
+                $("#imgTipsTip").attr("class", "onError").find("div").attr("class", "onError").html("上传图片格式必须是gif,jpg,jpeg,png");
+            });
+        }
+    });
+    // 文件上传过程中创建进度条实时显示。
+    uploader.on('uploadProgress', function(file, percentage) {
+
+    });
+
+    // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+    var goodsImgStr = ''
+    var goodsThumd_imgStr = '';
+    var imgPic = 0;
+    uploader.on('uploadSuccess', function(file, response) {
+//        allIndex--;
+        goodsImgStr += response.msg +'#';
+        goodsThumd_imgStr += response.thumd_img +'#';
+        $(".goodsImgList").find('img').eq(imgPic).attr('data-src',response.msg);
+        $(".goodsImgList").find('img').eq(imgPic).attr('data-Thumd_img',response.thumd_img);
+        imgPic++;
+        // $(".goodsImgList").find('img').each(function () {
+        //     $(this).attr('data-src',response.msg);
+        //     $(this).attr('data-Thumd_img',response.thumd_img);
+        // })
+//        $img.attr('data-src',goodsImgStr);
+//        $img.attr('data-Thumd_img',goodsThumd_imgStr);
+//        $("#goodsImgListShow").attr('data-src',goodsImgStr);
+//        $("#goodsImgListShow").attr('data-Thumd_img',goodsThumd_imgStr);
+
+        // CB.tips({
+        //     'title': '提示',
+        //     'text': '上传成功'
+        // });
+    });
+
+    uploader.on('fileDequeued', function(file) {
+//          console.log(11111111);
+    });
+    uploader.on('uploadFinished', function(file) {
+        allIndex--;
+        imgPic = 0;
+        if(allIndex == 0){
+            stSubmit();
+        }
+    });
+
+    // 文件上传失败，显示上传出错。
+    uploader.on('uploadError', function(file) {
+        CB.tips({
+            'title': '提示',
+            'text': '上传失败'
+        });
+    });
+    uploader.on('all', function(type) {
+        if (type === 'startUpload') {
+            state = 'uploading';
+        } else if (type === 'stopUpload') {
+            state = 'paused';
+        } else if (type === 'uploadFinished') {
+            state = 'done';
+        }
+    });
+    // 完成上传完了，成功或者失败，先删除进度条。
+    uploader.on('uploadComplete', function(file) {
+        // $("#imgTipsTip").attr("class", "onCorrect").find("div").attr("class", "onCorrect").html("上传成功");
+        hasUploadImg = false;
+    });
+
+    // 提交
+    function stSubmit() {
+        var params = {};
+        params.cateId = $("#cateId").val();
+        params.goodsName = $("#addGoodsName").val();
+        params.goodsModel = $("#addGoodsTypeNum").val();
+        params.attrs = [];
+        $(".goodsType").children('div').each(function () {
+            if($(this).find('.addAdminItemR').find('input').val() != ''){
+                var obj = {};
+                obj.attrId= $(this).find('.addAdminItemL').attr('data-id');
+                obj.attrName = $(this).find('.addAdminItemR').find('input').val();
+                params.attrs.push(obj);
+            }
+        });
+        params.imgs = '';
+        params.Thumd_img = '';
+//        console.log($("#goodsImgListShow").attr('data-src'));
+        $(".goodsImgList").find('img').each(function () {
+            params.imgs += $(this).attr('data-src') +'#';
+            params.Thumd_img += $(this).attr('data-Thumd_img')+'#';
+//            params.imgs = $("#goodsImgListShow").attr('data-src');
+//            params.Thumd_img = $("#goodsImgListShow").attr('data-Thumd_img');
+        });
+        if(params.imgs != ''){
+            params.imgs = params.imgs.slice(0,params.imgs.length-1);
+            params.Thumd_img = params.Thumd_img.slice(0,params.Thumd_img.length-1);
+        }
+        params.goodsColor = {};
+        params.goodsColor.attrs =[];
+        var flagColor = false;
+        if($(".st_switch").hasClass('on')){
+            flagColor = true;
+            params.goodsColor.isOpens = 1;
+            $(".colorTypeItem ").each(function () {
+                if($(this).find('input').val() == ''){
+                    popupTip('请将颜色值填写完整',false);
+                    flagColor = false;
+                    return false;
+                }
+                if($(this).find('img').length == 0){
+                    popupTip('请将对应图片填写完整',false);
+                    flagColor = false;
+                    return false;
+                }
+            });
+            if(flagColor){
+                $(".colorTypeItem ").each(function () {
+                    var objCol = {};
+                    objCol.colName = $(this).find('input').val();
+                    objCol.colImg = $(this).find('img').attr('data-srcL');
+                    objCol.colThumd_img = $(this).find('img').attr('data-srcthumd_img');
+                    params.goodsColor.attrs.push(objCol);
+                });
+            }
+        }else {
+            params.goodsColor.isOpens = 0;
+        }
+
+//        获取上传视频
+        if($("#pickVideoName").attr('data-src')){
+            params.videos = $("#pickVideoName").attr('data-src');
+        }else{
+            params.videos = '';
+        }
+//        获取功能特色
+        params.gongNengType ='' ;
+        var arrayType = [];
+        $(".st_normal_input_add").each(function () {
+            if($(this).val() != ''){
+                arrayType.push($(this).val());
+            }
+        });
+        params.gongNengType = arrayType.join('^^');
+        //获取网站
+        params.lineAddress = $(".lineAddress").val();
+        //获取新品
+        if($(".st_switchNewGoods").hasClass('on')){
+            params.newGoods = 1;
+        }else{
+            params.newGoods = 0;
+        }
+        //获取工程产品
+        // if($(".st_switchGongChengGoods").hasClass('on')){
+        //     params.GongChengGoods = 1;
+        // }else{
+        //     params.GongChengGoods = 0;
+        // }
+        //获取3d模型
+        if($(".st_switch3DModel").hasClass('on')){
+            params.model3d = 1;
+        }else{
+            params.model3d = 0;
+        }
+        //获取详情描述
+        params.content =  UE.getEditor('editor').getContent();
+        params.token=$("#token").val();
+
+        $.post("{:url('admin/Goods/doGoodsInfo')}",params,function (data) {
+            if(data.status==-999){
+                popupTip(data.msg,false);
+            }else if(data.status==1){
+                flagSuccess = true;
+                popupTip(data.msg,true,function(){
+                    location.href="{:url('admin/Goods/goodsList')}";
+                });
+            }else{
+                popupTip(data.msg,false);
+            }
+        })
+    }
+
+</script>
+{/block}

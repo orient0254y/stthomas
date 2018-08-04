@@ -1,0 +1,282 @@
+<%- include ../common/base.ejs %>
+    <!DOCTYPE html>
+    <html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>网站信息</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <!-- saved from url=(0014)about:internet -->
+        <script type="text/javascript" src="/js/admin/plugins/formValidator/formValidator-4.1.3.js"></script>
+        <script type="text/javascript" src="/js/admin/plugins/formValidator/formValidatorRegex.js"></script>
+    </head>
+    <style>
+        .picker01,
+        .pickerSun01,
+        .pickerMobile01,
+        .pickerWeiXin01,
+        .pickerWeiBo01 {
+            padding-left: 20px;
+            margin-left: 10px;
+            color: #f00;
+            background-position-y: 7px;
+            background: url("/images/admin/onError.png") 0px no-repeat;
+            background-size: 14px 14px;
+        }
+    </style>
+
+    <body>
+        <div class="st_container">
+            <div class="st_title">网站信息</div>
+            <div class="st_body">
+                <div class="st_tips">
+                    <p>请完善网站信息，*表示必填</p>
+                </div>
+                <div class="st_content">
+                    <form id="st_form" method="post" enctype="multipart/form-data" action="javascript:void(0)">
+                        <div class="st_msg_line clearfix">
+                            <div class="st_msg_line_left">
+                                <div style="float: right;">
+                                    <em class="important fl">*</em>
+                                    <span class="left">网站名称</span>
+                                    <i class="fenge">:</i>
+                                </div>
+                            </div>
+                            <div class="st_msg_line_right">
+                                <input type="text" name="netName" class="st_normal_input" id="netName" value="<%= data.name%>">
+                                <!-- <span class="line_tips"></span> -->
+                            </div>
+                        </div>
+                        <div class="st_msg_line clearfix">
+                            <div class="st_msg_line_left">
+                                <div style="float: right;">
+                                    <em class="important fl">*</em>
+                                    <span class="left">网站标题</span>
+                                    <i class="fenge">:</i>
+                                </div>
+                            </div>
+                            <div class="st_msg_line_right">
+                                <input type="text" name="netTitle" class="st_normal_input" id="netTitle" value="<%= data.title%>">
+                                <!-- <span class="line_tips">网站标题将显示在浏览器的标题栏</span> -->
+                            </div>
+                        </div>
+                        <div class="st_msg_line clearfix">
+                            <div class="st_msg_line_left">
+                                <div style="float: right;">
+                                    <em class="important fl">*</em>
+                                    <span class="left">网站描述</span>
+                                    <i class="fenge">:</i>
+                                </div>
+                            </div>
+                            <div class="st_msg_line_right">
+                                <input type="text" name="netDescription" class="st_normal_input" id="netDescription" value="<%= data.description%>">
+                                <!-- <span class="line_tips"></span> -->
+                            </div>
+                        </div>
+                        <div class="st_msg_line clearfix">
+                            <div class="st_msg_line_left">
+                                <div style="float: right;">
+                                    <em class="important fl">*</em>
+                                    <span class="left">网站关键字</span>
+                                    <i class="fenge">:</i>
+                                </div>
+                            </div>
+                            <div class="st_msg_line_right">
+                                <input type="text" name="netKeywords" class="st_normal_input" id="netKeywords" value="<%= data.keywords%>">
+                                <!-- <span class="line_tips">每个关键字请以，隔开</span> -->
+                            </div>
+                        </div>
+                        <!--新增加上传logo部分-->
+                        <!--PC首页-->
+                        <div class="st_msg_line clearfix">
+                            <div class="st_msg_line_left">
+                                <div style="float: right;">
+                                    <em class="important fl">*</em>
+                                    <span class="left">PC端首页LOGO</span>
+                                    <i class="fenge">:</i>
+                                </div>
+                            </div>
+                            <div class="st_msg_line_right">
+                                <div class="fl" style="width:70px;">上传图片123
+                                    <input type="file" name="picker" id="picker" multiple/>
+                                </div>
+                                <div class="fl picker" style="width:40px;height: 30px;padding: 4px 0px 0px 6px;margin-left: 28px;">
+                                    <%if(data.pc_home_logo){%>
+                                        <img src="/images/admin/u645.png" data-src="<%= data.pc_home_logo%>" data-srcL="<%= data.pc_home_logo%>" alt="" class="st_img_hover">
+                                        <%}%>
+                                </div>
+                                <div class="picker01 fl hide">图片上传不能为空</div>
+                                <span class="line_tips">上传图片格式必须是gif,jpg,jpeg,png，图片大小在200k以内，以下同规则</span>
+                            </div>
+                        </div>
+                        <!--PC子页面logo-->
+                        <div class="st_msg_line clearfix">
+                            <div class="st_msg_line_left">
+                                <div style="float: right;">
+                                    <em class="important fl">*</em>
+                                    <span class="left">PC端子页LOGO</span>
+                                    <i class="fenge">:</i>
+                                </div>
+                            </div>
+                            <div class="st_msg_line_right">
+                                <div class="fl" style="width:70px;">上传图片<input type="file" name="picker1"  id="picker1"></div>
+                                <div class="fl" style="width:40px;height: 30px;padding: 4px 0px 0px 6px;margin-left: 28px;">
+                                    <%if(data.pc_others_logo){%>
+                                        <img src="/images/admin/u645.png" data-src="<%= data.pc_others_logo%>" data-srcL="<%= data.pc_others_logo%>" alt="" class="st_img_hover">
+                                        <%}%>
+                                </div>
+                                <div class="fl hide">图片上传不能为空</div>
+                            </div>
+                        </div>
+                        <!--移动端页面logo-->
+                        <div class="st_msg_line clearfix">
+                            <div class="st_msg_line_left">
+                                <div style="float: right;">
+                                    <em class="important fl">*</em>
+                                    <span class="left">移动端LOGO</span>
+                                    <i class="fenge">:</i>
+                                </div>
+                            </div>
+                            <div class="st_msg_line_right">
+                                <div class="fl" style="width:70px;" id="pickerMobile">上传图片</div>
+                                <div class="fl pickerMobile" style="width:40px;height: 30px;padding: 4px 0px 0px 6px;margin-left: 28px;">
+                                    <%if(data.wap_logo){%>
+                                        <img src="/images/admin/u645.png" data-src="<%= data.wap_logo%>" data-srcL="<%= data.wap_logo%>" alt="" class="st_img_hover">
+                                        <%}%>
+                                </div>
+                                <div class="pickerMobile01 fl hide">图片上传不能为空</div>
+                            </div>
+                        </div>
+                        <!--end-->
+                        <div class="st_msg_line clearfix">
+                            <div class="st_msg_line_left">
+                                <div style="float: right;">
+                                    <em class="important fl">*</em>
+                                    <span class="left">服务热线电话</span>
+                                    <i class="fenge">:</i>
+                                </div>
+                            </div>
+                            <div class="st_msg_line_right">
+                                <input type="text" name="netTel" class="st_normal_input" id="netTel" value="<%= data.server_tel%>">
+                                <!-- <span class="line_tips"></span> -->
+                            </div>
+                        </div>
+                        <div class="st_msg_line clearfix">
+                            <div class="st_msg_line_left">
+                                <div style="float: right;">
+                                    <em class="important fl">*</em>
+                                    <span class="left">服务时间</span>
+                                    <i class="fenge">:</i>
+                                </div>
+                            </div>
+                            <div class="st_msg_line_right">
+                                <input type="text" name="netTime" class="st_normal_input" id="netTime" value="<%= data.server_time%>">
+                            </div>
+                        </div>
+
+                        <div class="st_msg_line clearfix">
+                            <div class="st_msg_line_left">
+                                <div style="float: right;">
+                                    <em class="important fl">*</em>
+                                    <span class="left">微博二维码图片</span>
+                                    <i class="fenge">:</i>
+                                </div>
+                            </div>
+                            <div class="st_msg_line_right">
+                                <div class="fl" style="width:70px;" id="pickerWeiBo">上传图片</div>
+                                <div class="fl pickerWeiBo" style="width:40px;height: 30px;padding: 4px 0px 0px 6px;margin-left: 28px;">
+                                    <%if(data.weibo_erweima){%>
+                                        <img src="/images/admin/u645.png" data-src="<%= data.weibo_erweima%>" data-srcL="<%= data.weibo_erweima%>" alt="" class="st_img_hover">
+                                        <%}%>
+                                </div>
+                                <div class="pickerWeiBo01 fl hide">图片上传不能为空</div>
+                            </div>
+                        </div>
+                        <div class="st_msg_line clearfix">
+                            <div class="st_msg_line_left">
+                                <div style="float: right;">
+                                    <em class="important fl">*</em>
+                                    <span class="left">微信二维码图片</span>
+                                    <i class="fenge">:</i>
+                                </div>
+                            </div>
+                            <div class="st_msg_line_right">
+                                <div class="fl" style="width:70px;" id="pickerWeiXin">上传图片</div>
+                                <div class="fl pickerWeiXin" style="width:40px;height: 30px;padding: 4px 0px 0px 6px;margin-left: 28px;">
+                                    <%if(data.weixin_erweima){%>
+                                        <img src="/images/admin/u645.png" data-src="<%= data.weixin_erweima%>" data-srcL="<%= data.weixin_erweima%>" alt="" class="st_img_hover">
+                                        <%}%>
+                                </div>
+                                <div class="pickerWeiXin01 fl hide">图片上传不能为空</div>
+                            </div>
+                        </div>
+
+                        <div class="st_msg_line clearfix">
+                            <div class="st_msg_line_left"></div>
+                            <div class="st_msg_line_right">
+                                <div style="height: 15px;"></div>
+                                <!-- <input type="submit" name="" value="确定" class="st_ensure"> -->
+                                <button type="submit" class="btn btn-default">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="/js/admin/base.js"></script>
+        <script type="text/javascript" src="/js/admin/confirmBoxes.js"></script>
+        <script type="text/javascript">
+
+            $("button").click(function () {
+                let file = document.getElementById("picker").files[0];
+                let files = document.getElementById("picker").files;
+                console.log(document.getElementById("picker").files);
+                /* var fileDataArray = [];
+                for(let i = 0;i < files.length;i++){
+                    let formData = new FormData();
+                    formData.append("avatar",files[i]);
+                    fileDataArray.push(formData);
+                } */
+                let formData = new FormData();
+                formData.append("avatar", file);
+                $.ajax({
+                    type: 'POST',
+                    url: '/admin/setting/upload',
+                    data: formData,
+                    async: false,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (err) {
+                        console.log(err.message);
+                    }
+                })
+                let file1 = document.getElementById("picker1").files[0];
+                let formData1 = new FormData();
+                formData1.append("avatar", file1);
+                // $.ajax({
+                //     type: 'POST',
+                //     url: '/admin/setting/upload',
+                //     data: formData1,
+                //     async: false,
+                //     cache: false,
+                //     contentType: false,
+                //     processData: false,
+                //     success: function (data) {
+                //         console.log(data);
+                //     },
+                //     error: function (err) {
+                //         console.log(err.message);
+                //     }
+                // })
+            });
+        </script>
+    </body>
+
+    </html>
+    <%- include ../common/base_bottom.ejs %>

@@ -1,0 +1,106 @@
+{extend name="common/base"} {block name="content"}
+<div class="st_container">
+    <div class="st_title">招商加盟</div>
+    <div class="st_body">
+        <div class="st_tips">
+            <p>以下是有意招商加盟者提供的信息</p>
+            <p>请谨慎删除</p>
+        </div>
+        <div class="btns_div"></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>姓名</th>
+                    <th>手机</th>
+                    <th>邮箱</th>
+                    <th>从哪知道</th>
+                    <th>地址</th>
+                    <th>留言</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {if $list['total']>0}
+                {volist name="$list.data" id="vo"}
+                <tr>
+                    <td>{$vo.mj_id}</td>
+                    <td>{$vo.mj_username}</td>
+                    <td>{$vo.mj_phone}</td>
+                    <td>{$vo.mj_email}</td>
+                    <td>{$vo.mj_source}</td>
+                    <td><div class="lettersLimit">{$vo.mj_address}</div></td>
+                    <td><div class="lettersLimit">{$vo.mj_message}</div></td>
+                    <td>
+                        <div class="st_btns">
+                            <!--<a href="javascript:void(0);" class="st_edit">编辑</a>-->
+                            <a href="javascript:void(0);" data-id="{$vo.mj_id}" class="st_del">删除</a>
+                        </div>
+                    </td>
+                </tr>
+                {/volist}
+                {else}
+                <tr>
+                    <td colspan="100" style="padding: 60px 0px;">没有找到任何记录 </td>
+                </tr>
+                {/if}
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="100">
+                    <div class="st_pages" id="wst-pager">
+                    </div>
+                    <div style="float: right;height: 50px;line-height: 50px;margin-right: 15px;">总计{$list.total}条记录</div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<script type="text/javascript" src="/static/admin/js/add/base.js"></script>
+<script type="text/javascript" src="/static/admin/js/add/confirmBoxes.js"></script>
+<script type="text/javascript">
+    $(".st_del").on('click',function () {
+        var that = $(this);
+        //询问框
+        layer.confirm('您确定要删除此条记录？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            layer.close(layer.index);
+            var id = that.attr('data-id');
+            del(id);
+        });
+    });
+    function del(id) {
+        $.post("{:url('admin/Services/Del')}",{id:id},function (data) {
+            if(data.status==1){
+                popupTip(data.msg,true,function () {
+                    location.reload();
+                });
+            }else{
+                popupTip(data.msg,false);
+            }
+        })
+    }
+$(".lettersLimit").mouseover(function(e){
+	var letters = $(this).html();
+	var bigDiv = $("<div></div>");
+	var dx = e.clientX + 10;
+	var dy = e.clientY;
+	bigDiv.css({"position": "fixed","z-index": "2","left":dx + "px","top":dy + "px", "width": "294px", "padding": "8px","border-box":"box-sizing","-webkit-border-box":"-webkit-box-sizing","background-color": "#fff","border":"1px solid #ccc","box-shadow": "0px 1px 1px 0px rgba(0,0,0,0.5)","line-height": "16px","color": "#333","text-align": "justify"});
+	bigDiv.html(letters);
+	$(document.body).append(bigDiv);
+	$(this).mousemove(function(e){
+		var dx = e.clientX + 10;
+		var dy = e.clientY;
+		bigDiv.css({
+			"left": dx + "px",
+			"top": dy + "px"
+		});
+	});
+	$(this).mouseout(function(){
+		bigDiv.remove();
+	});
+});
+</script>
+{/block}

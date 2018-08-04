@@ -1,0 +1,101 @@
+<%- include ../common/base.ejs %>
+    <link href="/css/admin/adminSet.css" rel="stylesheet" />
+
+    <div class="st_container">
+        <div class="st_title">添加管理员</div>
+        <div class="st_body">
+            <div class="st_tips">
+                <p>可从管理平台手动添加一名新管理员，并填写相关信息。</p>
+                <p>标识“*”的选项为必填项。</p>
+                <p>新增管理员后可从管理员列表中找到该条数据，并再次进行编辑操作。</p>
+            </div>
+        </div>
+        <div class="addAdminMsg">
+            <form name="addAdmin" id="addAdmin">
+                <input type="hidden" name="token" id="token" value="{$token}">
+                <div class="fn-clear addAdminItem">
+                    <div class="fl textR addAdminItemL">
+                        <i>*</i> 用户名：</div>&nbsp;
+                    <div class="fr textL addAdminItemR">
+                        <input name="addAdminUserName" type="text" id="addAdminUserName">
+                    </div>
+                </div>
+                <div class="fn-clear addAdminItem">
+                    <div class="fl textR addAdminItemL">
+                        <i>*</i> Email地址：</div>&nbsp;
+                    <div class="fr textL addAdminItemR">
+                        <input name="addAdminUserEmail" type="text" id="addAdminUserEmail">
+                    </div>
+                </div>
+                <div class="fn-clear addAdminItem">
+                    <div class="fl textR addAdminItemL">
+                        <i>*</i> 密 码：</div>&nbsp;
+                    <div class="fr textL addAdminItemR">
+                        <input name="addAdminUserPassWorld" type="password" id="addAdminUserPassWorld">
+                    </div>
+                </div>
+                <div class="fn-clear addAdminItem">
+                    <div class="fl textR addAdminItemL">
+                        <i>*</i> 确认密码：</div>&nbsp;
+                    <div class="fr textL addAdminItemR">
+                        <input name="addAdminUserSurePassWorld" type="password" id="addAdminUserSurePassWorld">
+                    </div>
+                </div>
+                <div class="fn-clear addAdminItem">
+                    <div class="fl textR addAdminItemL">
+                        <i>*</i> 请选择角色：</div>&nbsp;
+                    <div class="fr textL addAdminItemR">
+                        <select name="addAdminUserSelect" id="addAdminUserSelect">
+                            <option value="0">请选择</option>
+                            {volist name='roleList' id="vo"}
+                            <option value="{$vo.r_id}">{$vo.r_name}</option>
+                            {/volist}
+
+                        </select>
+                    </div>
+                </div>
+                <div class="fn-clear addAdminItem">
+                    <div class="fl textR addAdminItemL"></div>&nbsp;
+                    <div class="fr textL addAdminItemR">
+                        <button id="addAdminSuccess">提交</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        $.formValidator.initConfig({
+            theme: 'Default', mode: 'AutoTip', formID: "addAdmin", debug: true, submitOnce: true, onSuccess: function () {
+                var params = {};
+                params.name = $("#addAdminUserName").val();
+                params.email = $("#addAdminUserEmail").val();
+                params.password = $("#addAdminUserPassWorld").val();
+                params.repassword = $("#addAdminUserSurePassWorld").val();
+                params.roleId = $("#addAdminUserSelect").val();
+                params.token = $("#token").val();
+                $.post("{:url('admin/Staff/staffAdd')}", params, function (data) {
+                    if (data.status == 1) {
+                        popupTip(data.msg, true, function () {
+                            location.href = "{:url('admin/Staff/staffList')}";
+                        });
+                    } else if (data.status == -999) {
+                        popupTip(data.msg, false);
+                    } else {
+                        popupTip(data.msg, false);
+                    }
+                });
+                return false;
+            }, onError: function (msg) {
+            }
+        });
+        $("#addAdminUserName").formValidator({ onFocus: "输入用户名", onCorrect: "输入正确", }).inputValidator({ min: 1, max: 20, onError: "用户名不能为空" });
+        $("#addAdminUserEmail").formValidator({ onFocus: "输入Email地址", onCorrect: "输入正确", }).inputValidator({ min: 1, max: 20, onError: "Email地址不能为空" })
+            .inputValidator({ min: 1, onError: "邮箱不可以为空,请确认" })
+            .inputValidator({ min: 6, max: 100, onError: "你输入的邮箱长度非法" })
+            .regexValidator({ regExp: "email", dataType: "enum", onError: "Email地址格式不正确" });
+        //        $("#addAdminUserPassWorld").formValidator({onFocus:"最多20个字符",onCorrect:"输入正确",}).inputValidator({min:6,max:20,onErrorMin:"密码长度不能小于六位",onError:"确认密码不能为空"});
+        $("#addAdminUserPassWorld").formValidator({ onFocus: "最多20个字符", onCorrect: "输入正确" }).inputValidator({ min: 1, onError: "确认密码不能为空" }).inputValidator({ min: 6, max: 20, empty: { leftempty: false, rightempty: false, emptyError: "确认密码两边不能有空格" }, onErrorMin: "密码长度不能小于六位" });
+        $("#addAdminUserSurePassWorld").formValidator({ onFocus: "最多20个字符", onCorrect: "输入正确" }).compareValidator({ desID: "addAdminUserPassWorld", operateor: "=", dataType: "string", onError: "确证密码不一致" }).inputValidator({ min: 6, max: 20, empty: { leftempty: false, rightempty: false, emptyError: "确认密码两边不能有空格" }, onError: "确认密码不能为空" })
+        $("#addAdminUserSelect").formValidator({ onFocus: "请选择角色", onCorrect: "输入正确" }).inputValidator({ min: 1, onError: "请选择角色" });
+    </script>
+    <%- include ../common/base_bottom.ejs %>

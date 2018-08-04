@@ -1,0 +1,166 @@
+{extend name="common/base"} {block name="content"}
+<script type="text/javascript" src="/static/admin/js/plugins/formValidator/formValidator-4.1.3.js"></script>
+<script type="text/javascript" src="/static/admin/js/plugins/layer/laydate/laydate.js"></script>
+<script type="text/javascript" src="/static/admin/js/plugins/webuploader/webuploader.min.js"></script>
+<div class="st_container">
+    <div class="st_title">效果图属性 - 添加属性</div>
+    <div class="st_body">
+        <div class="st_tips">
+            <p>标识“*”的选项为必填项。</p>
+        </div>
+    </div>
+    <div class="st_content">
+        <form id="st_form">
+            <input type="hidden" id="token" value="{$token}">
+            <div class="st_msg_line clearfix">
+                <div class="st_msg_line_left">
+                    <div style="float: right;">
+                        <em class="important fl">*</em><span class="left">属性名称</span><i class="fenge">:</i>
+                    </div>
+                </div>
+                <div class="st_msg_line_right">
+                    <!-- <div class="st_normal_input" id="bdTime"></div> -->
+                    <input type="text" name="attrName" class="st_normal_input" id="attrName">
+                    <!-- <span class="line_tips"></span> -->
+                </div>
+            </div>
+            <div class="st_msg_line clearfix">
+                <div class="st_msg_line_left">
+                    <div style="float: right;">
+                        <em class="important fl">*</em><span class="left">属性值</span><i class="fenge">:</i>
+                    </div>
+                </div>
+                <div class="st_msg_line_right">
+                    <div class="st_msg_line_right">
+                        <div id="add_attr_box">
+                            <div class="add_attr_line">
+                                <span class="add_btn unselectable">[+]</span><!--
+                                 --><input type="text" name="attrVal" class="st_normal_input_add" id="attrVal_0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 单选选择框 -->
+            <div class="st_msg_line clearfix">
+                <div class="st_msg_line_left">
+                    <div style="float: right;">
+                        <span class="left">是否显示</span><i class="fenge">:</i>
+                    </div>
+                </div>
+                <div class="st_msg_line_right">
+                    <label class="st_normal_radio">
+                        <input type="radio" name="showAttr" value="1" checked><span>显示</span>
+                    </label>
+                    <label class="st_normal_radio">
+                        <input type="radio" name="showAttr" value="0"><span>不显示</span>
+                    </label>
+                    <!-- <span class="line_tips"></span> -->
+                </div>
+            </div>
+            <div class="st_msg_line clearfix">
+                <div class="st_msg_line_left">
+                    <div style="float: right;">
+                        <span class="left">排序</span><i class="fenge">:</i>
+                    </div>
+                </div>
+                <div class="st_msg_line_right">
+                    <input type="text" name="attrSeries" class="st_normal_input" id="attrSeries" value="0">
+                    <!-- <span class="line_tips"></span> -->
+                </div>
+            </div>
+            <div class="st_msg_line clearfix">
+                <div class="st_msg_line_left"></div>
+                <div class="st_msg_line_right">
+                    <div style="height: 15px;"></div>
+                    <input type="submit" name="" value="确定" class="st_ensure">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="/static/admin/js/add/base.js"></script>
+<script type="text/javascript" src="/static/admin/js/add/confirmBoxes.js"></script>
+<script type="text/javascript">
+$.formValidator.initConfig({
+    theme: 'Default',
+    mode: 'AutoTip',
+    formID: "st_form",
+    debug: true,
+    submitOnce: true,
+    onSuccess: function() {
+        stSubmit();
+        return false;
+    },
+    onError: function(msg) {
+        if (msg === "请上传图片") {
+            setTimeout(function(){
+                $("#imgTipsTip").removeClass("onFocus").addClass("onError").find("div").removeClass("onFocus").addClass("onError").html("请上传图片");
+            },200);
+        }
+    }
+});
+
+// 奖项名称验证
+$('#attrName').formValidator({ onCorrect: "输入正确" }).inputValidator({ min: 1, onError: "属性名称不能为空" });
+//属性验证
+$("#attrVal_0").formValidator({ onCorrect: "输入正确", onShow: "", onFocus: "" }).inputValidator({ min: 1, onError: "请添加属性值" });
+var f$;
+if ($ && $.formValidator) {
+    f$ = $;
+    f$.formValidator = $.formValidator;
+}
+$(document).on("click","#add_attr_box .add_btn",function(){
+	var id = "attrVal_" + (new Date()).getTime();
+	$("#add_attr_box").find(".add_attr_line").eq(0).find("input[name='attrVal']").attr("id", id);
+	f$ && f$.formValidator && f$("#" + id).unFormValidator(true).formValidator({ onCorrect: "输入正确", onShow: "", onFocus: "" }).inputValidator({ min: 1, onError: "请添加属性值" });
+});
+$('input.st_normal_input').blur(function() {
+    var val = ($(this).val()).trim();
+    if (val === '') {
+        $(this).addClass("error");
+    } else {
+        $(this).removeClass("error");
+    }
+});
+$('input.st_normal_input_add').blur(function() {
+    var val = ($(this).val()).trim();
+    if (val === '') {
+        $(this).addClass("error");
+    } else {
+        $(this).removeClass("error");
+    }
+});
+
+// 提交
+function stSubmit() {
+	var attrs = [];
+	$("input[name='attrVal']").each(function(){
+		attrs.push(($(this).val()).trim());
+	});
+    var params = {
+        'token': ($('#token').val()).trim(),
+        'name': ($('#attrName').val()).trim(),
+        'showAttr': $("input:radio:checked").val(),
+        'attrSeries': ($('#attrSeries').val()).trim(),
+        'attrs': attrs,
+    };
+    $.post("{:url('admin/EffectAttributes/doadd')}",params, function(data) {
+        if (data.status == 1) {
+            CB.tips({
+                title: "提示",
+                text: "<img src='/static/admin/images/u933.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>保存成功"
+            }, function() {
+                history.go(-1);
+                location.reload();
+            });
+        } else {
+            CB.tips({
+                title: "提示",
+                text: "<img src='/static/admin/images/u951.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>"+data.msg
+            });
+        }
+    });
+}
+</script>
+{/block}

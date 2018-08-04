@@ -1,0 +1,190 @@
+{extend name="common/base"}
+{block name="content"}
+<link href="/static/admin/css/adminSet.css" rel="stylesheet" />
+<!--<script src="/static/admin/js/index-base.js"></script>-->
+<div class="st_container">
+    <div class="st_title">新增门店</div>
+    <div class="st_body">
+        <div class="st_tips">
+            <p>标识“*”的选项为必填项。</p>
+        </div>
+    </div>
+    <div class="addAdminMsg">
+        {empty name="$data"}
+        <form  name="addAdmin" id="addAdmin">
+            <input type="hidden" name="token" id="token" value="{$token}">
+            <!--<input type="hidden" name="id" id="id" value="{$id}">-->
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"><i>*</i> 门店名称：</div>&nbsp;
+                <div class="fr textL addAdminItemR">
+                    <input name="addShopName" type="text" id="addShopName"></div>
+            </div>
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"><i>*</i> 所属地区：</div>&nbsp;
+                <div class="fr textL addAdminItemR">
+                    <select name="affiliatedAreaSheng" id="affiliatedAreaSheng" style="width: 158px;height: 32px;line-height: 32px;" onchange="changeAreas(this.value)">
+                        <option value="0">请选择</option>
+                        {volist name="obj" id="v" key="k"}
+                        <option value="{$v['a_id']}" >{$v['a_area_name']}</option>
+                        {/volist}
+                    </select>
+                    <select name="affiliatedAreaShi" id="affiliatedAreaShi" style="width: 158px;height: 32px;line-height: 32px;margin-left: 6px;">
+                        <option value="0">请选择</option>
+                    </select>
+                    <span class="affiliatedArea" style="color: #EC5151;margin-left: 20px;display: none;">请将城市填写完整</span>
+                </div>
+            </div>
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"><i>*</i> 详细地址：</div>&nbsp;
+                <div class="fr textL addAdminItemR"><input name="addAddress" type="text" id="addAddress" ></div>
+            </div>
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"><i>*</i> 设置经纬度：</div>&nbsp;
+                <div class="fr textL addAdminItemR">
+                    <input name="addLongitude" type="text" id="addLongitude" style="width: 152px;height: 32px;line-height: 30px;" placeholder="经度">
+                    <input name="addLatitude" type="text" id="addLatitude" style="width: 152px;height: 32px;line-height: 30px;margin-left: 6px;" placeholder="纬度" >
+                    <a href="http://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank" style="width:70px;height: 30px;line-height: 30px;color: #FFFFFF;background-color: #707070;display: inline-block;text-align: center;border-radius: 4px;cursor: pointer;">设置坐标</a>
+                    <span>请选取复制地图的经度纬度</span>
+                    <span class="latitudeHide" style="color: #EC5151;margin-left: 20px;display: none;">请将经度纬度填写完整</span>
+                </div>
+            </div>
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"><i>*</i> 服务电话：</div>&nbsp;
+                <div class="fr textL addAdminItemR"><input name="addServerTel" type="text" id="addServerTel" ></div>
+            </div>
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"></div>&nbsp;
+                <div class="fr textL addAdminItemR"> <button id="addAdminSuccess">提交</button></div>
+            </div>
+        </form>
+        {else/}
+        <form  name="addAdmin" id="addAdmin">
+            <input type="hidden" name="token" id="token" value="{$token}">
+            <input type="hidden" name="id" id="id" value="{$id}">
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"><i>*</i> 门店名称：</div>&nbsp;
+                <div class="fr textL addAdminItemR">
+                    <input name="addShopName" type="text" id="addShopName" value="{$data.s_store_name}"></div>
+            </div>
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"><i>*</i> 所属地区：</div>&nbsp;
+                <div class="fr textL addAdminItemR">
+                    <select name="affiliatedAreaSheng" id="affiliatedAreaSheng" style="width: 158px;height: 32px;line-height: 32px;" onchange="changeAreas(this.value)">
+                        <option value="0">请选择</option>
+                        {volist name="obj" id="v" key="k"}
+                        <option value="{$v['a_id']}" {if $data.s_store_area1 eq $v.a_id} selected {/if}>{$v['a_area_name']}</option>
+                        {/volist}
+                    </select>
+                    <select name="affiliatedAreaShi" id="affiliatedAreaShi" style="width: 158px;height: 32px;line-height: 32px;margin-left: 6px;">
+                        <option value="0">请选择</option>
+                        <option value="{$data.s_store_area2}" selected>{$data.name}</option>
+                    </select>
+                    <span class="affiliatedArea" style="color: #EC5151;margin-left: 20px;display: none;">请将城市填写完整</span>
+                </div>
+            </div>
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"><i>*</i> 详细地址：</div>&nbsp;
+                <div class="fr textL addAdminItemR"><input name="addAddress" type="text" id="addAddress" value="{$data['s_store_areas']}"></div>
+            </div>
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"><i>*</i> 设置经纬度：</div>&nbsp;
+                <div class="fr textL addAdminItemR">
+                    <input name="addLongitude" type="text" id="addLongitude" style="width: 152px;height: 32px;line-height: 30px;" placeholder="经度" value="{$data.s_store_longitude}">
+                    <input name="addLatitude" type="text" id="addLatitude" style="width: 152px;height: 32px;line-height: 30px;margin-left: 6px;" placeholder="纬度" value="{$data.s_store_latitude}">
+                    <a href="http://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank" style="width:70px;height: 30px;line-height: 30px;color: #FFFFFF;background-color: #707070;display: inline-block;text-align: center;border-radius: 4px;cursor: pointer;">设置坐标</a>
+                    <span>请选取复制地图的经度纬度</span>
+                    <span class="latitudeHide" style="color: #EC5151;margin-left: 20px;display: none;">请将经度纬度填写完整</span>
+                </div>
+            </div>
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"><i>*</i> 服务电话：</div>&nbsp;
+                <div class="fr textL addAdminItemR"><input name="addServerTel" type="text" id="addServerTel" value="{$data.s_store_phone}"></div>
+            </div>
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"></div>&nbsp;
+                <div class="fr textL addAdminItemR"> <button id="addAdminSuccess">提交</button></div>
+            </div>
+        </form>
+        {/empty}
+    </div>
+</div>
+<script type="text/javascript" src="/static/admin/js/add/base.js"></script>
+<script type="text/javascript" src="/static/admin/js/add/confirmBoxes.js"></script>
+<script>
+    //两级联动获取地址
+    function changeAreas(v){
+        $.post("{:url('admin/Shop/changeAreas')}",{id:v},function (data) {
+            if(data.status==1 && data.list){
+                var opts,html=[];
+                html.push("<option value=''>请选择</option>");
+                for(var i=0;i<data.list.length;i++){
+                    opts = data.list[i];
+                    html.push('<option value="'+opts.a_id+'"'+'>'+opts.a_area_name+'</option>');
+                }
+                $("#affiliatedAreaShi").html(html.join(''));
+            }
+        })
+    }
+    //获取光标隐藏报警提示
+    $("#addLatitude").on('focus',function () {
+        $(".latitudeHide").hide();
+    });
+    $("#addLongitude").on('focus',function () {
+        $(".latitudeHide").hide();
+    });
+    $("#affiliatedAreaSheng").on('click',function () {
+        $(".affiliatedArea").hide();
+    });
+    $("#affiliatedAreaShi").on('click',function () {
+        $(".affiliatedArea").hide();
+    });
+    //表单提交
+    $.formValidator.initConfig({
+        theme:'Default',mode:'AutoTip',formID:"addAdmin",debug:true,submitOnce:true,onSuccess:function(){
+            var params={};
+            params.token=$("#token").val();//获取token验证
+            params.name=$("#addShopName").val();//门店名字
+            params.address=$("#addAddress").val();//详细地址
+            params.affiliatedAreaSheng=$("#affiliatedAreaSheng option:selected").val();//省级
+            params.affiliatedAreaShi=$("#affiliatedAreaShi option:selected").val();//市级
+            params.addLongitude=$("#addLongitude").val();//经度
+            params.addLatitude=$("#addLatitude").val();//纬度
+            params.addServerTel=$("#addServerTel").val();//服务电话
+            params.id=$("#id").val();
+            if(params.affiliatedAreaSheng == 0 ||  params.affiliatedAreaShi == 0){
+                $(".affiliatedArea").show();
+                return false;
+            }
+            if(params.addLongitude == '' ||  params.addLatitude == ''){
+                $(".latitudeHide").show();
+                return false;
+            }
+
+            $.post("{:url('admin/Shop/addShop')}",params,function (data) {
+                if(data.status==1){
+                    CB.tips({
+                        title: "提示",
+                        text: "<img src='/static/admin/images/u933.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>保存成功"
+                    }, function() {
+                        location.href="{:url('admin/Shop/shopList')}";
+                    });
+                } else {
+                    CB.tips({
+                        "title": "操作提示",
+                        "text": data.msg,
+                        "btn": true
+                    });
+                }
+            })
+        },onError:function(msg){
+        }});
+    $("#addShopName").formValidator({onFocus:"输入门店名称",onCorrect:"输入正确",}).inputValidator({min:1,max:20,onError:"门店名称不能为空"});
+//    $("#affiliatedAreaSheng").formValidator({onFocus:"请选择",onCorrect:"输入正确"}).inputValidator({min:1,onError:"请选择省"});
+//    $("#affiliatedAreaShi").formValidator({onFocus:"请选择",onCorrect:"输入正确"}).inputValidator({min:1,onError:"请选择市"});
+    $("#addAddress").formValidator({onFocus:"输入详细地址",onCorrect:"输入正确",}).inputValidator({min:1,max:100,onError:"详细地址不能为空"});
+    $("#addAddress").formValidator({onFocus:"输入详细地址",onCorrect:"输入正确",}).inputValidator({min:1,max:100,onError:"详细地址不能为空"});
+    $("#addServerTel").formValidator({onFocus:"输入服务电话",onCorrect:"输入正确",}).inputValidator({min:1,max:100,onError:"服务电话不能为空"})
+    $("#addAdminUserPassWorld").formValidator({onFocus:"最多20个字符",onCorrect:"输入正确"}).inputValidator({min: 1, onError: "确认密码不能为空"}).inputValidator({min:6,max:20,empty:{leftempty:false,rightempty:false,emptyError:"确认密码两边不能有空格"},onErrorMin:"密码长度不能小于六位"});
+    $("#addAdminUserSurePassWorld").formValidator({onFocus:"最多20个字符",onCorrect:"输入正确"}).compareValidator({desID:"addAdminUserPassWorld",operateor:"=",dataType:"string",onError:"确证密码不一致"}).inputValidator({min:6,max:20,empty:{leftempty:false,rightempty:false,emptyError:"确认密码两边不能有空格"},onError:"确认密码不能为空"})
+</script>
+{/block}

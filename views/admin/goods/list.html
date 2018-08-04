@@ -1,0 +1,499 @@
+{extend name="common/base"}
+{block name="content"}
+<link rel="stylesheet" href="/static/admin/css/goods.css">
+<style>
+    .st_switchNewGoodsList.on {
+        background-color: #1989FA;
+    }
+    .on {
+        cursor: pointer;
+        background-color: #1989FA;
+    }
+    .st_switchNewGoodsList {
+        width: 38px;
+        height: 16px;
+        border-radius: 8px;
+        background-color: #ccc;
+        position: relative;
+        float: left;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    .st_switchNewGoodsList.on span {
+        left: 22px;
+    }
+    .st_switchNewGoodsList span {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        width: 14px;
+        height: 14px;
+        background-color: #fff;
+        margin: 1px;
+        border-radius: 7px;
+    }
+    .st_switchGongChengGoodsList span {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        width: 14px;
+        height: 14px;
+        background-color: #fff;
+        margin: 1px;
+        border-radius: 7px;
+    }
+    .st_switchGongChengGoodsList.on {
+        background-color: #1989FA;
+    }
+    .on {
+        cursor: pointer;
+        background-color: #1989FA;
+    }
+    .st_switchGongChengGoodsList {
+        width: 38px;
+        height: 16px;
+        border-radius: 8px;
+        background-color: #ccc;
+        position: relative;
+        float: left;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    .st_switchGongChengGoodsList.on span {
+        left: 22px;
+    }
+    /*st_switch3DModel*/
+    .st_switchSale span {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        width: 14px;
+        height: 14px;
+        background-color: #fff;
+        margin: 1px;
+        border-radius: 7px;
+    }
+    .st_switchSale.on {
+        background-color: #1989FA;
+    }
+    .on {
+        cursor: pointer;
+        background-color: #1989FA;
+    }
+    .st_switchSale {
+        width: 38px;
+        height: 16px;
+        border-radius: 8px;
+        background-color: #ccc;
+        position: relative;
+        float: left;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    .st_switchSale.on span {
+        left: 22px;
+    }
+</style>
+<div class="st_container">
+    <div class="st_title">产品列表</div>
+    <div class="st_body">
+        <div class="st_tips">
+            <p>该页面展示了商城所有的商品信息，可对商品进行编辑修改操作。</p>
+            <p>可输入商品名称关键字进行搜索</p>
+        </div>
+    </div>
+
+    <div class="btns_div" style="padding-left: 15px;padding-right: 15px;">
+        <form action="" id="selFormId">
+            <div class="st_search_box">
+                <div class="st_shangjia st_select_item">
+                    <span class="left">所属分类</span>
+                    <i class="fenge">:</i>
+                    <select name="cateId">
+                        <option value="0">全部</option>
+                        {volist name='cateList' id='vo'}
+                        <option value="{$vo.gc_id}" {if $vo.gc_id==$cateId} selected {/if}>{$vo.gc_name}</option>
+                        {/volist}
+                    </select>
+                </div>
+                <div class="st_shangjia st_select_item">
+                    <span class="left">上下架</span>
+                    <i class="fenge">:</i>
+                    <select name="isSale">
+                        <option value="-1">全部</option>
+                        <option value="1" {if $isSale==1} selected {/if}>上架</option>
+                        <option value="0" {if $isSale==0} selected {/if}>下架</option>
+                    </select>
+                </div>
+                <label class="st_checkbox_item">
+                    <input type="checkbox" name="isNew" value="1" {if $isNew==1}checked{/if}><span>新品</span>
+                </label>
+                <!--<label class="st_checkbox_item">-->
+                    <!--<input type="checkbox" name="isProject" value="1" {if $isProject==1}checked{/if}><span>工程产品</span>-->
+                <!--</label>-->
+                <label class="st_checkbox_item">
+                    <input type="checkbox" name="isModel" value="1" {if $isModel==1}checked{/if}><span>3D模型</span>
+                </label>
+                <label class="st_checkbox_item">
+                    <input type="checkbox" name="isVedio" value="1" {if $isVedio==1}checked{/if}><span>视频</span>
+                </label>
+                <div class="st_text_item fn-clear">
+                    <input class="fl" type="text" name="name" placeholder="产品名称" value="{$name}">
+                    <!--<span type="submit"></span>-->
+                    <input class="fl st_text_item_btn" type="submit" value="">
+                </div>
+            </div>
+        </form>
+        <a href="{:url('admin/Goods/goodsAddCate')}" class="st_btn_h28">添加产品</a>
+    </div>
+    <div style="padding-left: 15px;padding-right: 15px;">
+        <table >
+            <thead>
+            <tr>
+                <th><input type="checkbox" value="" class="selectAllInp"></th>
+                <th>编号</th>
+                <th>产品名称</th>
+                <th>所属分类</th>
+                <th>上架</th>
+                <th>新品</th>
+                <th>3D模型</th>
+                <th>视频</th>
+                <th>创建日期</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody style="font-size: 12px;">
+            {if $list.total>0}
+            {volist name='list.data' id='vo' key='key'}
+            <tr>
+                <td><input type="checkbox" value="{$vo.g_id}" class="singleInp"></td>
+                <td>{$vo.g_id}</td>
+                <td>
+                    <a href="javascript:void(0);" class="st_goods">
+                        <img src="{$vo.headImg}">
+                        <div>
+                            <p>{$vo.g_name}</p>
+                            <span>产品型号：<b>{$vo.g_version}</b></span>
+                        </div>
+                    </a>
+                </td>
+                <td>{notempty name='vo.gc_name2'}{$vo.gc_name2}<span class="gt">&gt;</span>{/notempty}{$vo.gc_name} </td>
+                <td><div class="st_switchSale {if $vo.g_is_sale==1} on {/if}"><span></span></div></td>
+                <td>
+                    <div class="xinpin clearfix">
+<!--                         <span class="left">新品</span>
+                        <i class="fenge">:</i> -->
+                        <div class="st_switchNewGoodsList {if $vo.g_is_new==1} on {/if}"><span></span></div>
+                    </div>
+                    <!--<div class="gongye clearfix">-->
+                        <!--<span class="left">工品</span>-->
+                        <!--<i class="fenge">:</i>-->
+                        <!--<div class="st_switchGongChengGoodsList {if $vo.g_is_project==1} on {/if}"><span></span></div>-->
+                    <!--</div>-->
+                </td>
+                <td>{$vo.modelStatus==0?'无':'有'}</td>
+                <td>{$vo.g_has_vedio==1?'有':'无'}</td>
+                <td>{$vo.g_create_time}</td>
+                <td>
+                    <div class="st_btns">
+                        <a href="{:url('admin/Goods/goodsModelList',array('id'=>$vo.g_id))}" class="st_set3D">3D模型设置</a>
+                        <a href="{:url('admin/Goods/goodsShow',array('id'=>$vo.g_id))}" target="_blank" class="st_show">查看</a>
+                        <a href="{:url('admin/Goods/goodsEdit',array('id'=>$vo.g_id))}" class="st_edit">编辑</a>
+                        <a href="javascript:void(0);" class="st_del">删除</a>
+                    </div>
+                </td>
+            </tr>
+            {/volist}
+            {else /}
+            <tr><td colspan="10" style="padding: 60px 0px;">没有找到任何记录 </td></tr>
+            {/if}
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="4">
+                    <div>
+                        <select name="" class="goodsSetList">
+                            <option data-id="0" value="0">删除</option>
+                            <option data-id="1" value="1">设置上架</option>
+                            <option data-id="0" value="1">设置下架</option>
+                            <option data-id="1" value="2">设置新品</option>
+                            <option data-id="0" value="2">取消新品</option>
+                            <!--<option data-id="1" value="3">设置工程产品</option>-->
+                            <!--<option data-id="0" value="3">设置取消工程产品</option>-->
+                        </select>
+                        <button class="goodsSetSure off">确定</button>
+                    </div>
+                </td>
+                <td colspan="6">
+                    <div class="st_pages" id="wst-pager">
+
+                    </div>
+                    <div style="float: right;height: 50px;line-height: 50px;margin-right: 15px;">总计{$list.total}条记录</div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<script type="text/javascript" src="/static/admin/js/add/base.js"></script>
+<script type="text/javascript" src="/static/admin/js/add/confirmBoxes.js"></script>
+<script src="/static/admin/js/plugins/layui/layui.js"></script>
+<script src="/static/admin/js/common.js"></script>
+<script type='text/javascript'>
+
+    layui.use('laypage', function(){
+        var laypage = layui.laypage;
+        laypage({
+            cont: 'wst-pager',
+            pages: {$list["last_page"]}, //总页数
+            skip: true, //是否开启跳页
+            skin: '#e23e3d',
+            groups: 3, //连续显示分页数
+            curr: function(){ //通过url获取当前页，也可以同上（pages）方式获取
+                var page = location.search.match(/page=(\d+)/);
+                return page ? page[1] : 1;
+            }(),
+            jump: function(e, first){ //触发分页后的回调
+                if(!first){ //一定要加此判断，否则初始时会无限刷新
+                    var nuewurl = WST.splitURL("page");
+                    var ulist = nuewurl.split("?");
+                    if(ulist.length>1){
+                        location.href = nuewurl+'&page='+e.curr;
+                    }else{
+                        location.href = '?page='+e.curr;
+                    }
+
+                }
+            }
+        });
+
+
+
+        var total = {$list["total"]};
+        function page(t){
+            var page = location.search.match(/page=(\d+)/);
+            var curr = 1;
+            if(page && page.length>1){ //说明当前url上有page参数
+                curr = page[1]; // 当前页
+            }
+            var nuewurl = WST.splitURL("page"); // 当前url
+            var ulist = nuewurl.split("?"); // 将传递的参数与url分开
+            // 说明当前有参数. 需要带着参数一起传递
+            var url = (ulist.length>1)?nuewurl+'&page=':'?page=';
+
+            if(t=='prev'){ // 上一页
+                if(curr<=1)return;
+                curr = parseInt(curr)-1;
+                location.href = url+curr;
+            }else{ // 下一页
+                if(curr>=total)return;
+                curr = parseInt(curr)+1;
+                location.href = url+curr;
+            }
+
+        }
+    });
+
+
+</script>
+<script>
+    //点击全选
+    $(document).on('click','.selectAllInp',function () {
+        if($(this).is(":checked")){
+            $(".goodsSetSure").removeClass('off').addClass('on');
+            $(".singleInp").prop('checked',true);
+        }else {
+            $(".singleInp").prop('checked',false);
+            $(".goodsSetSure").removeClass('on').addClass('off');
+        }
+    });
+    //点击单选
+    $(document).on('click','.singleInp',function () {
+        var flag = true;
+        var flagOn = false;
+        $(".singleInp").each(function () {
+            if (!$(this).is(":checked")){
+                flag = false;
+            }else{
+                flagOn = true;
+            }
+        });
+        if(flag){
+            $(".selectAllInp").prop('checked',true);
+        }else {
+            $(".selectAllInp").prop('checked',false);
+        }
+        if(flagOn){
+            $(".goodsSetSure").removeClass('off').addClass('on');
+        }else {
+            $(".goodsSetSure").removeClass('on').addClass('off');
+        }
+    });
+    //点击新品
+    //点击新品开关
+    $(document).on("click",".st_switchNewGoodsList",function(){
+        var params = {};
+        params.ids = [];
+        params.ids.push($(this).parent().parent().parent().find('.singleInp').val());
+        params.status = 0;
+        params.type = 2;
+        var close = false;
+        if ($(this).hasClass("on")) {
+            close = true;
+        }
+        var scope = this;
+        if (close) {
+            //当前为开，点击关闭
+            params.status = 0;
+            $(scope).attr("class", "st_switchNewGoodsList");
+        }else{
+            //当前关闭，点开打开
+            $(scope).attr("class", "st_switchNewGoodsList on");
+            params.status = 1;
+        }
+        $.post("{:url('admin/Goods/allHandle')}",params,function (data) {
+            if(data.status==-999){
+                popupTip(data.msg,false);
+            }else if(data.status==1){
+                popupTip(data.msg,true,function () {
+                    location.reload();
+                })
+            }else{
+                popupTip(data.msg,false);
+            }
+        })
+    });
+    //点击工程产品开关
+    $(document).on("click",".st_switchGongChengGoodsList",function(){
+        var params = {};
+        params.ids = [];
+        params.ids.push($(this).parent().parent().parent().find('.singleInp').val());
+        params.status = 0;
+        params.type = 3;
+        var close = false;
+        if ($(this).hasClass("on")) {
+            close = true;
+        }
+        var scope = this;
+        if (close) {
+            //当前为开，点击关闭
+            $(scope).attr("class", "st_switchGongChengGoodsList");
+            params.status = 0;
+        }else{
+            //当前关闭，点开打开
+            $(scope).attr("class", "st_switchGongChengGoodsList on");
+            params.status = 1;
+        }
+        $.post("{:url('admin/Goods/allHandle')}",params,function (data) {
+            if(data.status==-999){
+                popupTip(data.msg,false);
+            }else if(data.status==1){
+                popupTip(data.msg,true,function () {
+                    location.reload();
+                })
+            }else{
+                popupTip(data.msg,false);
+            }
+        })
+    });
+    //点击上下架开关
+    $(document).on("click",".st_switchSale",function(){
+        var params = {};
+        params.ids = [];
+        params.ids.push($(this).parent().parent().find('.singleInp').val());
+        params.status = 0;
+        params.type = 1;
+        var close = false;
+        if ($(this).hasClass("on")) {
+            close = true;
+        }
+        var scope = this;
+        if (close) {
+            //当前为开，点击关闭
+            $(scope).attr("class", "st_switchSale");
+            params.status = 0;
+        }else{
+            //当前关闭，点开打开
+            $(scope).attr("class", "st_switchSale on");
+            params.status = 1;
+        }
+        $.post("{:url('admin/Goods/allHandle')}",params,function (data) {
+            if(data.status==-999){
+                popupTip(data.msg,false);
+            }else if(data.status==1){
+                popupTip(data.msg,true,function () {
+                    location.reload();
+                })
+            }else{
+                popupTip(data.msg,false);
+            }
+        })
+    });
+    // 点击删除当前商品按钮
+    $(".st_del").on('click',function () {
+        var params ={}
+        params.ids = [];
+        params.type = 0;
+        params.status = 0;
+        params.ids.push($(this).parent().parent().parent().find('.singleInp').val());
+        //询问框
+        layer.confirm('您确定要删除此产品？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            $(".layui-layer-shade").hide();
+            $(".layui-layer-dialog").hide();
+            $.post("{:url('admin/Goods/allHandle')}",params,function (data) {
+                if(data.status==-999){
+                    popupTip(data.msg,false);
+                }else if(data.status==1){
+                    popupTip(data.msg,true,function () {
+                        location.reload();
+                    })
+                }else{
+                    popupTip(data.msg,false);
+                }
+            })
+        });
+
+    });
+
+
+    //点击确定
+    $(".goodsSetSure").on('click',function () {
+        if($(this).hasClass('on')){
+            var params = {};
+            params.ids = [];
+            $("tbody").find('input').each(function () {
+                if($(this).is(':checked')){
+                    params.ids.push( $(this).val());
+                }
+            });
+            params.type = $(".goodsSetList option:selected").val();
+            params.status = $(".goodsSetList option:selected").attr('data-id');
+            //询问框
+            var tips = $(".goodsSetList option:selected").html();
+            layer.confirm('您确定要批量'+tips+'？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                $(".layui-layer-shade").hide();
+                $(".layui-layer-dialog").hide();
+                $.post("{:url('admin/Goods/allHandle')}",params,function (data) {
+                    if(data.status==-999){
+                        popupTip(data.msg,false);
+                    }else if(data.status==1){
+                        popupTip(data.msg,true,function () {
+                            location.reload();
+                        })
+                    }else{
+                        popupTip(data.msg,false);
+                    }
+                })
+            });
+        }
+    });
+
+</script>
+{/block}

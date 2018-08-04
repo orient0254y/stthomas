@@ -1,0 +1,122 @@
+.nav-left{background-color: #333643;width: 60px;height: 100%;position: fixed;top: 0px;left: 0px;z-index: 1001;}
+.nav-top{background-color: #FFFFFF;width: 100%;height: 55px;position: fixed;top: 0px;left: 60px;z-index: 99}
+.nav-left ul {width: 100%;display: block;}
+.nav-left ul li{list-style: none;margin-bottom: 4px;width: 100%;display: block;padding: 15px 0px 10px 0px;}
+.nav-left ul li.active{background-color: #1989FA}
+.nav-left ul li:hover{background-color: #4A5064}
+.nav-left ul li.active:hover{background-color: #1989FA}
+
+.nav-left ul li div{width: 100%;text-align: center;font-size: 12px;color: #FFFFFF;}
+.nav-left ul li div:nth-child(1) img{width: 20px;height: 20px;overflow: hidden;padding: 0px 0px 2px 0px;}
+.nav-left .sheZhi01 i{width: 20px;display:block;height: 20px;overflow: hidden;padding: 0px 0px 2px 0px;background: url("/images/admin/indexBase.png") -30px 0px no-repeat;margin-left: 20px;}
+.nav-left .pinPai01 i{width: 20px;display:block;height: 20px;overflow: hidden;padding: 0px 0px 2px 0px;background: url("/images/admin/indexBase.png") -30px -32px no-repeat;margin-left: 20px;}
+.nav-left .canPin01 i{width: 20px;display:block;height: 20px;overflow: hidden;padding: 0px 0px 2px 0px;background: url("/images/admin/indexBase.png") -30px -94px no-repeat;margin-left: 20px;}
+.nav-left .wenZhang01 i{width: 20px;display:block;height: 20px;overflow: hidden;padding: 0px 0px 2px 0px;background: url("/images/admin/indexBase.png") -30px -64px no-repeat;margin-left: 20px;}
+.nav-left .guangGao01 i{width: 20px;display:block;height: 20px;overflow: hidden;padding: 0px 0px 2px 0px;background: url("/images/admin/indexBase.png") -30px -64px no-repeat;margin-left: 20px;}
+.nav-left .fuWu01 i{width: 20px;display:block;height: 20px;overflow: hidden;padding: 0px 0px 2px 0px;background: url("/images/admin/indexBase.png") -30px -150px no-repeat;margin-left: 20px;}
+.nav-left .xiaoGuoTu01 i{width: 20px;display:block;height: 20px;overflow: hidden;padding: 0px 0px 2px 0px;background: url("/images/admin/indexBase.png") -30px -120px no-repeat;margin-left: 20px;}
+.nav-left .menDian01 i{width: 20px;display:block;height: 20px;overflow: hidden;padding: 0px 0px 2px 0px;background: url("/images/admin/indexBase.png") -30px -180px no-repeat;margin-left: 20px;}
+.nav-left .nav-control{text-align: center;padding: 18px 0px;}
+.nav-left .nav-control img{width: 18px;height: 16px;overflow: hidden;}
+.nav-left .nav-control i{width: 18px;height: 16px;overflow: hidden;background: url("/images/admin/indexBase.png") -2px -209px no-repeat;display: block;margin-left: 20px;}
+.nav-left ul li:hover i{background-position-x:0px;}
+.nav-top-left{padding: 8px 0px 0px 20px;float: left;}
+.nav-top{border-bottom: 1px solid #E6E9F0;min-width: 1200px;z-index: 1011;}
+.nav-top div span{font-size: 14px;color: #44130F;font-weight: 600;float: left;line-height: 38px;margin-left: 5px;}
+.nav-top div img{width: 38px;height: 38px;overflow: hidden;float: left;}
+
+.nav-right{background-color: #EAEDF1;width: 160px;height: 100%;position: fixed;top: 0px;left: 60px;z-index: 1001;box-sizing: border-box;padding-top: 55px;}
+.nav-right div.active{display: block;}
+.nav-right-title{height: 60px;line-height: 60px;padding-left: 30px;color: #333333;font-weight: 600;font-size: 14px;}
+.nav-right .ul-wrapper{display: none;}
+.nav-right .ul-wrapper.active{display:block;}
+.nav-right ul li a{height: 36px;line-height: 36px;color: #333333;font-size: 12px;display: block;padding-left: 30px;}
+.nav-right-active{background-color: #FFFFFF}
+
+#page-wrapper{margin: 0px 0px 0px 220px;overflow: hidden;}
+/*#wrapper{position: relative;height: 100%;}*/
+body{position: relative}
+.nav-top-right{float: right;margin-right: 82px;font-size: 14px;color: #7A8599;}
+.nav-top-right a{font-size: 14px;color: #7A8599;cursor: pointer;}
+.nav-top-right div{float: right;}
+.nav-top-right .signOut{padding: 17px 0px;}
+.nav-top-right .signOut a{display: inline-block;vertical-align: middle;border-left: 1px solid #D7D7D7;padding-left: 10px;}
+.nav-top-right .signOut img{width: 20px; height: 20px;overflow: hidden;display: inline-block;margin-top: -2px;margin-left: 10px;}
+.nav-top-right .userName{display: inline-block;vertical-align: middle;padding:20px 10px; cursor:default;}
+.nav-top-right .userName img{width: 14px; height: 14px;overflow: hidden;display: inline-block;margin-top: -2px;margin-left: 6px;margin-right: 6px;}
+.nav-top-right .homePage{padding: 17px 0px;}
+.nav-top-right .homePage a{display: inline-block;vertical-align: middle;border-right: 1px solid #D7D7D7;padding-right: 10px;}
+.nav-top-right .homePage img{width: 18px; height: 18px;overflow: hidden;display: inline-block;margin-top: -2px;margin-right: 6px;}
+
+.userMsg{position: absolute;top: 55px;right: 140px;border: 1px solid #E6E9F0;padding-bottom: 15px;background: #FFFFFF;}
+.userMsg div{font-size: 13px;color: #7A8599;padding: 14px 20px 0px 20px;}
+
+/*提示框?*/
+.zheZhao{width: 100%;height: 100%;position: fixed;top: 0px;left: 0px;background-color: rgba(0,0,0,0.5);z-index: 101;}
+.tip{position: absolute;top: 50%;left: 50%;margin-left: -150px;margin-top: -30px;background-color: #FFFFFF;border-radius: 5px;}
+.tipName{height: 38px;line-height: 38px;padding-left: 20px;color: #666666;background-color: #ECF8FF;border-radius: 5px;}
+.tipMsg{height: 108px;line-height: 108px;text-align: center;font-size: 16px;color: #333333;margin-left: 0px;}
+.tipTip{display: inline-block;font-size: 14px;margin-left: 4px;}
+.tipImg{vertical-align: middle;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

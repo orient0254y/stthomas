@@ -1,0 +1,87 @@
+<%- include ../common/base.ejs %>
+<link href="/css/admin/adminSet.css" rel="stylesheet" />
+
+<div class="st_container">
+    <div class="st_title">修改密码</div>
+    <div class="st_body">
+        <div class="st_tips">
+            <!--<p>可从管理平台手动添加一名新管理员，并填写相关信息。</p>-->
+            <p>标识“*”的选项为必填项。</p>
+            <!--<p>新增管理员后可从管理员列表中找到该条数据，并再次进行编辑操作。</p>-->
+        </div>
+    </div>
+    <div class="addAdminMsg">
+        <form  name="addAdmin" id="addAdmin">
+            <input type="hidden" name="token" id="token" value="{$token}">
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"><i>*</i> 旧 密 码：</div>&nbsp;
+                <div class="fr textL addAdminItemR">
+                    <input name="addAdminUserPassWorld" type="password" id="addAdminUserOldPassWorld">
+                    <div class="addAdminUserOldPassWorldYanZheng" style="display: none">
+                        输入旧密码
+                    </div>
+                </div>
+            </div>
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"><i>*</i> 新 密 码：</div>&nbsp;
+                <div class="fr textL addAdminItemR"><input name="addAdminUserPassWorld" type="password" id="addAdminUserNewPassWorld"></div>
+            </div>
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"><i>*</i> 确认密码：</div>&nbsp;
+                <div class="fr textL addAdminItemR"><input name="addAdminUserSurePassWorld" type="password" id="addAdminUserSurePassWorld"></div>
+            </div>
+            <div class="fn-clear addAdminItem">
+                <div class="fl textR addAdminItemL"></div>&nbsp;
+                <div class="fr textL addAdminItemR"><input type="submit" id="addAdminSuccess"></div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+        function editPwd() {
+            var params={};
+            params.token=$("#token").val();
+            params.oldpwd=$("#addAdminUserOldPassWorld").val();
+            params.newpwd=$("#addAdminUserNewPassWorld").val();
+            params.renewpwd=$("#addAdminUserSurePassWorld").val();
+            $.post("{:url('admin/Staff/editPwd')}",params,function (data) {
+                if(data.status==1){
+                    popupTip(data.msg,true,function () {
+                        location.reload();
+                    })
+                }else if(data.status==-999){
+                    popupTip(data.msg,false);
+                }else{
+                    popupTip(data.msg,false);
+                }
+            })
+        }
+    $.formValidator.initConfig({
+        theme:'Default',mode:'AutoTip',formID:"addAdmin",debug:true,submitOnce:true,onSuccess:function(){
+            editPwd();
+            return false;
+        },onError:function(msg){
+        }});
+    //        $("#addAdminUserPassWorld").formValidator({onFocus:"最多20个字符",onCorrect:"输入正确",}).inputValidator({min:6,max:20,onErrorMin:"密码长度不能小于六位",onError:"确认密码不能为空"});
+        $("#addAdminUserOldPassWorld").formValidator({onFocus:"最多20个字符",onCorrect:"输入正确"}).inputValidator({min: 1, onError: "确认密码不能为空"}).inputValidator({min:6,max:20,empty:{leftempty:false,rightempty:false,emptyError:"确认密码两边不能有空格"},onErrorMin:"密码长度不能小于六位"}).ajaxValidator({
+            type:'post',
+            dataType : "json",
+            async : true,
+            url : "{:url('admin/Staff/checkOldPwd')}",
+            success : function(data){
+                if( data.status == "1" ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            buttons: $("#addAdminSuccess"),
+            onError : "密码不正确",
+            onWait : "请稍候..."
+        });
+    $("#addAdminUserNewPassWorld").formValidator({onFocus:"最多20个字符",onCorrect:"输入正确"}).inputValidator({min: 1, onError: "确认密码不能为空"}).inputValidator({min:6,max:20,empty:{leftempty:false,rightempty:false,emptyError:"确认密码两边不能有空格"},onErrorMin:"密码长度不能小于六位"});
+    $("#addAdminUserSurePassWorld").formValidator({onFocus:"最多20个字符",onCorrect:"输入正确"}).compareValidator({desID:"addAdminUserNewPassWorld",operateor:"=",dataType:"string",onError:"确证密码不一致"}).inputValidator({min:6,max:20,empty:{leftempty:false,rightempty:false,emptyError:"确认密码两边不能有空格"},onError:"确认密码不能为空"})
+    $("#addAdminUserSelect").formValidator({onFocus:"请选择角色",onCorrect:"输入正确"}).inputValidator({min:1,onError:"请选择角色"});
+
+</script>
+<%- include ../common/base_bottom.ejs %>

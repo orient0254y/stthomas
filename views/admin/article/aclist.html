@@ -1,0 +1,126 @@
+{extend name="common/base"} {block name="content"}
+<div class="st_container">
+    <div class="st_title">文章分类列表</div>
+    <div class="st_body">
+        <div class="st_tips">
+            <p>该页面展示所有文章分类。</p>
+            <p>可对分类进行编辑修改、删除。</p>
+            <p>注：分类下已有文章需先删除文章后才能对该分类进行删除操作。</p>
+        </div>
+        <div class="btns_div">
+            <a href="{:url('admin/Article/articleAdd')}" class="st_btn_h28">添加文章分类</a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>文章分类名称</th>
+                    <th>描述</th>
+                    <th>排序</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            {if $list['total']>0}
+              {volist name='list["data"]' id='vo'}
+                    <tr>
+                        <td>{$vo['ac_name']}</td>
+                        <td>{$vo['ac_description']}</td>
+                        <td><input type="text" name="series" data="{$vo['ac_id']}" class="series" value="{$vo['ac_sort']}" onchange="changeSort(this.value,{$vo.ac_id})"></td>
+                        <td>
+                            <div class="st_btns">
+                                <a href="{:url('admin/Article/articleAdd',array('id'=>$vo.ac_id))}" class="st_edit">编辑</a>
+                                <a href="javascript:void(0);" data-value="{$vo.ac_id}" class="st_del">删除</a>
+                            </div>
+                        </td>
+                    </tr>
+               {/volist}
+
+            {else /}
+
+                <tr>
+                    <td colspan="5" style="padding: 60px 0px;">没有找到任何记录 </td>
+                </tr>
+            {/if}
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="100">
+
+                    <div class="st_pages" >
+                        <p>总计{$list.total}条记录</p>
+                        {$page|raw}
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<script type="text/javascript" src="/static/admin/js/add/base.js"></script>
+<script type="text/javascript" src="/static/admin/js/add/confirmBoxes.js"></script>
+<script type="text/javascript">
+$(document).on("click", ".st_del", function() {
+    var id=$(this).attr('data-value');
+    CB.confirm({
+        "title": "操作提示",
+        "text": "您确定要删除此条记录？"
+    }, function() {
+        $.post("{:url('admin/Article/delArticleCats')}",{id:id},function (data) {
+             // console.log(data);return;
+            //如果该分类下还有文章
+            if (data.status==-2) {
+                CB.tips({
+                    "title": "操作提示",
+                    "text": data.msg,
+                    "btn": false
+                },function () {
+                    location.reload();
+                });
+            }else if(data.status==1){
+                CB.tips({
+                    "title": "操作提示",
+                    "text":"操作成功",
+                    "btn": false
+                },function () {
+                    location.reload();
+                })
+            }else {
+                CB.tips({
+                    "title": "操作提示",
+                    "text": "操作失败 请刷新后再试",
+                    "btn": false
+                },function () {
+                    location.reload();
+                });
+
+            }
+        })
+    });
+})
+    
+    function changeSort(v,id) {
+        $.post("{:url('admin/Article/changeSort')}",{v:v,id:id},function (data) {
+            if(data.status==1){
+                CB.tips({
+                    "title": "操作提示",
+                    "text":"操作成功",
+                    "btn": false
+                },function () {
+                    location.reload();
+                })
+            }else{
+                CB.tips({
+                    "title": "操作提示",
+                    "text": data.msg,
+                    "btn": false
+                },function () {
+                    location.reload();
+                });
+
+            }
+        })
+    }
+    
+    
+</script>
+{/block}

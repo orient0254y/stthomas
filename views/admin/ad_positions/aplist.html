@@ -1,0 +1,148 @@
+{extend name="common/base"}
+{block name="content"}
+<div class="st_container">
+    <div class="st_title">广告位置</div>
+    <div class="st_body">
+        <div class="st_tips">
+            <p>该页面展示网站所有的广告位置。</p>
+            <p>点击查看可查看广告位置相关广告位的广告。</p>
+        </div>
+        <div class="btns_div">
+            <form action="" id="topform" method="post">
+                <div class="st_text_item" style="float: right">
+                    <input type="text" name="keyword" value="{$keyword}" placeholder="广告位名称">
+                    <span onclick="keywordSub()"></span>
+                </div>
+            </form>
+            <a href="{:url('admin/AdPositions/apAddShow')}" class="st_btn_h28">添加广告位</a>
+        </div>
+        <table>
+            <thead>
+            <tr>
+                <th>广告位名称</th>
+                <th>位置宽度</th>
+                <th>位置高度</th>
+                <th>广告位代码</th>
+                <th>广告位描述</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if $list.total>0}
+            {volist name="list.data" id="vo"}
+            <tr>
+                <td>{$vo.ap_name}</td>
+                <td>{$vo.ap_width}</td>
+                <td>{$vo.ap_height}</td>
+                <td>{$vo.ap_id}</td>
+                <td>{$vo.ap_describe}</td>
+                <td>
+                    <div class="st_btns">
+                        <a href="{:url('admin/AdPositions/apEditShow',array('id'=>$vo.ap_id))}" class="st_edit">编辑</a>
+                        <!-- <a href="javascript:void(0);" data-id="{$vo.ap_id}" class="st_del">删除</a> -->
+                    </div>
+                </td>
+            </tr>
+            {/volist}
+            {else}
+            <tr>
+                <td colspan="5" style="padding: 60px 0px;">没有找到任何记录 </td>
+            </tr>
+            {/if}
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="100">
+
+                    <div class="st_pages" id="wst-pager">
+                    </div>
+                    <div style="float: right;height: 50px;line-height: 50px;margin-right: 15px;">总计{$list.total}条记录</div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+
+    </div>
+</div>
+<script src="/static/admin/js/plugins/layui/layui.js"></script>
+<script src="/static/admin/js/common.js"></script>
+<script type='text/javascript'>
+    $(".st_del").on('click',function () {
+        var that = $(this);
+        //询问框
+        layer.confirm('您确定要删除此条记录？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+                var id = that.attr('data-id');
+                del(id);
+            });
+        });
+    layui.use('laypage', function(){
+        var laypage = layui.laypage;
+        laypage({
+            cont: 'wst-pager',
+            pages: {$list["last_page"]}, //总页数
+            skip: true, //是否开启跳页
+            skin: '#1989FA',
+            groups: 3, //连续显示分页数
+            curr: function(){ //通过url获取当前页，也可以同上（pages）方式获取
+                var page = location.search.match(/page=(\d+)/);
+                return page ? page[1] : 1;
+            }(),
+            jump: function(e, first){ //触发分页后的回调
+                if(!first){ //一定要加此判断，否则初始时会无限刷新
+                    var nuewurl = WST.splitURL("page");
+                    var ulist = nuewurl.split("?");
+                    if(ulist.length>1){
+                        location.href = nuewurl+'&page='+e.curr;
+                    }else{
+                        location.href = '?page='+e.curr;
+                    }
+
+                }
+            }
+        });
+
+
+
+        var total = {$list["total"]};
+        function page(t){
+            var page = location.search.match(/page=(\d+)/);
+            var curr = 1;
+            if(page && page.length>1){ //说明当前url上有page参数
+                curr = page[1]; // 当前页
+            }
+            var nuewurl = WST.splitURL("page"); // 当前url
+            var ulist = nuewurl.split("?"); // 将传递的参数与url分开
+            // 说明当前有参数. 需要带着参数一起传递
+            var url = (ulist.length>1)?nuewurl+'&page=':'?page=';
+
+            if(t=='prev'){ // 上一页
+                if(curr<=1)return;
+                curr = parseInt(curr)-1;
+                location.href = url+curr;
+            }else{ // 下一页
+                if(curr>=total)return;
+                curr = parseInt(curr)+1;
+                location.href = url+curr;
+            }
+
+        }
+    });
+    function del(id) {
+        $.post("{:url('admin/AdPositions/apdel')}",{id:id},function (data) {
+            if(data.status==1){
+                popupTip(data.msg,true,function () {
+                    location.reload();
+                });
+            }else{
+                popupTip(data.msg,false);
+            }
+        })
+    }
+    function keywordSub(){
+        $("#topform").submit();
+    }
+
+</script>
+{/block}

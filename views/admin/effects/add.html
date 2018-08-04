@@ -1,0 +1,639 @@
+{extend name="common/base"} {block name="content"}
+<script type="text/javascript" src="/static/admin/js/plugins/formValidator/formValidator-4.1.3.js"></script>
+<script type="text/javascript" src="/static/admin/js/plugins/layer/laydate/laydate.js"></script>
+<script type="text/javascript" src="/static/admin/js/plugins/webuploader/webuploader.min.js"></script>
+<!-- 设置作品图 -->
+<style type="text/css">
+#set_img_box {
+    position: fixed;
+    z-index: 99999999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+.bg_cover {
+    position: absolute;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.img_box {
+    width: 580px;
+    height: 462px;
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    top: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    -webkit-transform: translate3d(-50%, -50%, 0);
+    background-color: #fff;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.ib_title {
+    height: 38px;
+    line-height: 38px;
+    position: relative;
+    padding-left: 16px;
+    color: #666;
+    background-color: #ECF8FF;
+}
+
+.ib_close,
+.ib_img_del {
+    position: absolute;
+    cursor: pointer;
+    right: 0;
+    top: 0;
+}
+
+.ib_close {
+    width: 38px;
+    height: 38px;
+    background-color: #ECF8FF;
+}
+
+.ib_img_del {
+    width: 22px;
+    height: 22px;
+    background-color: #E4E4E4;
+}
+
+.ib_close s,
+.ib_close b,
+.ib_img_del s,
+.ib_img_del b {
+    width: 16px;
+    height: 1px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}
+
+.ib_close s,
+.ib_img_del s {
+    transform: translate3d(-50%, -50%, 0) rotate(45deg);
+    -webkit-transform: translate3d(-50%, -50%, 0) rotate(45deg);
+}
+
+.ib_close b,
+.ib_img_del b {
+    transform: translate3d(-50%, -50%, 0) rotate(135deg);
+    -webkit-transform: translate3d(-50%, -50%, 0) rotate(135deg);
+}
+
+.ib_close s,
+.ib_close b {
+    background-color: #666;
+}
+
+.ib_img_del s,
+.ib_img_del b {
+    width: 14px;
+    background-color: #f00;
+}
+
+.ib_body {
+    padding: 12px 4px 12px 16px;
+}
+
+.ib_body .onCorrect{
+	padding-left: 20px;
+    margin-left: 10px;
+    background-position-y: 5px;
+}
+.ib_body .onError{
+	padding-left: 20px;
+    margin-left: 10px;
+    background-position-y: 5px;
+}
+.ib_upload_btn,
+.webuploader-pick {
+    width: 64px;
+    text-align: center;
+    display: inline-block;
+    height: 26px;
+    line-height: 26px;
+    color: #fff;
+    background-color: #1989FA;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.ib_content {
+    height: 320px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin: 10px 0 16px;
+}
+
+.ib_content ul li {
+    position: relative;
+    width: 98px;
+    height: 98px;
+    border: 1px solid #ccc;
+    float: left;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    display: -webkit-box;
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
+}
+
+.ib_content ul li img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.ib_content ul li:nth-child(5n) {
+    margin-right: 0;
+}
+
+.ib_ensure {
+    display: block;
+    width: 60px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    border-radius: 3px;
+    color: #fff;
+    background-color: #EC5151;
+    margin: 0 auto;
+    font-size: 14px;
+}
+
+.ib_ensure:hover {
+    color: #fff;
+}
+#imgTips{
+	visibility: hidden;width:0px;height: 26px;border:none;vertical-align: top;
+}
+#imgTipsTip {
+    color: #f00;
+    padding-left: 20px;
+    margin-left: 10px;
+    background-position-y: 7px;
+	vertical-align: top;
+    height: 26px;
+    line-height: 26px;
+}
+
+#imgTipsTip.onCorrect {
+    color: #333;
+}
+</style>
+<div id="set_img_box">
+    <div class="bg_cover"></div>
+    <div class="img_box">
+        <div class="ib_title">设置作品图
+            <div class="ib_close">
+                <s></s><b></b></div>
+        </div>
+        <div class="ib_body">
+            <div class="ib_upload_btn" id="ib_picker">上传作品</div><input type="text" name="" id="imgTips">
+            <div class="ib_content">
+                <ul class="clearfix">
+                    <!--<li>
+                        <img src="/static/admin/images/u0.jpg">
+                        <div class="ib_img_del">
+                            <s></s><b></b></div>
+                    </li>
+                    <li>
+                        <img src="/static/admin/images/indexBase.png">
+                        <div class="ib_img_del">
+                            <s></s><b></b></div>
+                    </li>-->
+                </ul>
+            </div>
+            <a href="javascript:void(0);" class="ib_ensure">确定</a>
+        </div>
+    </div>
+</div>
+<div class="st_container">
+    <div class="st_title">添加效果图</div>
+    <div class="st_body">
+        <div class="st_tips">
+            <p>标识“*”的选项为必填项。</p>
+        </div>
+    </div>
+    <div class="st_content">
+        <form id="st_form">
+            <input type="hidden" value="{$token}" id="token">
+            <!-- 作品描述 -->
+            <div class="st_msg_line clearfix">
+                <div class="st_msg_line_left">
+                    <div style="float: right;">
+                        <em class="important fl">*</em><span class="left">作品描述</span><i class="fenge">:</i>
+                    </div>
+                </div>
+                <div class="st_msg_line_right">
+                    <!-- <div class="st_normal_input" id="bdTime"></div> -->
+                    <input type="text" name="eDescription" class="st_normal_input" id="eDescription">
+                    <!-- <span class="line_tips"></span> -->
+                </div>
+            </div>
+            <!-- 风格 -->
+            {if $attributesList}
+            {volist name="attributesList" id="vo"}
+            <div class="st_msg_line clearfix">
+                <div class="st_msg_line_left">
+                    <div style="float: right;">
+                        <em class="important fl">*</em><span class="left">{$vo.ea_name}</span><i class="fenge">:</i>
+                    </div>
+                </div>
+                <div class="st_msg_line_right">
+                    <select class="st_normal_select" name="eStyle" id="{$vo.ea_id}">
+                        <option value="-1">请选择</option>
+                        {volist name="vo.ea_value" id="val" key="k"}
+                        <option value="{$vo.ea_id}_{$k}">{$val}</option>
+                        {/volist}
+                    </select>
+                </div>
+            </div>
+            {/volist}
+            {/if}
+            <div class="st_msg_line clearfix">
+                <div class="st_msg_line_left">
+                    <div style="float: right;">
+                        <em class="important fl">*</em><span class="left">作品图</span><i class="fenge">:</i>
+                    </div>
+                </div>
+                <div class="st_msg_line_right">
+                    <style type="text/css">
+                    #setImg {
+                        width: 0px;
+                        border: none;
+                        height: 30px;
+                        margin-left: 232px;
+                    }
+                    </style>
+                    <a href="javascript:void(0);" class="st_btn_h30" id="setImgBtn">设置图片</a><!--
+                    --><input type="text" name="setImg" id="setImg">
+                </div>
+            </div>
+            <!-- 是否显示 -->
+            <div class="st_msg_line clearfix">
+                <div class="st_msg_line_left">
+                    <div style="float: right;">
+                        <span class="left">是否显示</span><i class="fenge">:</i>
+                    </div>
+                </div>
+                <div class="st_msg_line_right" id="showAttr">
+                    <label class="st_normal_radio">
+                        <input type="radio" name="showAttr" checked><span>显示</span>
+                    </label>
+                    <label class="st_normal_radio">
+                        <input type="radio" name="showAttr"><span>不显示</span>
+                    </label>
+                    <!-- <span class="line_tips"></span> -->
+                </div>
+            </div>
+            <!-- 排序 -->
+            <div class="st_msg_line clearfix">
+                <div class="st_msg_line_left">
+                    <div style="float: right;">
+                        <span class="left">排序</span><i class="fenge">:</i>
+                    </div>
+                </div>
+                <div class="st_msg_line_right">
+                    <input type="text" name="series" class="st_normal_input" id="series" value="0">
+                    <!-- <span class="line_tips"></span> -->
+                </div>
+            </div>
+            <div class="st_msg_line clearfix">
+                <div class="st_msg_line_left"></div>
+                <div class="st_msg_line_right">
+                    <div style="height: 15px;"></div>
+                    <input type="submit" name="" value="确定" class="st_ensure">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="/static/admin/js/add/base.js"></script>
+<script type="text/javascript" src="/static/admin/js/add/confirmBoxes.js"></script>
+<script type="text/javascript">
+var maxSize = 4;
+var imgWidth, imgHeight, uploader, state = 'pending',
+    hasUploadImg = false;
+var delImgsArray = [];
+
+$(document).ready(function() {
+	//设置图片
+    $("#setImgBtn").click(function() {
+        $("#set_img_box").fadeIn();
+        imgsBefore = $("#set_img_box").find("ul").find("li").length;
+    });
+    //关闭设置图片
+    $("#set_img_box").find(".ib_close").click(function() {
+        $("#set_img_box").fadeOut(function() {
+            $("#setImg").focus().blur();
+        });
+    });
+    //设置初始图片
+    $("#set_img_box").find(".ib_content").find("ul").find("li").each(function(){
+    	var imgSrc = $(this).find("img").attr("src");
+    	var imgName = imgSrc.substring(imgSrc.lastIndexOf("/") + 1);
+    	$(this).find("img").attr('name', imgName)
+    });
+    setImgName();
+});
+
+$.formValidator.initConfig({
+    theme: 'Default',
+    mode: 'AutoTip',
+    formID: "st_form",
+    debug: true,
+    submitOnce: true,
+    onSuccess: function() {
+        if (hasUploadImg) {
+            if (state === 'uploading') {
+                uploader.stop();
+            } else {
+                uploader.upload();
+            }
+        } else {
+            stSubmit();
+        }
+        return false;
+    },
+    onError: function(msg) {
+        if (msg === "请上传图片") {
+            setTimeout(function(){
+                $("#imgTipsTip").removeClass("onFocus").addClass("onError").find("div").removeClass("onFocus").addClass("onError").html("请上传图片");
+                $("#imgTips").val("");
+            },200);
+        }
+    }
+});
+
+// 作品描述验证
+$('#eDescription').formValidator({ onCorrect: "输入正确" }).inputValidator({ min: 1, onError: "作品描述不能为空" });
+//风格
+//$("#eStyle").formValidator({ onCorrect: "输入正确", onShow: "", onFocus: "" }).inputValidator({ min: 1, onError: "请选择风格" });
+// 颜色
+//$("#eColor").formValidator({ onCorrect: "输入正确", onShow: "", onFocus: "" }).inputValidator({ min: 1, onError: "请选择颜色" });
+var f$;
+if ($ && $.formValidator) {
+    f$ = $;
+    f$.formValidator = $.formValidator;
+}
+$(window).on("load",function(){
+    $(".st_normal_select").each(function(){
+        var id = $(this).attr("id");
+        var styleName = $(this).parent().siblings().find("span").html();
+        f$("#" + id).formValidator({ onCorrect: "输入正确", onShow: "", onFocus: "" }).inputValidator({ min: 1, onError: "请选择" + styleName });
+    });
+});
+// 作品图
+$("#setImg").formValidator({ onCorrect: "图片正确", onShow: "", onFocus: "" }).inputValidator({ min: 1, onError: "请上传图片" });
+// 作品图
+$("#imgTips").formValidator({ onCorrect: "图片正确", onShow: "", onFocus: "" }).inputValidator({ min: 1, onError: "请上传图片" });
+
+$('input.st_normal_input').blur(function() {
+    var val = ($(this).val()).trim();
+    if (val === '') {
+        $(this).addClass("error");
+    } else {
+        $(this).removeClass("error");
+    }
+});
+$('select.st_normal_select').blur(function() {
+    var val = ($(this).val()).trim();
+    if (val === "-1") {
+        $(this).addClass("error");
+    } else {
+        $(this).removeClass("error");
+    }
+});
+
+// 初始化Web Uploader
+
+uploader = WebUploader.create({
+
+    // 选完文件后，是否自动上传。
+    auto: false,
+
+    // swf文件路径
+    swf: '/static/admin/js/plugins/webuploader/Uploader.swf',
+
+    // 文件接收服务端。
+    server: '{:url("admin/effects/webupload")}',
+
+    // 选择文件的按钮。可选。
+    // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+    pick: {
+        id: '#ib_picker',
+        multiple: true
+    },
+
+    fileSizeLimit: maxSize * 1024 * 1024,
+
+    // fileSingleSizeLimit: maxSize * 1024 * 1024,
+
+    // 只允许选择图片文件。
+    accept: {
+        title: 'Images',
+        extensions: 'gif,jpg,jpeg,png',
+        mimeTypes: 'image/gif,image/jpg,image/jpeg,image/png'
+    },
+    thumb: {
+        // 图片质量，只有type为`image/jpeg`的时候才有效。
+        quality: 70,
+
+        // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
+        allowMagnify: true,
+
+        // 是否允许裁剪。
+        crop: true,
+
+        // 为空的话则保留原有图片格式。
+        // 否则强制转换成指定的类型。
+        // type: 'image/jpeg'
+    },
+
+    // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+    resize: false
+});
+
+// 当有文件添加进来的时候
+uploader.on('fileQueued', function(file) {
+    uploader.makeThumb(file, function(error, src) {
+        if (error) {
+            $img.replaceWith('<span>不能预览</span>');
+            return;
+        }
+        imgWidth = file._info.width;
+        imgHeight = file._info.height;
+        if (imgWidth > imgHeight) {
+            imgHeight = 100 * imgHeight / imgWidth;
+            imgWidth = 100;
+        } else {
+            imgWidth = 100 * imgWidth / imgHeight;
+            imgHeight = 100;
+        }
+        uploader.makeThumb(file, function(error, src) {
+            var $li = $('<li></li>');
+            var $img = $('<img>');
+            var $del = $('<div class="ib_img_del"><s></s><b></b></div>');
+            $li.append($img);
+            $li.append($del);
+            $("#set_img_box").find("ul").append($li);
+            $img.attr({ 'src': src, "name": file.name , "class": "new_upload"});
+
+        }, imgWidth, imgHeight);
+    }, 1, 1);
+});
+uploader.on('beforeFileQueued', function(file) {
+    hasUploadImg = true;
+    // 大小验证
+    if (file.size > maxSize * 1024 * 1024) {
+        CB.tips({
+            "title": "提示",
+            'text': "所选附件总大小不可超过" + maxSize + "M"
+        }, function() {
+            $("#imgTipsTip").attr("class", "onError").find("div").attr("class", "onError").html("所选附件总大小不可超过" + maxSize + "M");
+            setImgName();
+        });
+        return false;
+    }else{
+    	$("#imgTipsTip").attr("class", "onCorrect").find("div").attr("class", "onCorrect").html("格式正确");
+    	setImgName();
+    }
+});
+var delImg = '/static/admin/js/plugins/webuploader/delimg.php';
+//删除单个图片
+$(document).on("click", "#set_img_box ul li .ib_img_del", function() {
+	var name = $(this).siblings("img").attr("name");
+	var className = $(this).siblings("img").attr("class");
+	if (className !== "new_upload") {
+		delImgsArray.push(name);
+		$(this).parent().remove();
+		setImgName();
+		return;
+	}
+	//new_upload
+    var index = $(this).closest("li").index();
+    var thisBeforeNum = 0;
+    $("#set_img_box ul li").each(function(i){
+    	var className = $(this).find("img").attr("class");
+    	if (i <= index) {
+    		if (className !== "new_upload") {
+    			thisBeforeNum ++;
+    		}
+    	}
+    });
+    index -= thisBeforeNum;
+    uploader.removeFile(uploader.getFiles()[index], true);
+    $(this).parent().remove();
+    setImgName();
+});
+//设置作品图 确定按钮
+$("#set_img_box .ib_ensure").click(function(){
+	setImgName();
+	$("#set_img_box").fadeOut(function() {
+        $("#setImg").focus().blur();
+    });
+});
+var namesArray = [];
+function setImgName(){
+	var namesArray = [];
+	$("#set_img_box").find("ul").find("li").each(function(){
+		namesArray.push($(this).find("img").attr("name"));
+	});
+	$("#setImg").val(namesArray.join(","));
+	$("#imgTips").val(namesArray.join(",")).focus().blur();
+}
+uploader.on("error", function(type) {
+    if (type == "Q_TYPE_DENIED") {
+        CB.tips({
+            "title": "提示",
+            'text': "上传图片格式必须是gif,jpg,jpeg,png"
+        }, function() {
+            $("#imgTipsTip").attr("class", "onError").find("div").attr("class", "onError").html("上传图片格式必须是gif,jpg,jpeg,png");
+        });
+    }
+});
+// 文件上传过程中创建进度条实时显示。
+uploader.on('uploadProgress', function(file, percentage) {
+
+});
+
+// 文件上传成功，给item添加成功class, 用样式标记上传成功。
+uploader.on('uploadSuccess', function(file, response) {
+    namesArray.push(response.msg);
+    $("#setImg").val(namesArray.join(","));
+    $("#imgTips").val(namesArray.join(",")).focus().blur();
+    if(namesArray.length === $("#set_img_box").find("ul").find("li").length){
+        $("#imgTipsTip").attr("class", "onCorrect").find("div").attr("class", "onCorrect").html("上传成功");
+        hasUploadImg = false;
+        stSubmit();
+    }
+});
+
+// 文件上传失败，显示上传出错。
+uploader.on('uploadError', function(file) {
+    CB.tips({
+        'title': '提示',
+        'text': '图片上传失败'
+    });
+});
+uploader.on('all', function(type) {
+    if (type === 'startUpload') {
+        state = 'uploading';
+    } else if (type === 'stopUpload') {
+        state = 'paused';
+    } else if (type === 'uploadFinished') {
+        state = 'done';
+    }
+});
+// 完成上传完了，成功或者失败，先删除进度条。
+uploader.on('uploadComplete', function(file) {
+
+});
+// 提交
+function stSubmit() {
+	var showAttr = 0;
+	$('#showAttr').find('input[name="showAttr"]').each(function(i){
+		if ($(this).prop("checked")) {
+			showAttr = 1 - i;
+			return false;
+		}
+	});
+    var styleArr = [];
+    $(".st_normal_select").each(function(){
+        styleArr.push(($(this).val()).trim());
+    });
+    var style = styleArr.join(",");
+    var params = {
+        'token':($('#token').val()).trim(),
+        'description': ($('#eDescription').val()).trim(),	//作品描述
+        'style': style,				//属性值
+        'imgs': ($('#setImg').val()).trim(),				//作品图
+        'showAttr': showAttr,								//是否显示
+        'series': ($("#series").val()).trim()				//排序
+    };
+    $.post("{:url('admin/effects/doAdd')}", params, function(data) {
+        if (data.status == 1) {
+            CB.tips({
+                title: "提示",
+                text: "<img src='/static/admin/images/u933.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>保存成功"
+            }, function() {
+                location.href="{:url('admin/effects/effectList')}";
+            });
+        } else {
+            CB.tips({
+                title: "提示",
+                text: "<img src='/static/admin/images/u951.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>"+data.msg
+            });
+        }
+    });
+}
+</script>
+{/block}

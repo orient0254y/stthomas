@@ -1,0 +1,108 @@
+
+/*产品列表*/
+.glyphicon{width: 10px;height: 10px;padding: 4px;display: inline-block;}
+.glyphicon01{width: 40px;height: 20px;padding: 0px;display: inline-block;background: url("/static/admin/images/second.png") no-repeat 0 0; background-position: 18px 2px;}
+.glyphicon-minus{background: url("/static/admin/images/hebing01.png") no-repeat 0 0; background-position: 0px 10px;}
+.glyphicon-plus{background: url("/static/admin/images/zhankai01.png") no-repeat 0 0; background-position: 0px 8px;}
+.fenLeiName{width: 170px;height: 26px;line-height: 26px;padding: 0px 4px;}
+.goodsNum{width: 54px;height: 26px;line-height: 26px;padding-left: 4px;}
+.goodsSetList{
+    height: 26px;line-height: 26px;padding-left: 4px;font-size: 12px;color: #707070; border:1px solid #dbdbdb;
+}
+.goodsSetSure{width: 54px;height: 26px;line-height: 26px;color: #FFFFFF;background-color: #8E8E8E;font-size: 12px;border-radius: 4px;margin-left: 6px; border:none;}
+.off{cursor: not-allowed}
+.on{cursor: pointer;background-color: #1989FA}
+
+/*添加产品 - 选择产品分类*/
+.goodsMsgCont{padding: 0px 15px;}
+.flCommonMind{height: 326px;line-height: 326px;width: 100px;text-align: center;}
+.goodsMsgContTitle{border-bottom:2px solid #E4EAEC; }
+.goodsMsgContTitle span{font-size: 14px;font-weight: 600;color: #666666;margin-left: 14px; height: 36px;line-height: 36px;}
+.flCommon{width: 420px;height: 326px;overflow-y: scroll;border: 2px solid #E4EAEC;color: #707070;padding-left: 15px;}
+.flCommonName{height: 36px;line-height: 36px; text-align:center; color: #009900;}
+.flCommon ul li{height: 36px;line-height: 36px;width: 95%;padding-left: 14px;border-top: 1px solid #E9E9E9;}
+.goodsMsgContMsg{padding: 45px 0 0 20px;}
+.firstActive{color: #FF3333;background: url("/static/admin/images/firstType.png") no-repeat 0 0 ;background-position:378px 12px; background-color: #FFEFEC;}
+.secondActive{color: #FF3333; background-color: #FFEFEC;}
+.tipCont{height: 50px;line-height: 50px;padding-left: 19px;}
+.tipContTitle{font-weight: 600;}
+.nextAddMsg{width: 176px;height: 36px;line-height: 36px;background-color: #1989FA;color: #FFFFFF;border-radius: 4px;display: inline-block;cursor: pointer;margin: 70px 0px 0px 440px; text-align: center; }
+
+
+/*添加产品信息*/
+.addGoodsInFoMsg{padding:13px 15px;padding-bottom: 100px;}
+.addGoodsInFoTitle{font-weight: 600;font-size: 14px;color: #666666;padding-left: 15px;height: 36px;line-height: 36px;border-bottom: 2px solid #E4EAEC;margin-bottom: 40px; }
+.addGoodsInFoType{height: 30px;line-height: 30px;}
+.addGoodsInFoChange{color: #1989FA;margin-left: 30px;height: 30px;line-height: 30px;cursor: pointer;}
+.goodsType{padding: 15px 0px;}
+
+.goodsImgList ul li {position: relative;float: left;text-align: center;width: 100px;height: 100px;border: 1px solid #CCCCCC;overflow: hidden;margin-right: 15px;line-height: 100px;}
+.addAdminItemR ul li .img-controls{
+    position: absolute;
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    display: flex;
+    bottom: -30px;
+    /*bottom: 0px;*/
+    background-color: #dedede;
+    font-size: 18px;
+    color: #43ad0d;
+    font-weight: bolder;
+    cursor: pointer;
+}
+.addAdminItemR ul li .move-left{
+    float: left;
+    color: #1989FA;
+    width: 35%;
+    font-family: simSun;
+    text-align: center;
+    font-size: 16px;
+}
+.addAdminItemR ul li .move-right{
+    float: left;
+    width: 35%;
+    color: #1989FA;
+    font-family: simSun;
+    text-align: center;
+    font-size: 16px;
+}
+.addAdminItemR ul li .img-delete{
+    float: left;
+    font-family: simSun;
+    width: 30%;
+    color: #1989FA;
+    text-align: center;
+    font-size: 16px;
+}
+/*.upLoadImgLocal{margin-top: 10px;width: 100px;}*/
+.addAdminItem .upLoadImgLocal  .webuploader-pick{width: 100px;background-color: #FF2833;}
+.upLoadLocal{width: 100px;height: 32px;line-height: 32px;color: #FFFFFF;background-color: #FF2833;border-radius: 4px;text-align: center;margin-right: 10px;display: inline-block;cursor: pointer;}
+.addAdminItem  .colorTypeUpLoadColorImg{}
+.addAdminItem  .colorTypeUpLoadColorImg .webuploader-pick{width: 100%;}
+.sub_btnCol {color: #1989FA;cursor: pointer;margin-right: 6px;}
+.add_btnCol {color: #1989FA;cursor: pointer;margin-right: 6px;}
+.sub_btnCol:hover{color: #FF3333;}
+#pickVideo .webuploader-pick{width: 100%;margin-right: 10px;}
+.delVideoUpload{position: absolute;top: 0px;left: 242px;width: 40px;height: 32px;line-height: 32px;font-size: 14px;cursor: pointer;color: #FF3333;text-align: center;}
+.goodsDetailedDescription{font-weight: 600;font-size: 14px;color: #666666;padding-left: 15px;height: 30px;line-height: 30px;border-bottom: 2px solid #E4EAEC;margin-bottom: 14px;padding-top: 30px;}
+.addGoodsInfoBottom{min-width: 1200px;position: fixed;bottom: 0px;left: 0px;width: 100%;height: 100px;line-height: 100px;background-color: #F3F4F5;border-top: 2px solid #D4D4D4;text-align: center;z-index: 1000}
+.prevChouseGoogdType{width: 176px;height: 36px;line-height: 36px;border: 1px solid #1989FA;cursor: pointer;color: #1989FA;display: inline-block;font-size: 14px;border-radius: 4px;margin-right: 4px;}
+.successAdd{width: 136px;height: 36px;line-height: 36px;border: 1px solid #1989FA;cursor: pointer;color: #FFFFFF;display: inline-block;background-color: #1989FA;font-size: 14px;border-radius: 4px;}
+
+/*3d模型预览列表*/
+.preview3dModdel{width: 65px;height: 26px;line-height: 26px;text-align: center;border-radius: 4px;background-color: #707070;color: #FFFFFF;display: inline-block;cursor: pointer;}
+#infoBG{position: fixed;top:0px;left: 0px;height: 100%;width: 100%; background-color: rgba(0,0,0,0.4);z-index: 1050}
+#info{position: absolute;top:50%;left: 50%;width: 900px;height: 600px;margin-left: -400px; margin-top: -300px;}
+#tipName{width: 900px;height: 38px;background-color: #ECF8FF; color: #666666;}
+#tipName .threeDModelTip{height: 38px;line-height: 38px;padding-left: 15px;}
+#tipName .close3DModdel{height: 38px;line-height: 38px;width: 30px;cursor: pointer;text-align: center;}
+#container{width: 900px;height: 600px;}
+
+/*3dModelAdd*/
+.saveModel{width: 95px;height: 32px;line-height: 32px;background-color: #FF3333;display: inline-block;color: #FFFFFF;font-size: 14px;text-align: center;cursor: pointer;border-radius: 4px;margin-right: 10px;}
+.previewAddModel{width: 95px;height: 32px;line-height: 32px;background-color: #1989FA;display: inline-block;color: #FFFFFF;font-size: 14px;text-align: center;cursor: pointer;border-radius: 4px;}
+
+
+
+

@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Examples</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <!-- saved from url=(0014)about:internet -->
+    <link href="/static/admin/css/base.css" rel="stylesheet">
+    <script type="text/javascript" src="/static/admin/js/add/jquery.min.js"></script>
+    <!-- 表单验证插件引入 -->
+    <script type="text/javascript" src="/static/admin/js/plugins/formValidator/formValidator-4.1.3.js"></script>
+    <!-- 表单验证插件引入结束 -->
+    <!-- 时间插件引入 -->
+    <script type="text/javascript" src="/static/admin/js/plugins/layer/laydate/laydate.js"></script>
+    <!-- 时间插件引入结束 -->
+    <!-- 图片上传 webuploader 引入 -->
+    <script type="text/javascript" src="/static/admin/js/plugins/webuploader/webuploader.min.js"></script>
+    <!-- 图片上传 webuploader 引入结束 -->
+    <!-- 富文本编辑器 UE 引入 -->
+    <script type="text/javascript" charset="utf-8" src="/static/admin/js/plugins/ueditor-1.4.3.3/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/static/admin/js/plugins/ueditor-1.4.3.3/editor_api.js">
+    </script>
+    <!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+    <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+    <script type="text/javascript" charset="utf-8" src="/static/admin/js/plugins/ueditor-1.4.3.3/lang/zh-cn/zh-cn.js"></script>
+    <!-- 富文本编辑器 UE 引入结束 -->
+</head>
+
+<body>
+    <!-- 想让某个标签不能被选中，只需要给它加一个class -- unselectable 搜索unselectable可找到事例 -->
+    <div class="st_container">
+        <div class="st_title">发展历程列表</div>
+        <div class="st_body">
+            <div class="st_tips">
+                <p>该页面展示所有文章分类。</p>
+                <p>可对分类进行编辑修改、删除。</p>
+                <p>注：分类下已有文章需先删除文章后才能对该分类进行删除操作。</p>
+            </div>
+            <div class="btns_div">
+                <div class="st_search_box">
+                    <div class="st_fenlei st_select_item">
+                        <span class="left">所属分类</span>
+                        <i class="fenge">:</i>
+                        <div class="st_item_list" id="st_item_list">
+                            <p class="unselectable">请选择</p>
+                            <ul>
+                                <li>请选择</li>
+                                <li>马桶系列</li>
+                                <li>智能卫浴</li>
+                                <li class="sgl">智能一体坐便器</li>
+                                <li class="sgl">智能一体坐便器</li>
+                                <li>马桶系列</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="st_shangjia st_select_item">
+                        <span class="left">上下架</span>
+                        <i class="fenge">:</i>
+                        <select>
+                            <option>请选择</option>
+                            <option>上架</option>
+                            <option>下架</option>
+                        </select>
+                    </div>
+                    <div class="st_label st_select_item">
+                        <span class="left">标签</span>
+                        <i class="fenge">:</i>
+                        <select>
+                            <option>请选择</option>
+                            <option>新品</option>
+                            <option>工程产品</option>
+                        </select>
+                    </div>
+                    <label class="st_checkbox_item">
+                        <input type="checkbox" name="model"><span>3D模型</span>
+                    </label>
+                    <label class="st_checkbox_item">
+                        <input type="checkbox" name="video"><span>视频</span>
+                    </label>
+                    <div class="st_text_item">
+                        <input type="text" name="name" placeholder="产品名称">
+                        <span></span>
+                    </div>
+                </div>
+                <a href="javascript:void(0);" class="st_btn_h28">添加文章分类</a>
+                <span class="st_add_remarks">（注：按颁发时间先后倒序排列）</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            <!-- 请勿更改id或者class -->
+                            <input type="checkbox" name="inputCheckAll" id="inputCheckAll">
+                        </th>
+                        <th>编号</th>
+                        <th>产品名称</th>
+                        <th>所属地区</th>
+                        <th>门店名称</th>
+                        <th>服务电话</th>
+                        <th>详细地址</th>
+                        <th>营业时间</th>
+                        <th>标签</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="inputCheck">
+                        </td>
+                        <td>1</td>
+                        <td>
+                            <a href="javascript:void(0);" class="st_goods">
+                                <img src="/static/admin/images/u229.png">
+                                <div>
+                                    <p>圣托玛斯 喷射虹吸式缓冲盖板坐便器陶瓷马桶C8007</p>
+                                    <span>产品型号：<b>STC1602</b></span>
+                                </div>
+                            </a>
+                        </td>
+                        <td>北京 北京</td>
+                        <td>北京圣托马斯旗舰店 / 95</td>
+                        <td>010-6546412
+                            <input type="text" name="series" class="series">
+                        </td>
+                        <td>北京市朝阳区朝阳农场盛和乐国际商</td>
+                        <td>9;00-18:00(节假日 20;00)<img class="st_img_hover" src="/static/admin/images/u645.png"></td>
+                        <td>
+                            <div class="xinpin clearfix">
+                                <span class="left">新品</span>
+                                <i class="fenge">:</i>
+                                <div class="st_switch"></div>
+                            </div>
+                            <div class="gongye clearfix">
+                                <span class="left">工业</span>
+                                <i class="fenge">:</i>
+                                <div class="st_switch"></div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="st_btns">
+                                <a href="javascript:void(0);" class="st_edit">编辑</a>
+                                <a href="javascript:void(0);" class="st_del">删除</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="100" style="padding: 60px 0px;">没有找到任何记录 </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="100">
+                            <div class="st_shangjia st_select_item">
+                                <select id="pl_type">
+                                    <option value="PL_DEL">批量删除</option>
+                                    <option value="PL_HIDE">批量隐藏</option>
+                                    <option value="PL_SHOW">批量显示</option>
+                                </select>
+                            </div>
+                            <!-- 请勿更改id或者class -->
+                            <a href="javascript:void(0);" class="st_btn_h28" id="pl_ensure">确定</a>
+                            <div class="st_pages">
+                                <p>总计4条记录 </p>
+                                <a href="javascript:void(0);"><i class="st_arrow st_left"></i></a>
+                                <span>1</span>
+                                <a href="javascript:void(0);">2</a>
+                                <a href="javascript:void(0);">3</a>
+                                <a href="javascript:void(0);">4</a>
+                                <a href="javascript:void(0);">5</a>
+                                <a href="javascript:void(0);">6</a>
+                                <a href="javascript:void(0);">...</a>
+                                <a href="javascript:void(0);">10</a>
+                                <a href="javascript:void(0);"><i class="st_arrow st_right"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="100">
+                            <div class="st_pages" id="wst-pager">
+                            </div>
+                            <div style="float: right;height: 50px;line-height: 50px;margin-right: 15px;">总计4条记录</div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <!-- 普通input框 -->
+            <div style="margin-bottom: 15px;margin-top: 15px;">
+                <input type="text" name="" class="st_normal_input" placeholder="普通input框">
+            </div>
+            <!-- 信息展示栏目 -->
+            <div class="st_content">
+                <h2>这句话是提示：下面是信息展示form</h2>
+                <form id="st_form">
+                    <!-- 普通input信息框 -->
+                    <div class="st_msg_line clearfix">
+                        <div class="st_msg_line_left">
+                            <div style="float: right;">
+                                <em class="important fl">*</em><span class="left">网站名称</span><i class="fenge">:</i>
+                            </div>
+                        </div>
+                        <div class="st_msg_line_right">
+                            <input type="text" name="netName" class="st_normal_input">
+                            <!-- 不需验证时带的提示 -->
+                            <!-- <span class="line_tips">网站标题将显示在浏览器的标题栏</span> -->
+                        </div>
+                    </div>
+                    <!-- 时间信息框 -->
+                    <div class="st_msg_line clearfix">
+                        <div class="st_msg_line_left">
+                            <div style="float: right;">
+                                <em class="important fl">*</em><span class="left">时间设置</span><i class="fenge">:</i>
+                            </div>
+                        </div>
+                        <div class="st_msg_line_right">
+                            <input type="text" name="bdTime" class="st_normal_input" id="bdTime">
+                        </div>
+                    </div>
+                    <!-- 添加减少信息框 -->
+                    <div class="st_msg_line clearfix">
+                        <div class="st_msg_line_left">
+                            <div style="float: right;">
+                                <em class="important fl">*</em><span class="left">属性值</span><i class="fenge">:</i>
+                            </div>
+                        </div>
+                        <div class="st_msg_line_right">
+                            <div id="add_attr_box">
+                                <div class="add_attr_line">
+                                    <span class="add_btn sttr_btn unselectable">[+]</span><!--
+                                    --><input type="text" name="attrVal" class="st_normal_input_add" id="attrVal_0">
+
+                                </div>
+                                <!-- <div class="add_attr_line">
+                                    <span class="sub_btn sttr_btn unselectable">[-]</span><input type="text" name="attrVal" class="st_normal_input_add" id="attrVal_1">
+                                </div>
+                                <div class="add_attr_line">
+                                    <span class="sub_btn sttr_btn unselectable">[-]</span><input type="text" name="attrVal" class="st_normal_input_add" id="attrVal_2">
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- select选择框 -->
+                    <div class="st_msg_line clearfix">
+                        <div class="st_msg_line_left">
+                            <div style="float: right;">
+                                <em class="important fl">*</em><span class="left">文章分类</span><i class="fenge">:</i>
+                            </div>
+                        </div>
+                        <div class="st_msg_line_right">
+                            <select class="st_normal_select" name="acClassify" id="acClassify">
+                                <option>请选择</option>
+                                <option>产品管理员</option>
+                                <option>文章管理员</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- 单选选择框 -->
+                    <div class="st_msg_line clearfix">
+                        <div class="st_msg_line_left">
+                            <div style="float: right;">
+                                <span class="left">文章重要性</span><i class="fenge">:</i>
+                            </div>
+                        </div>
+                        <div class="st_msg_line_right">
+                            <label class="st_normal_radio">
+                                <input type="radio" name="importantLevel"><span>普通</span>
+                            </label>
+                            <label class="st_normal_radio">
+                                <input type="radio" name="importantLevel"><span>置顶</span>
+                            </label>
+                            <!-- <span class="line_tips"></span> -->
+                        </div>
+                    </div>
+                    <!-- 上传图片展示框 -->
+                    <div class="st_msg_line clearfix">
+                        <div class="st_msg_line_left">
+                            <div style="float: right;">
+                                <em class="important fl">*</em><span class="left">历程图</span><i class="fenge">:</i>
+                            </div>
+                        </div>
+                        <div class="st_msg_line_right webuploader-container">
+                            <div class="st_uploadImg" id="picker">上传图片</div>
+                            <div id="imgContainer" class="imgContainer"><img></div>
+                            <div style="position: absolute;left: 320px;top: 0;height: 30px;white-space: nowrap;">
+                                <style type="text/css">
+                                #imgTipsTip {
+                                    color: #f00;
+                                    padding-left: 20px;
+                                    margin-left: 10px;
+                                    background-position-y: 7px;
+                                }
+
+                                #imgTipsTip.onCorrect {
+                                    color: #333;
+                                }
+                                </style>
+                                <input type="text" name="img" id="imgTips" style="visibility: hidden;width:0px;height: 30px;border:none;">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 富文本编辑框 js 搜索：富文本编辑器 js开始 -->
+                    <div class="st_msg_line clearfix">
+                        <div class="st_msg_line_left">
+                            <div style="float: right;">
+                                <em class="important fl">*</em><span class="left">文章内容</span><i class="fenge">:</i>
+                            </div>
+                        </div>
+                        <div class="st_msg_line_right" style="position: relative;width: 100%;">
+                            <!-- <div class="st_normal_input" id="bdTime"></div> -->
+                            <style type="text/css">
+                            div#editor {
+                                line-height: initial;
+                            }
+
+                            div#acContentTip {
+                                float: left;
+                                position: absolute;
+                                top: -30px;
+                                left: 540px;
+                            }
+
+                            #acContent {
+                                display: none;
+                                width: 1px;
+                                height: 1px;
+                            }
+                            </style>
+                            <script id="editor" type="text/plain" style="width:1159px;height:500px;margin-top: 15px;"></script>
+                            <input type="text" name="" id="acContent">
+                            <!-- <span class="line_tips"></span> -->
+                        </div>
+                    </div>
+                    <div class="st_msg_line clearfix">
+                        <div class="st_msg_line_left"></div>
+                        <div class="st_msg_line_right">
+                            <div style="height: 15px;"></div>
+                            <input type="submit" name="" value="确定" class="st_ensure">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/static/admin/js/add/base.js"></script>
+    <script type="text/javascript" src="/static/admin/js/add/confirmBoxes.js"></script>
+</body>
+<script type="text/javascript">
+// 保存成功
+CB.tips({
+    title: "提示",
+    text: "<img src='/static/admin/images/u933.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>保存成功"
+}, function() {
+    // location.href="{:url('admin/Web/webSite')}";
+    // location.reload();
+});
+// 保存失败
+CB.tips({
+    title: "提示",
+    text: "<img src='/static/admin/images/u951.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>保存失败"
+});
+// 确认操作
+CB.confirm({
+    "title": "操作提示",
+    "text": "您确定要删除此条记录？"
+}, function() {
+    //如果未成功，提示未成功原因
+    if (1) {
+        CB.tips({
+            "title": "操作提示",
+            "text": "该分类下还有文章，不允许删除非空分类",
+            "btn": true //是否带确定按钮，默认false
+        });
+    }
+});
+
+
+//时间插件设置
+laydate.render({
+    elem: '#bdTime' //指定元素
+        ,
+    type: 'year',
+    done: function(value, date) {
+        if (value) {
+            $(this.elem).removeClass('error');
+            $(this.elem).siblings().removeClass('onError').addClass("onCorrect").find("div").removeClass("onError").addClass("onCorrect").html("输入正确");
+        }
+    }
+});
+// 上传图片js设置
+var imgWidth, imgHeight, uploader, state = 'pending',
+    hasUploadImg = false;
+//上传图片最大占用存储
+var maxSize = 1,
+    widthSize = 350,
+    heightSize = 170;
+
+// 带图片验证时设置
+$.formValidator.initConfig({
+    theme: 'Default',
+    mode: 'AutoTip',
+    formID: "st_form",
+    debug: true,
+    submitOnce: true,
+    onSuccess: function() {
+        if (hasUploadImg) {
+            if (state === 'uploading') {
+                uploader.stop();
+            } else {
+                uploader.upload();
+            }
+        } else {
+            stSubmit();
+        }
+        return false;
+    },
+    onError: function(msg) {
+        if (msg === "请上传图片") {
+            setTimeout(function(){
+                $("#imgTipsTip").removeClass("onFocus").addClass("onError").find("div").removeClass("onFocus").addClass("onError").html("请上传图片");
+                $("#imgTips").val("");
+            },200);
+        }
+    }
+});
+// 图片
+$('#imgTips').formValidator({ onShow: "上传图片格式必须是gif,jpg,jpeg,png;图片大小在" + maxSize + "mb之内， 尺寸为 （" + widthSize + "*" + heightSize + "）", onCorrect: "上传正确" }).inputValidator({ min: 1, onError: "请上传图片" });
+$('#bdTime').formValidator({ onCorrect: "输入正确" }).inputValidator({ min: 1, onError: "历程时间不能为空" });
+$('#acClassify').formValidator({ onCorrect: "输入正确" }).inputValidator({ min: 1, onError: "文章分类不能为空" });
+
+//属性验证
+$("#attrVal_0").formValidator({ onCorrect: "输入正确", onShow: "（如：马桶的 排水方式，坐便器类型，坐便冲水量 等）", onFocus: "（如：马桶的 排水方式，坐便器类型，坐便冲水量 等）" }).inputValidator({ min: 1, onError: "请添加属性值" });
+var f$;
+if ($ && $.formValidator) {
+    f$ = $;
+    f$.formValidator = $.formValidator;
+}
+$(document).on("click","#add_attr_box .add_btn",function(){
+    var id = "attrVal_" + (new Date()).getTime();
+    $("#add_attr_box").find(".add_attr_line").eq(0).find("input[name='attrVal']").attr("id", id);
+    f$ && f$.formValidator && f$("#" + id).unFormValidator(true).formValidator({ onCorrect: "输入正确", onShow: "（如：马桶的 排水方式，坐便器类型，坐便冲水量 等）", onFocus: "（如：马桶的 排水方式，坐便器类型，坐便冲水量 等）" }).inputValidator({ min: 1, onError: "请添加属性值" });
+});
+
+//富文本编辑器 js开始
+var ue = UE.getEditor('editor');
+UE.getEditor('editor').focus();
+//文章内容验证
+setTimeout(function() {
+    $(UE.getEditor('editor').body).blur(function() {
+        $('#acContent').focus().blur();
+        var content = UE.getEditor('editor').getContentTxt();
+        if (content) {
+            $('#acContent').val(1);
+            $('#acContentTip').attr("class", "onCorrect").find("div").attr("class", "onCorrect").html("<span>输入正确</span>");
+        } else {
+            $('#acContentTip').attr("class", "onError").find("div").attr("class", "onError").html("<span>文章内容不能为空</span>");
+        }
+    });
+}, 1000);
+$('#acContent').formValidator({ onCorrect: "输入正确" }).inputValidator({ min: 1, onError: "文章内容不能为空" });
+// 富文本编辑器 js结束
+var delImg = '/static/admin/js/plugins/webuploader/delimg.php';
+// 初始化Web Uploader
+
+uploader = WebUploader.create({
+
+    // 选完文件后，是否自动上传。
+    auto: false,
+
+    // swf文件路径
+    swf: '/static/admin/js/plugins/webuploader/Uploader.swf',
+
+    // 文件接收服务端。
+    server: '/static/admin/js/plugins/webuploader/uploader.php',
+
+    // 选择文件的按钮。可选。
+    // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+    pick: {
+        id: '#picker',
+        multiple: false
+    },
+
+    fileSizeLimit: maxSize * 1024 * 1024,
+
+    // fileSingleSizeLimit: maxSize * 1024 * 1024,
+
+    // 只允许选择图片文件。
+    accept: {
+        title: 'Images',
+        extensions: 'gif,jpg,jpeg,png',
+        mimeTypes: 'image/gif,image/jpg,image/jpeg,image/png'
+    },
+    thumb: {
+        // 图片质量，只有type为`image/jpeg`的时候才有效。
+        quality: 70,
+
+        // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
+        allowMagnify: true,
+
+        // 是否允许裁剪。
+        crop: true,
+
+        // 为空的话则保留原有图片格式。
+        // 否则强制转换成指定的类型。
+        // type: 'image/jpeg'
+    },
+
+    // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+    resize: false
+});
+
+// 当有文件添加进来的时候
+uploader.on('fileQueued', function(file) {
+    var $img = $('<img>');
+    // 清空添加省略图
+    $("#imgContainer").html("").append($img);
+    // 创建缩略图
+    // 如果为非图片文件，可以不用调用此方法。
+    // thumbnailWidth x thumbnailHeight 为 100 x 100
+    setTimeout(function() {
+        uploader.makeThumb(file, function(error, src) {
+            if (error) {
+                $img.replaceWith('<span>不能预览</span>');
+                return;
+            }
+            if (widthSize && heightSize) {
+                if (imgWidth !== widthSize || imgHeight !== heightSize) {
+                    // $img.replaceWith('<span>不能预览</span>');
+                }else{
+                    $img.attr({ 'data-src': src, 'src': '/static/admin/images/u645.png', 'class': "st_img_hover" });
+                }
+            }else{
+                $img.attr({ 'data-src': src, 'src': '/static/admin/images/u645.png', 'class': "st_img_hover" });
+            }
+            // $img.attr({ 'data-src': src, 'src': '/static/admin/images/u645.png', 'class': "st_img_hover" });
+            //存入上传图片文件名称
+            $("#imgTips").val(file.name);
+        }, imgWidth, imgHeight);
+    }, 200);
+});
+uploader.on('beforeFileQueued', function(file) {
+    hasUploadImg = true;
+    // 大小验证
+    if (file.size > maxSize * 1024 * 1024) {
+        CB.tips({
+            "title": "提示",
+            'text': "所选附件总大小不可超过" + maxSize + "M"
+        }, function() {
+            $("#imgTipsTip").attr("class", "onError").find("div").attr("class", "onError").html("所选附件总大小不可超过" + maxSize + "M");
+            $("#imgTips").val("");
+        });
+        return false;
+    }
+    uploader.makeThumb(file, function(error, src) {
+        imgWidth = file._info.width;
+        imgHeight = file._info.height;
+        if (widthSize && heightSize) {
+            if (imgWidth !== widthSize || imgHeight !== heightSize) {
+                uploader.stop();
+                // uploader.removeFile(file, true);
+                for (var i = 0; i < uploader.getFiles().length; i++) {
+                    uploader.removeFile(uploader.getFiles()[i], true);
+                    uploader.cancelFile(uploader.getFiles()[i]);
+                    delete uploader.getFiles()[i];
+                }
+                CB.tips({
+                    "title": "提示",
+                    "text": "尺寸为 （" + widthSize + "*" + heightSize + "）"
+                }, function() {
+                    $("#imgTipsTip").attr("class", "onError").find("div").attr("class", "onError").html("尺寸为 （" + widthSize + "*" + heightSize + "）");
+                    $("#imgTips").val("");
+                });
+                var name = file.name;
+                //删除图片
+                // $.post(delImg,{name: name},function(){});
+                return;
+            } else {
+                $("#imgTipsTip").attr("class", "onCorrect").find("div").attr("class", "onCorrect").html("格式正确");
+                //存入上传图片文件名称
+                $("#imgTips").val(file.name);
+            }
+        } else {
+            $("#imgTipsTip").attr("class", "onCorrect").find("div").attr("class", "onCorrect").html("格式正确");
+            //存入上传图片文件名称
+            $("#imgTips").val(file.name);
+        }
+    }, 1, 1);
+});
+
+uploader.on("error", function(type) {
+    if (type == "Q_TYPE_DENIED") {
+        CB.tips({
+            "title": "提示",
+            'text': "上传图片格式必须是gif,jpg,jpeg,png"
+        }, function() {
+            $("#imgTipsTip").attr("class", "onError").find("div").attr("class", "onError").html("上传图片格式必须是gif,jpg,jpeg,png");
+        });
+    }
+});
+// 文件上传过程中创建进度条实时显示。
+uploader.on('uploadProgress', function(file, percentage) {
+
+});
+
+// 文件上传成功，给item添加成功class, 用样式标记上传成功。
+uploader.on('uploadSuccess', function(file, response) {
+    CB.tips({
+        'title': '提示',
+        'text': '上传成功'
+    });
+});
+
+// 文件上传失败，显示上传出错。
+uploader.on('uploadError', function(file) {
+    CB.tips({
+        'title': '提示',
+        'text': '上传失败'
+    });
+});
+uploader.on('all', function(type) {
+    if (type === 'startUpload') {
+        state = 'uploading';
+    } else if (type === 'stopUpload') {
+        state = 'paused';
+    } else if (type === 'uploadFinished') {
+        state = 'done';
+    }
+});
+// 完成上传完了，成功或者失败，先删除进度条。
+uploader.on('uploadComplete', function(file) {
+    $("#imgTipsTip").attr("class", "onCorrect").find("div").attr("class", "onCorrect").html("上传成功");
+    hasUploadImg = false;
+    stSubmit();
+});
+// 提交
+function stSubmit() {
+    var time = ($('#bdTime').val()).trim();
+    var img = ($('#imgTips').val()).trim();
+    var description = ($('#bdDescription').val()).trim();
+    var params = {
+        'time': time,
+        'img': img,
+        'description': description
+    };
+    $.post("{:url('admin/Brands/bdadd')}", { params: params }, function(data) {
+        console.log(data);
+        if (data.status) {
+            CB.tips({
+                title: "提示",
+                text: "<img src='/static/admin/images/u933.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>保存成功"
+            }, function() {
+                location.reload();
+            });
+        } else {
+            CB.tips({
+                title: "提示",
+                text: "<img src='/static/admin/images/u951.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>保存失败"
+            });
+        }
+    });
+}
+</script>
+
+</html>
