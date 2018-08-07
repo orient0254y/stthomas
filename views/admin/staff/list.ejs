@@ -19,29 +19,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {if $list['total']>0} {volist name='list["data"]' id='vo'}
-                    <tr>
-                        <td>
-                            {$vo.s_login_name}
-                        </td>
-                        <td>{$vo.r_name}</td>
-                        <td>{$vo.s_create_time}</td>
-                        <td>{$vo.s_last_time}</td>
-                        <td>
-                            <div class="st_btns">
-                                {if $vo.s_is_admin==0}
-                                <a href="{:url('admin/staff/staffEditShow',array('id'=>$vo.s_id))}" class="st_edit">编辑</a>
-                                <!--<a href="javascript:void(0);" onclick="del({$vo.s_id})" class="st_del">删除</a>-->
-                                <a href="javascript:void(0);" data-id="{$vo.s_id}" class="st_del">删除</a>
-                                {/if}
-                            </div>
-                        </td>
-                    </tr>
-                    {/volist} {else /}
+                    <%if(data.length > 0){%>
+                        <%for(var i = 0;i < data.length; i++){%>
+                            <tr>
+                                <td><%=data[i].username%></td>
+                                <td><%=data[i].role%></td>
+                                <td><%=data[i].create_time%></td>
+                                <td><%=data[i].last_login_time%></td>
+                                <td>
+                                    <div class="st_btns">
+                                        <a href="{:url('admin/staff/staffEditShow',array('id'=>$vo.s_id))}" class="st_edit">编辑</a>
+                                        <!--<a href="javascript:void(0);" onclick="del({$vo.s_id})" class="st_del">删除</a>-->
+                                        <a href="javascript:void(0);" data-id="{$vo.s_id}" class="st_del">删除</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <%}%>
+                    <%}else{%>
                     <tr>
                         <td colspan="5" style="padding: 60px 0px;">没有找到任何记录 </td>
                     </tr>
-                    {/if}
+                    <%}%>
                 </tbody>
                 <tfoot>
                     <tr>

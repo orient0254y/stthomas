@@ -1,15 +1,8 @@
 @charset "utf-8";
-
-
-
-
-
-
 /* 
     @名称: base
     @功能: 重设浏览器默认样式
 */
-
 
 /* 防止用户自定义背景颜色对网页的影响，添加让用户可以自定义字体 */
 
@@ -20,11 +13,6 @@ html {
     -ms-text-size-adjust: 100%;
     font-family: 微软雅黑;
 }
-
-
-
-
-
 
 /* 内外边距通常让各个浏览器样式的表现位置不同 */
 
@@ -70,11 +58,6 @@ section {
     padding: 0;
 }
 
-
-
-
-
-
 /* 重设 HTML5 标签, IE 需要在 js 中 createElement(TAG) */
 
 article,
@@ -91,11 +74,6 @@ section {
     display: block;
 }
 
-
-
-
-
-
 /* HTML5 媒体文件跟 img 保持一致 */
 
 audio,
@@ -106,13 +84,7 @@ video {
     *zoom: 1;
 }
 
-
-
-
-
-
 /* 要注意表单元素并不继承父级 font 的问题 */
-
 
 /*body,button,input,select,textarea {
     font: 12px/1.5 tahoma, arial, \5b8b\4f53;
@@ -131,10 +103,6 @@ select:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 1000px white inset !important;
 }
 
-
-
-
-
 /* 去掉各Table  cell 的边距并让其边重合 */
 
 table {
@@ -142,21 +110,11 @@ table {
     border-spacing: 0;
 }
 
-
-
-
-
-
 /* IE bug fixed: th 不继承 text-align*/
 
 th {
     text-align: inherit;
 }
-
-
-
-
-
 
 /* 去除默认边框 */
 
@@ -165,21 +123,11 @@ img {
     border: 0;
 }
 
-
-
-
-
-
 /* ie6 7 8(q) bug 显示为行内表现 */
 
 iframe {
     display: block;
 }
-
-
-
-
-
 
 /* 去掉 firefox 下此元素的边框 */
 
@@ -188,11 +136,6 @@ acronym {
     border: 0;
     font-variant: normal;
 }
-
-
-
-
-
 
 /* 一致的 del 样式 */
 
@@ -212,11 +155,6 @@ var {
     font-weight: 700;
 }
 
-
-
-
-
-
 /* 去掉列表前的标识, li 会继承 */
 
 ol,
@@ -224,22 +162,12 @@ ul {
     list-style: none;
 }
 
-
-
-
-
-
 /* 对齐是排版最重要的因素, 别让什么都居中 */
 
 caption,
 th {
     text-align: center;
 }
-
-
-
-
-
 
 /* 来自yahoo, 让标题都自定义, 适应多个系统应用
 h1,h2,h3,h4,h5,h6 {
@@ -251,11 +179,6 @@ q:before,
 q:after {
     content: '';
 }
-
-
-
-
-
 
 /* 统一上标和下标 */
 
@@ -275,22 +198,12 @@ sub {
     bottom: -0.25em;
 }
 
-
-
-
-
-
 /* 默认不显示下划线，保持页面简洁 */
 
 ins,
 a {
     text-decoration: none;
 }
-
-
-
-
-
 
 /* 清理浮动 */
 
@@ -308,11 +221,6 @@ a {
     /* for IE6 IE7 */
 }
 
-
-
-
-
-
 /* 隐藏, 通常用来与 JS 配合 */
 
 body .fn-hide {
@@ -326,11 +234,6 @@ body .fn-hide {
 .hide {
     display: none;
 }
-
-
-
-
-
 
 /* 设置内联, 减少浮动带来的bug */
 
@@ -462,13 +365,6 @@ input {
     padding-top: 55px;
 }
 
-
-
-
-
-
-
-
 /*表格样式*/
 
 table {
@@ -506,7 +402,7 @@ table tbody tr td {
     /*padding: 12px 0 12px 20px;*/
     padding: 6px 0 7px 20px;
     color: #707070;
-    font-size:12px;
+    font-size: 12px;
 }
 
 table tbody tr td:last-child {
@@ -531,11 +427,6 @@ table tfoot tr td {
 .textL {
     text-align: left
 }
-
-
-
-
-
 
 /*内容标题样式*/
 
@@ -563,20 +454,16 @@ table tfoot tr td {
     padding: 15px;
 }
 
-
-
-
-
-
-
-
 /*按钮样式*/
 
 .btns_div {
     padding: 17px 0 10px;
 }
 
-a.st_btn_h28, a.st_btn_h30, a.st_btn_h30_add, a.st_btn_h30_blue {
+a.st_btn_h28,
+a.st_btn_h30,
+a.st_btn_h30_add,
+a.st_btn_h30_blue {
     display: inline-block;
     height: 28px;
     line-height: 28px;
@@ -596,20 +483,24 @@ a.st_btn_h30 {
     background-color: #707070;
     margin-right: 10px;
 }
+
 a.st_btn_h30:hover {
     color: #fff;
     background-color: #707070;
 }
 
-a.st_btn_h30_add,a.st_btn_h30_blue{
+a.st_btn_h30_add,
+a.st_btn_h30_blue {
     height: 30px;
     line-height: 30px;
     position: relative;
 }
-a.st_btn_h30_add{
+
+a.st_btn_h30_add {
     padding-left: 24.5px;
 }
-a.st_btn_h30_add:before{
+
+a.st_btn_h30_add:before {
     display: block;
     content: "";
     position: absolute;
@@ -619,7 +510,8 @@ a.st_btn_h30_add:before{
     height: 2px;
     background-color: #fff;
 }
-a.st_btn_h30_add:after{
+
+a.st_btn_h30_add:after {
     display: block;
     content: "";
     position: absolute;
@@ -629,12 +521,15 @@ a.st_btn_h30_add:after{
     height: 10px;
     background-color: #fff;
 }
-a.st_btn_h30_add:hover{
+
+a.st_btn_h30_add:hover {
     color: #fff;
 }
-a.st_btn_h30_blue:hover{
+
+a.st_btn_h30_blue:hover {
     color: #fff;
 }
+
 a.st_btn_h28:hover {
     background-color: #0570DB;
     color: #fff;
@@ -747,7 +642,7 @@ i.fenge {
     cursor: default;
 }
 
-.unselectable{
+.unselectable {
     -webkit-user-select: none;
     -moz-user-select: none;
     -o-user-select: none;
@@ -859,13 +754,6 @@ i.fenge {
     margin-top: 2px;
 }
 
-
-
-
-
-
-
-
 /*表格内按钮样式*/
 
 .st_btns {
@@ -897,23 +785,26 @@ a.st_edit:hover {
     border: 1px solid #31B4E1;
     color: #31B4E1;
 }
+
 a.st_control:hover {
     border: 1px solid #31B4E1;
     color: #31B4E1;
 }
+
 a.st_set3D:hover {
     border: 1px solid #31B4E1;
     color: #31B4E1;
 }
+
 a.st_addChild:hover {
     border: 1px solid #1989FA;
     color: #1989FA;
 }
+
 a.st_show:hover {
     border: 1px solid #31B4E1;
     color: #31B4E1;
 }
-
 
 a.st_scan:hover {
     border: 1px solid #29C25F;
@@ -924,12 +815,6 @@ a.st_del:hover {
     border: 1px solid #EC5151;
     color: #EC5151;
 }
-
-
-
-
-
-
 
 /*页码样式*/
 
@@ -988,30 +873,16 @@ a.st_del:hover {
     transform: rotate(180deg);
 }
 
-
-
-
-
-
-
-
 /*提示样式*/
 
 .st_tips {
     padding: 6px 8px;
     line-height: 23px;
     color: #009900;
-    font-size:12px;
+    font-size: 12px;
     border: 1px solid #C7DDB9;
     background-color: #F2FFEA;
 }
-
-
-
-
-
-
-
 
 /*商品样式*/
 
@@ -1053,9 +924,6 @@ a.st_goods div span b {
     color: #0099CC;
 }
 
-
-
-
 /*确认按钮*/
 
 .st_ensure {
@@ -1071,10 +939,6 @@ a.st_goods div span b {
     font-size: 14px;
 }
 
-
-
-
-
 /*排序*/
 
 input.series {
@@ -1085,11 +949,6 @@ input.series {
     padding-left: 4px;
     color: #707070;
 }
-
-
-
-
-
 
 /*通用input[type='text']*/
 
@@ -1144,18 +1003,20 @@ input::-webkit-inner-spin-button {
     -webkit-appearance: none !important;
     margin: 0;
 }
-input[type="number"]{
+
+input[type="number"] {
     -moz-appearance: textfield;
 }
 
-.add_attr_line{
+.add_attr_line {
     margin-bottom: 2px;
 }
 
 .add_attr_line:last-child {
     margin-bottom: 0;
 }
-.add_attr_line span{
+
+.add_attr_line span {
     display: inline-block;
     width: 27px;
     color: #1989FA;
@@ -1169,7 +1030,7 @@ label.st_normal_radio {
 
 label.st_normal_radio input {
     vertical-align: top;
-    transform: translate3d(0,50%,0);
+    transform: translate3d(0, 50%, 0);
     width: 14px;
     height: 14px;
     margin-right: 5px;
@@ -1225,6 +1086,7 @@ textarea.st_normal_textarea:focus {
     line-height: 30px;
     color: #707070;
 }
+
 @media screen and (max-width: 1366px) {
     .st_msg_line_left {
         width: 220px;
@@ -1236,15 +1098,41 @@ textarea.st_normal_textarea:focus {
 }
 
 .st_msg_line_right {
+    position: relative;
     float: left;
     line-height: 30px;
     min-width: 320px;
 }
 
-.line_tips {
+.picker{
+    position: relative;
     display: inline-block;
-    color: #999;
-    margin-left: 10px;
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    color: #fff;
+    border-radius: 3px;
+    background-color: #707070;
+    cursor: pointer;
+    overflow: hidden;
+    margin-right: 16px;
+}
+
+.picker input{
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    filter:alpha(opacity=0);
+    height: 100%;
+    cursor: pointer;
+}
+
+.st_msg_line_right img{
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 4px;
 }
 
 .st_msg_line_right .onError {
@@ -1270,8 +1158,44 @@ textarea.st_normal_textarea:focus {
 .st_msg_line_right .onShow {
     color: #999;
     padding-left: 0;
+    line-height: 30px;
+    vertical-align: top;
 }
-
+.line_tips {
+    display: inline-block;
+    color: #999;
+    margin-left: 10px;
+    position: absolute;
+    left: 320px;
+    top: 0;
+    height: 30px;
+    white-space: nowrap;
+}
+.line_tips.onCorrect {
+    padding-left: 20px;
+    margin-left: 10px;
+    color: #90b71b;
+    background-position-y: 7px;
+    line-height: 30px;
+}
+.line_tips.onError {
+    padding-left: 20px;
+    margin-left: 10px;
+    color: #f00;
+    background-position-y: 7px;
+    line-height: 30px;
+}
+.line_tips.onFocus {
+    padding-left: 0;
+    color: #999;
+    background: transparent;
+    line-height: 30px;
+}
+.line_tips.onShow {
+    color: #999;
+    padding-left: 0;
+    line-height: 30px;
+}
 .st_img_hover {
     display: block;
     cursor: pointer;
@@ -1280,7 +1204,6 @@ textarea.st_normal_textarea:focus {
 .st_content {
     padding-top: 50px;
 }
-
 
 /*上传图片*/
 
@@ -1347,34 +1270,25 @@ textarea.st_normal_textarea:focus {
     top: 4px;
 }
 
-.lettersLimit{
+.lettersLimit {
     max-width: 220px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     cursor: default;
 }
-.st_text_item_btn{
+
+.st_text_item_btn {
     width: 18px !important;
     height: 18px !important;
     padding-left: 0px !important;
-    margin:4px 4px 0px 0px!important;
+    margin: 4px 4px 0px 0px !important;
     cursor: pointer;
     background: url('/static/admin/images/u2231.png') 0 0 no-repeat;
     background-size: 18px 18px;
 }
-.gt{margin:0px 6px; font-family: simsun;}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+.gt {
+    margin: 0px 6px;
+    font-family: simsun;
+}

@@ -18,7 +18,7 @@ app.use(session({
         path: '/',  //表示在哪个路由下面可以访问cookie
         httpOnly: true,     //设置为true,表示只有在nodejs服务端可以操作cookie ，没法用js脚本语言操作cookie
         secure: false, 
-        maxAge: 300000 
+        maxAge: 1000 * 60 * 60
     }),
     name:'session_id',/*保存在本地cookie的一个名字 默认connect.sid  可以不设置*/
     //重新保存：强制会话保存即使是未修改的。默认为true但是得写上
@@ -39,6 +39,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/static',express.static(path.join(__dirname, 'public')));
+app.use('/upload',express.static(path.join(__dirname, 'upload')));
 
 app.use('/admin', admin);
 app.use('/',index);

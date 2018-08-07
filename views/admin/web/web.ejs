@@ -12,20 +12,6 @@
         <script type="text/javascript" src="/js/admin/plugins/formValidator/formValidator-4.1.3.js"></script>
         <script type="text/javascript" src="/js/admin/plugins/formValidator/formValidatorRegex.js"></script>
     </head>
-    <style>
-        .picker01,
-        .pickerSun01,
-        .pickerMobile01,
-        .pickerWeiXin01,
-        .pickerWeiBo01 {
-            padding-left: 20px;
-            margin-left: 10px;
-            color: #f00;
-            background-position-y: 7px;
-            background: url("/images/admin/onError.png") 0px no-repeat;
-            background-size: 14px 14px;
-        }
-    </style>
 
     <body>
         <div class="st_container">
@@ -45,7 +31,7 @@
                                 </div>
                             </div>
                             <div class="st_msg_line_right">
-                                <input type="text" name="netName" class="st_normal_input" id="netName" value="<%= data.name%>">
+                                <input type="text" name="netName" class="st_normal_input" id="netName" value="<% if(data){%><%=data.name%><%}%>">
                                 <!-- <span class="line_tips"></span> -->
                             </div>
                         </div>
@@ -58,7 +44,7 @@
                                 </div>
                             </div>
                             <div class="st_msg_line_right">
-                                <input type="text" name="netTitle" class="st_normal_input" id="netTitle" value="<%= data.title%>">
+                                <input type="text" name="netTitle" class="st_normal_input" id="netTitle" value="<% if(data){%><%=data.title%><%}%>">
                                 <!-- <span class="line_tips">网站标题将显示在浏览器的标题栏</span> -->
                             </div>
                         </div>
@@ -71,7 +57,7 @@
                                 </div>
                             </div>
                             <div class="st_msg_line_right">
-                                <input type="text" name="netDescription" class="st_normal_input" id="netDescription" value="<%= data.description%>">
+                                <input type="text" name="netDescription" class="st_normal_input" id="netDescription" value="<%if(data){%><%=data.description%><%}%>">
                                 <!-- <span class="line_tips"></span> -->
                             </div>
                         </div>
@@ -84,7 +70,7 @@
                                 </div>
                             </div>
                             <div class="st_msg_line_right">
-                                <input type="text" name="netKeywords" class="st_normal_input" id="netKeywords" value="<%= data.keywords%>">
+                                <input type="text" name="netKeywords" class="st_normal_input" id="netKeywords" value="<%if(data){%><%=data.keywords%><%}%>">
                                 <!-- <span class="line_tips">每个关键字请以，隔开</span> -->
                             </div>
                         </div>
@@ -99,16 +85,15 @@
                                 </div>
                             </div>
                             <div class="st_msg_line_right">
-                                <div class="fl" style="width:70px;">上传图片123
-                                    <input type="file" name="picker" id="picker" multiple/>
+                                <div class="fl picker">上传图片
+                                    <input type="file" name="pc_home_logo" accept="image/gif,image/jpg,image/jpeg,image/png" />
                                 </div>
-                                <div class="fl picker" style="width:40px;height: 30px;padding: 4px 0px 0px 6px;margin-left: 28px;">
-                                    <%if(data.pc_home_logo){%>
-                                        <img src="/images/admin/u645.png" data-src="<%= data.pc_home_logo%>" data-srcL="<%= data.pc_home_logo%>" alt="" class="st_img_hover">
+                                <%if(data && data.pc_home_logo){%>
+                                    <img src="/images/admin/u645.png" data-src="<%- '/upload' + data.pc_home_logo%>" class="st_img_hover">
+                                    <%}else{%>
+                                        <img src="/images/admin/u645.png" style="display: none;" class="st_img_hover">
                                         <%}%>
-                                </div>
-                                <div class="picker01 fl hide">图片上传不能为空</div>
-                                <span class="line_tips">上传图片格式必须是gif,jpg,jpeg,png，图片大小在200k以内，以下同规则</span>
+                                            <span class="line_tips onShow">上传图片格式必须是gif,jpg,jpeg,png;图片大小在200kb之内</span>
                             </div>
                         </div>
                         <!--PC子页面logo-->
@@ -121,13 +106,15 @@
                                 </div>
                             </div>
                             <div class="st_msg_line_right">
-                                <div class="fl" style="width:70px;">上传图片<input type="file" name="picker1"  id="picker1"></div>
-                                <div class="fl" style="width:40px;height: 30px;padding: 4px 0px 0px 6px;margin-left: 28px;">
-                                    <%if(data.pc_others_logo){%>
-                                        <img src="/images/admin/u645.png" data-src="<%= data.pc_others_logo%>" data-srcL="<%= data.pc_others_logo%>" alt="" class="st_img_hover">
-                                        <%}%>
+                                <div class="fl picker">上传图片
+                                    <input type="file" name="pc_child_logo" accept="image/gif,image/jpg,image/jpeg,image/png">
                                 </div>
-                                <div class="fl hide">图片上传不能为空</div>
+                                <%if(data && data.pc_child_logo){%>
+                                    <img src="/images/admin/u645.png" data-src="<%- '/upload' + data.pc_child_logo%>" alt="" class="st_img_hover">
+                                    <%}else{%>
+                                        <img src="/images/admin/u645.png" style="display: none;" class="st_img_hover">
+                                        <%}%>
+                                            <span class="line_tips onShow">上传图片格式必须是gif,jpg,jpeg,png;图片大小在200kb之内</span>
                             </div>
                         </div>
                         <!--移动端页面logo-->
@@ -140,13 +127,15 @@
                                 </div>
                             </div>
                             <div class="st_msg_line_right">
-                                <div class="fl" style="width:70px;" id="pickerMobile">上传图片</div>
-                                <div class="fl pickerMobile" style="width:40px;height: 30px;padding: 4px 0px 0px 6px;margin-left: 28px;">
-                                    <%if(data.wap_logo){%>
-                                        <img src="/images/admin/u645.png" data-src="<%= data.wap_logo%>" data-srcL="<%= data.wap_logo%>" alt="" class="st_img_hover">
-                                        <%}%>
+                                <div class="fl picker">上传图片
+                                    <input type="file" name="wap_logo" accept="image/gif,image/jpg,image/jpeg,image/png">
                                 </div>
-                                <div class="pickerMobile01 fl hide">图片上传不能为空</div>
+                                <%if(data && data.wap_logo){%>
+                                    <img src="/images/admin/u645.png" data-src="<%- '/upload' + data.wap_logo%>" class="st_img_hover">
+                                    <%}else{%>
+                                        <img src="/images/admin/u645.png" style="display: none;" class="st_img_hover">
+                                        <%}%>
+                                            <span class="line_tips onShow">上传图片格式必须是gif,jpg,jpeg,png;图片大小在200kb之内</span>
                             </div>
                         </div>
                         <!--end-->
@@ -159,7 +148,7 @@
                                 </div>
                             </div>
                             <div class="st_msg_line_right">
-                                <input type="text" name="netTel" class="st_normal_input" id="netTel" value="<%= data.server_tel%>">
+                                <input type="text" name="netTel" class="st_normal_input" id="netTel" value="<%if(data){%><%=data.server_tel%><%}%>">
                                 <!-- <span class="line_tips"></span> -->
                             </div>
                         </div>
@@ -172,7 +161,7 @@
                                 </div>
                             </div>
                             <div class="st_msg_line_right">
-                                <input type="text" name="netTime" class="st_normal_input" id="netTime" value="<%= data.server_time%>">
+                                <input type="text" name="netTime" class="st_normal_input" id="netTime" value="<%if(data){%><%=data.server_time%><%}%>">
                             </div>
                         </div>
 
@@ -185,13 +174,15 @@
                                 </div>
                             </div>
                             <div class="st_msg_line_right">
-                                <div class="fl" style="width:70px;" id="pickerWeiBo">上传图片</div>
-                                <div class="fl pickerWeiBo" style="width:40px;height: 30px;padding: 4px 0px 0px 6px;margin-left: 28px;">
-                                    <%if(data.weibo_erweima){%>
-                                        <img src="/images/admin/u645.png" data-src="<%= data.weibo_erweima%>" data-srcL="<%= data.weibo_erweima%>" alt="" class="st_img_hover">
-                                        <%}%>
+                                <div class="fl picker">上传图片
+                                    <input type="file" name="weibo_erweima" accept="image/gif,image/jpg,image/jpeg,image/png">
                                 </div>
-                                <div class="pickerWeiBo01 fl hide">图片上传不能为空</div>
+                                <%if(data && data.weibo_erweima){%>
+                                    <img src="/images/admin/u645.png" data-src="<%- '/upload' + data.weibo_erweima%>" class="st_img_hover">
+                                    <%}else{%>
+                                        <img src="/images/admin/u645.png" style="display: none;" class="st_img_hover">
+                                        <%}%>
+                                            <span class="line_tips onShow">上传图片格式必须是gif,jpg,jpeg,png;图片大小在200kb之内</span>
                             </div>
                         </div>
                         <div class="st_msg_line clearfix">
@@ -203,77 +194,228 @@
                                 </div>
                             </div>
                             <div class="st_msg_line_right">
-                                <div class="fl" style="width:70px;" id="pickerWeiXin">上传图片</div>
-                                <div class="fl pickerWeiXin" style="width:40px;height: 30px;padding: 4px 0px 0px 6px;margin-left: 28px;">
-                                    <%if(data.weixin_erweima){%>
-                                        <img src="/images/admin/u645.png" data-src="<%= data.weixin_erweima%>" data-srcL="<%= data.weixin_erweima%>" alt="" class="st_img_hover">
-                                        <%}%>
+                                <div class="fl picker">上传图片
+                                    <input type="file" name="weixin_erweima" accept="image/gif,image/jpg,image/jpeg,image/png">
                                 </div>
-                                <div class="pickerWeiXin01 fl hide">图片上传不能为空</div>
+                                <%if(data && data.weixin_erweima){%>
+                                    <img src="/images/admin/u645.png" data-src="<%- '/upload' + data.weixin_erweima%>" class="st_img_hover">
+                                    <%}else{%>
+                                        <img src="/images/admin/u645.png" style="display: none;" class="st_img_hover">
+                                        <%}%>
+                                            <span class="line_tips onShow">上传图片格式必须是gif,jpg,jpeg,png;图片大小在200kb之内</span>
                             </div>
                         </div>
-
                         <div class="st_msg_line clearfix">
                             <div class="st_msg_line_left"></div>
                             <div class="st_msg_line_right">
                                 <div style="height: 15px;"></div>
-                                <!-- <input type="submit" name="" value="确定" class="st_ensure"> -->
-                                <button type="submit" class="btn btn-default">提交</button>
+                                <input type="submit" name="submit" value="确定" class="st_ensure" id="st_ensure">
+                                <!-- <button type="submit" class="btn btn-default">提交</button> -->
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+        <!-- <form id="frmUploader" enctype="multipart/form-data" action="/admin/setting/mulUpload" method="post">
+            <input type="file" name="imgUploader" multiple id="imgUploader" />
+            <input type="submit" name="submit" id="btnSubmit" value="Upload" />
+        </form> -->
         <script type="text/javascript" src="/js/admin/base.js"></script>
         <script type="text/javascript" src="/js/admin/confirmBoxes.js"></script>
         <script type="text/javascript">
-
-            $("button").click(function () {
-                let file = document.getElementById("picker").files[0];
-                let files = document.getElementById("picker").files;
-                console.log(document.getElementById("picker").files);
-                /* var fileDataArray = [];
-                for(let i = 0;i < files.length;i++){
-                    let formData = new FormData();
-                    formData.append("avatar",files[i]);
-                    fileDataArray.push(formData);
-                } */
-                let formData = new FormData();
-                formData.append("avatar", file);
-                $.ajax({
-                    type: 'POST',
-                    url: '/admin/setting/upload',
-                    data: formData,
-                    async: false,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    success: function (data) {
-                        console.log(data);
-                    },
-                    error: function (err) {
-                        console.log(err.message);
+            $(document).ready(function () {
+                // 获取文件url
+                function getObjectURL(file) {
+                    var url = null;
+                    if (window.createObjectURL != undefined) {  // basic
+                        url = window.createObjectURL(file);
+                    } else if (window.URL != undefined) {       // mozilla(firefox)
+                        url = window.URL.createObjectURL(file);
+                    } else if (window.webkitURL != undefined) { // web_kit or chrome
+                        url = window.webkitURL.createObjectURL(file);
                     }
+                    return url;
+                }
+                // 通过url把图片压缩成base64文件
+                function imgToBase64(url, fn) {
+                    var img = new Image();
+                    img.src = url;
+                    img.crossOrigin = 'Anonymous';
+                    img.onload = function () {
+                        var width = img.width, height = img.height;
+                        var scale = width / height;
+                        newWidth = 180;
+                        newHeight = parseInt(newWidth / scale);
+                        var canvas = $("<canvas></canvas>");
+                        canvas[0].width = newWidth; canvas[0].height = newHeight;
+                        var ctx = canvas[0].getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height, 0, 0, newWidth, newHeight);
+                        var cropStr = canvas[0].toDataURL("image/jpeg", 0.7);
+                        fn && fn(cropStr);
+                        return cropStr;
+                    }
+                }
+                var limits = {
+                    fileSize: "200kb",  // 图片大小
+                    exts: "gif,jpg,jpeg,png",   // 图片格式
+                    width: "1920",  // 图片宽
+                    height: "1920"  // 图片高
+                }
+                // 获取图片大小
+                function getSize(size) {
+                    if (/mb/ig.test(size)) {
+                        return parseInt(size) * 1024 * 1024;
+                    } else if (/kb/ig.test(size)) {
+                        return parseInt(size) * 1024;
+                    } else if (/b/ig.test(size)) {
+                        return parseInt(size);
+                    }
+                }
+                //匹配后缀名
+                function checkExts(fileName) {
+                    var strs = fileName.split(".");
+                    var regex = new RegExp(limits.exts.split(",").join("|").toString(), "ig");
+                    if (regex.test(strs[strs.length - 1])) {
+                        return true;
+                    }
+                    return false;
+                }
+                //正式读取文件  
+                $(document).on("click", "input[type='file']", function () {
+                    checkImgs(this, "onFocus");
                 })
-                let file1 = document.getElementById("picker1").files[0];
-                let formData1 = new FormData();
-                formData1.append("avatar", file1);
-                // $.ajax({
-                //     type: 'POST',
-                //     url: '/admin/setting/upload',
-                //     data: formData1,
-                //     async: false,
-                //     cache: false,
-                //     contentType: false,
-                //     processData: false,
-                //     success: function (data) {
-                //         console.log(data);
-                //     },
-                //     error: function (err) {
-                //         console.log(err.message);
-                //     }
-                // })
+                $(document).on('change', "input[type='file']", function (e) {
+                    var file = $(this).get(0).files[0];
+                    if (!file) return;
+                    var maxSize = getSize(limits.fileSize);
+                    var scope = this;
+                    if (file.size > maxSize) {
+                        CB.tips({
+                            text: "图片的大小应该在" + limits.fileSize + "以内",
+                            title: "提示"
+                        }, function () {
+                            checkImgs(scope, "onError");
+                        })
+                        return;
+                    }
+                    if (!checkExts(file.name)) {
+                        CB.tips({
+                            text: "图片格式必须是" + limits.exts,
+                            title: "提示"
+                        }, function () {
+                            checkImgs(scope, "onError");
+                        })
+                        return;
+                    }
+
+                    imgToBase64(getObjectURL($(this).get(0).files[0]), function (base64) {
+                        $(scope).parent().siblings("img").show().attr({
+                            "data-src": base64
+                        });
+                        checkImgs(scope, "onCorrect");
+                    });
+                })
+                function checkImgs(obj, val) {
+                    var tips = $(obj).parent().siblings(".line_tips");
+                    switch (val) {
+                        case "onShow":
+                            tips.attr({ "class": "line_tips onShow" }).html("上传图片格式必须是" + limits.exts + ";图片大小在" + limits.fileSize + "之内");
+                            break;
+                        case "onCorrect":
+                            tips.attr({ "class": "line_tips onCorrect" }).html("图片正确");
+                            break;
+                        case "onError":
+                            tips.attr({ "class": "line_tips onError" }).html("请上传图片");
+                            var newInput = $('<input type="file" accept="image/gif,image/jpg,image/jpeg,image/png">');
+                            newInput.attr("name", $(obj).attr("name"));
+                            $(obj).parent().append(newInput);
+                            $(obj).remove();
+                            break;
+                        case "onFocus":
+                            tips.attr({ "class": "line_tips onFocus" }).html("上传图片格式必须是" + limits.exts + ";图片大小在" + limits.fileSize + "之内");
+                            break;
+                        default:
+                            tips.attr({ "class": "line_tips onFocus" }).html("上传图片格式必须是" + limits.exts + ";图片大小在" + limits.fileSize + "之内");
+                            break;
+                    }
+                }
+                $.formValidator.initConfig({
+                    theme: 'Default',
+                    mode: 'AutoTip',
+                    formID: "st_form",
+                    debug: true,
+                    submitOnce: true,
+                    onSuccess: function () {
+                        var allImgUploaded = true;
+                        $(".picker").find("input[type='file']").each(function () {
+                            if ($(this).get(0).files[0] !== undefined) {
+                                checkImgs(this, "onCorrect");
+                            } else {
+                                var src = $(this).parent().siblings("img").attr("data-src");
+                                if (!src) {
+                                    checkImgs(this, "onError");
+                                    allImgUploaded = false;
+                                }else{
+                                    checkImgs(this, "onCorrect");
+                                }
+                            }
+                        });
+                        if (allImgUploaded) {
+                            var formData = new FormData($("#st_form").get(0));
+                            $(".picker").find("input[type='file']").each(function () {
+                                if ($(this).get(0).files[0] === undefined) {
+                                    var src = $(this).parent().siblings("img").attr("data-src").substring(7);
+                                    if(src){
+                                        var name = $(this).attr("name");
+                                        formData.append(name,src);
+                                    }
+                                }
+                            });
+                            submit(formData);
+                        }
+                        return false;
+                    },
+                    onError: function (msg) {
+                        console.log(msg);
+                    }
+                });
+                // 网站名验证
+                $('#netName').formValidator({ onCorrect: "输入正确" }).inputValidator({ min: 1, onError: "网站名称不能为空" });
+                $('#netTitle').formValidator({ onCorrect: "输入正确", tipCss: { color: "#000" } }).inputValidator({ min: 1, onError: "网站标题不能为空" });
+                $('#netDescription').formValidator({ onCorrect: "输入正确" }).inputValidator({ min: 1, onError: "网站描述不能为空" });
+                $('#netKeywords').formValidator({ onCorrect: "输入正确", onShow: "每个关键字请以，隔开", onFocus: "每个关键字请以，隔开" }).inputValidator({ min: 1, onError: "网站关键字不能为空" });
+                $('#netTel').formValidator({ onCorrect: "输入正确" }).inputValidator({ min: 1, onError: "服务热线电话不能为空" });
+                $('#netTime').formValidator({ onCorrect: "输入正确", onShow: "如:( 9:00 - 21:00 )", onFocus: "如:( 9:00 - 21:00 )" }).inputValidator({ min: 1, onError: "服务时间不能为空" });
+                function submit(formData) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/admin/setting/upload',
+                        data: formData,
+                        async: false,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: function (data) {
+                            if (data.status == 1) {
+                                CB.tips({
+                                    "title": "提示",
+                                    "text": "<img src='/images/admin/u933.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>保存成功"
+                                }, function(){
+                                    window.location.reload();
+                                })
+                            }else{
+                                CB.tips({
+                                    "title": "提示",
+                                    "text": "<img src='/images/admin/u951.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>"+ data.msg
+                                })
+                            }
+                        },
+                        error: function (err) {
+                            console.log(err.message);
+                        }
+                    })
+                }
             });
         </script>
     </body>
