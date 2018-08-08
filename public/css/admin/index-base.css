@@ -33,7 +33,7 @@
 .nav-right ul li a{height: 36px;line-height: 36px;color: #333333;font-size: 12px;display: block;padding-left: 30px;}
 .nav-right-active{background-color: #FFFFFF}
 
-#page-wrapper{margin: 0px 0px 0px 220px;overflow: hidden;}
+#page-wrapper{margin: 0px 0px 0px 220px;overflow: hidden;height:100%;}
 /*#wrapper{position: relative;height: 100%;}*/
 body{position: relative}
 .nav-top-right{float: right;margin-right: 82px;font-size: 14px;color: #7A8599;}

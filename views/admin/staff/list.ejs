@@ -1,4 +1,5 @@
 <%- include ../common/base.ejs %>
+    <link rel="stylesheet" type="text/css" href="/js/admin/plugins/layui/css/layui.css">
     <div class="st_container">
         <div class="st_title">管理员列表</div>
         <div class="st_body">
@@ -6,7 +7,7 @@
                 <p>该页面展示了平台所有的管理员。。</p>
             </div>
             <div class="btns_div">
-                <a href="{:url('admin/staff/staffAddShow')}" class="st_btn_h28">添加管理员</a>
+                <a href="/admin/staffAdd" class="st_btn_h28">添加管理员</a>
             </div>
             <table>
                 <thead>
@@ -19,71 +20,85 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <%if(data.length > 0){%>
-                        <%for(var i = 0;i < data.length; i++){%>
+                    <%if(data.list.length > 0){%>
+                        <%for(var i = 0;i < data.list.length; i++){%>
                             <tr>
-                                <td><%=data[i].username%></td>
-                                <td><%=data[i].role%></td>
-                                <td><%=data[i].create_time%></td>
-                                <td><%=data[i].last_login_time%></td>
+                                <td>
+                                    <%=data.list[i].username%>
+                                </td>
+                                <td>
+                                    <%=data.list[i].role%>
+                                </td>
+                                <td>
+                                    <%=data.list[i].create_time%>
+                                </td>
+                                <td>
+                                    <%=data.list[i].last_login_time%>
+                                </td>
                                 <td>
                                     <div class="st_btns">
-                                        <a href="{:url('admin/staff/staffEditShow',array('id'=>$vo.s_id))}" class="st_edit">编辑</a>
-                                        <!--<a href="javascript:void(0);" onclick="del({$vo.s_id})" class="st_del">删除</a>-->
-                                        <a href="javascript:void(0);" data-id="{$vo.s_id}" class="st_del">删除</a>
+                                        <a href="javascript:void(0);" data-id="<%=data.list[i].id%>" class="st_edit">编辑</a>
+                                        <a href="javascript:void(0);" data-id="<%=data.list[i].id%>" class="st_del">删除</a>
                                     </div>
                                 </td>
                             </tr>
-                        <%}%>
-                    <%}else{%>
-                    <tr>
-                        <td colspan="5" style="padding: 60px 0px;">没有找到任何记录 </td>
-                    </tr>
-                    <%}%>
+                            <%}%>
+                                <%}else{%>
+                                    <tr>
+                                        <td colspan="5" style="padding: 60px 0px;">没有找到任何记录 </td>
+                                    </tr>
+                                    <%}%>
                 </tbody>
                 <tfoot>
                     <tr>
                         <td colspan="100">
-
                             <div class="st_pages" id="wst-pager">
                             </div>
-                            <div style="float: right;height: 50px;line-height: 50px;margin-right: 15px;">总计{$list['total']}条记录</div>
+                            <div style="float: right;height: 50px;line-height: 50px;margin-right: 15px;">总计
+                                <%=data.length%>条记录</div>
                         </td>
                     </tr>
                 </tfoot>
             </table>
+            <script type="text/javascript" src="/js/admin/confirmBoxes.js"></script>
             <script src="/js/admin/plugins/layui/layui.js"></script>
             <script type='text/javascript'>
+            $(".st_edit").on('click', function(){
+                var id = $(this).attr("data-id");
+                var name = $(this).closest('tr').find("td").eq(0).html();
+                var last_login_time = $(this).closest('tr').find("td").eq(3).html();
+                window.location.href = '/admin/staffEdit?id=' + id + "&name=" + name.trim() + "&llt=" + last_login_time.trim();
+            })
                 $(".st_del").on('click', function () {
-                    var that = $(this);
+                    var id = $(this).attr("data-id");
                     //询问框
-                    layer.confirm('您确定要删除此条记录？', {
-                        btn: ['确定', '取消'] //按钮
+                    CB.confirm({
+                        title: "提示",
+                        text: "您确定要删除此条记录？",
+                        btn: true
                     }, function () {
-                        $(".layui-layer-shade").hide();
-                        $(".layui-layer-dialog").hide();
-                        var id = that.attr('data-id');
-                        del(id);
+                        $.post('/admin/staffDel', { id: id }, function (data) {
+                            if (data.status == 1) {
+                                CB.tips({
+                                    title: "提示",
+                                    text: "<img src='/images/admin/u933.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>" + data.msg
+                                }, function () {
+                                    window.location.href = "/admin/staffList";
+                                });
+                            } else {
+                                CB.tips({
+                                    "title": "提示",
+                                    "text": "<img src='/images/admin/u951.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>" + data.msg
+                                })
+                            }
+                        })
                     });
                 });
-                function del(id) {
-                    $.post("{:url('admin/Staff/staffDel')}", { id: id }, function (data) {
-                        if (data.status == 1) {
-                            popupTip(data.msg, true, function () {
-                                location.reload();
-                            });
-                        } else if (data.status == -999) {
-                            popupTip(data.msg, false);
-                        } else {
-                            popupTip(data.msg, false);
-                        }
-                    })
-                }
-                /* layui.use('laypage', function () {
+                layui.use('laypage', function () {
                     var laypage = layui.laypage;
                     laypage({
                         cont: 'wst-pager',
-                        pages: { $list["last_page"] }, //总页数
+                        pages: parseInt('<%=data.pages%>'), //总页数
                         skip: true, //是否开启跳页
                         skin: '#1989FA',
                         groups: 3, //连续显示分页数
@@ -105,9 +120,6 @@
                         }
                     });
 
-
-
-                    var total = { $list["total"] };
                     function page(t) {
                         var page = location.search.match(/page=(\d+)/);
                         var curr = 1;
@@ -124,15 +136,13 @@
                             curr = parseInt(curr) - 1;
                             location.href = url + curr;
                         } else { // 下一页
-                            if (curr >= total) return;
+                            if (curr >= parseInt('<%=data.total%>')) return;
                             curr = parseInt(curr) + 1;
                             location.href = url + curr;
                         }
 
                     }
-                }); */
-
-
+                });
             </script>
         </div>
     </div>

@@ -12,13 +12,13 @@
 .addAdminItem .textL .onFocus{  padding-left: 20px;  margin-left: 14px;  background-position-y: 7px;  width: 40%;color: #999;}
 #addAdminSuccess{width: 80px;height: 35px;line-height: 35px;color: #FFFFFF;text-align: center;background-color: #EC5151;border-radius: 4px;margin-top: 20px;cursor: pointer;}
 .addAdminItem .addAdminItemR .addAdminUserOldPassWorldYanZheng{display: inline-block;height: 30px;line-height: 30px;padding-left: 20px;margin-left: 14px;width: 40%;}
-.addAdminUserOldPassWorldYanZheng{background: url("/static/admin/images/onFocus.png") no-repeat;background-position: 0px 5px;}
+.addAdminUserOldPassWorldYanZheng{background: url("/images/admin/onFocus.png") no-repeat;background-position: 0px 5px;}
 
 /*角色添加部分*/
 .addAdminItemR .describeJuese{padding: 2px;border-color: #DBDBDB;}
 .addAdminItem .addAdminItemR .addRoleNameTip{display: inline-block;height: 30px;line-height: 30px;padding-left: 20px;margin-left: 14px;width: 40%;}
-.addRoleNameTip{background: url("/static/admin/images/onError.png") no-repeat;background-position: 0px 5px;color: #EC5151;}
-.addRoleNameTipLess{background: url("/static/admin/images/onError.png") no-repeat;background-position: 0px 5px;text-align: left;color: #EC5151;display: inline-block;height: 30px;line-height: 30px;padding-left: 20px;margin-left: 14px;width: 16%;}
+.addRoleNameTip{background: url("/images/admin/onError.png") no-repeat;background-position: 0px 7px;color: #f00;}
+.addRoleNameTipLess{background: url("/images/admin/onError.png") no-repeat;background-position: 0px 7px;text-align: left;color: #f00;display: inline-block;height: 30px;line-height: 30px;padding-left: 20px;margin-left: 14px;width: 16%;}
 .selectItem{padding-left: 15px;}
 .selectItem input{vertical-align: text-bottom;margin-bottom: 2px;margin-right: 4px;}
 .selectItem .selectItem01{height: 40px;line-height: 40px;padding-left: 18px;background-color: #F2F2F2;}

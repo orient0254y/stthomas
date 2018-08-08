@@ -1,136 +1,142 @@
 <%- include ../common/base.ejs %>
-<div class="st_container">
-    <div class="st_title">角色列表</div>
-    <div class="st_body">
-        <div class="btns_div">
-            <a href="{:url('admin/Role/roleAddShow')}" class="st_btn_h28">添加角色</a>
+    <link rel="stylesheet" type="text/css" href="/js/admin/plugins/layui/css/layui.css">
+    <div class="st_container">
+        <div class="st_title">角色列表</div>
+        <div class="st_body">
+            <div class="btns_div">
+                <a href='/admin/roleAdd' class="st_btn_h28">添加角色</a>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>角色名</th>
+                        <th>角色描述</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%if(data.list.length > 0){%>
+                        <%for(var i=0;i<data.list.length;i++){%>
+                            <tr>
+                                <td>
+                                    <%=data.list[i].name%>
+                                </td>
+                                <td>
+                                    <%=data.list[i].description%>
+                                </td>
+                                <td>
+                                    <div class="st_btns">
+                                        <a href="javascript:void(0);" data-id="<%=data.list[i].id%>" class="st_edit">编辑</a>
+                                        <a href="javascript:void(0);" data-id="<%=data.list[i].id%>" class="st_del">删除</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <%}%>
+                                <%}else{%>
+                                    <tr>
+                                        <td colspan="5" style="padding: 60px 0px;">没有找到任何记录 </td>
+                                    </tr>
+                                    <%}%>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="100">
+                            <div class="st_pages" id="wst-pager">
+
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
-        <table>
-            <thead>
-            <tr>
-                <th>角色名</th>
-                <th>角色描述</th>
-                <th>操作</th>
-            </tr>
-            </thead>
-            <tbody>
-            {if $list.total>0}
-            {volist name='list.data' id='vo'}
-            <tr>
-                <td>
-                    {$vo.r_name}
-                </td>
-                <td>{$vo.r_description}</td>
-                <td>
-                    <div class="st_btns">
-                        <a href="{:url('admin/Role/roleEditShow',array('id'=>$vo.r_id))}"  class="st_edit">编辑</a>
-                        <a href="javascript:void(0);" data-id="{$vo.r_id}" class="st_del">删除</a>
-                    </div>
-                </td>
-            </tr>
-            {/volist}
-            {else /}
-            <tr>
-                <td colspan="5" style="padding: 60px 0px;">没有找到任何记录 </td>
-            </tr>
-            {/if}
-            </tbody>
-            <tfoot>
-            <tr>
-                <td colspan="100">
-                    <div class="st_pages" id="wst-pager">
-
-                    </div>
-                </td>
-            </tr>
-            </tfoot>
-        </table>
     </div>
-</div>
-<script src="/js/admin/plugins/layui/layui.js"></script>
-<script src="/js/admin/common.js"></script>
-<script type='text/javascript'>
+    <script type="text/javascript" src="/js/admin/confirmBoxes.js"></script>
+    <script src="/js/admin/plugins/layui/layui.js"></script>
+    <script src="/js/admin/common.js"></script>
+    <script type='text/javascript'>
+        layui.use('laypage', function () {
+            var laypage = layui.laypage;
+            laypage({
+                cont: 'wst-pager',
+                pages: "<%=data.pages%>", //总页数
+                skip: true, //是否开启跳页
+                skin: '#e23e3d',
+                groups: 3, //连续显示分页数
+                curr: function () { //通过url获取当前页，也可以同上（pages）方式获取
+                    var page = location.search.match(/page=(\d+)/);
+                    return page ? page[1] : 1;
+                }(),
+                jump: function (e, first) { //触发分页后的回调
+                    if (!first) { //一定要加此判断，否则初始时会无限刷新
+                        var nuewurl = WST.splitURL("page");
+                        var ulist = nuewurl.split("?");
+                        if (ulist.length > 1) {
+                            location.href = nuewurl + '&page=' + e.curr;
+                        } else {
+                            location.href = '?page=' + e.curr;
+                        }
 
-    function del(id) {
-        $.post("{:url('admin/Role/roleDel')}",{id:id},function (data) {
-            if(data.status==1){
-                popupTip(data.msg,true,function () {
-                    location.reload();
-                });
-
-            }else if(data.status==-999){
-                popupTip(data.msg,false);
-            }else{
-                popupTip(data.msg,false);
-            }
-        })
-    }
-    layui.use('laypage', function(){
-        var laypage = layui.laypage;
-        laypage({
-            cont: 'wst-pager',
-            pages: {$list["last_page"]}, //总页数
-            skip: true, //是否开启跳页
-            skin: '#e23e3d',
-            groups: 3, //连续显示分页数
-            curr: function(){ //通过url获取当前页，也可以同上（pages）方式获取
-                var page = location.search.match(/page=(\d+)/);
-                return page ? page[1] : 1;
-            }(),
-            jump: function(e, first){ //触发分页后的回调
-                if(!first){ //一定要加此判断，否则初始时会无限刷新
-                    var nuewurl = WST.splitURL("page");
-                    var ulist = nuewurl.split("?");
-                    if(ulist.length>1){
-                        location.href = nuewurl+'&page='+e.curr;
-                    }else{
-                        location.href = '?page='+e.curr;
                     }
+                }
+            });
 
+            function page(t) {
+                var page = location.search.match(/page=(\d+)/);
+                var curr = 1;
+                if (page && page.length > 1) { //说明当前url上有page参数
+                    curr = page[1]; // 当前页
+                }
+                var nuewurl = WST.splitURL("page"); // 当前url
+                var ulist = nuewurl.split("?"); // 将传递的参数与url分开
+                // 说明当前有参数. 需要带着参数一起传递
+                var url = (ulist.length > 1) ? nuewurl + '&page=' : '?page=';
+
+                if (t == 'prev') { // 上一页
+                    if (curr <= 1) return;
+                    curr = parseInt(curr) - 1;
+                    location.href = url + curr;
+                } else { // 下一页
+                    if (curr >= parseInt("<%=data.total%>")) return;
+                    curr = parseInt(curr) + 1;
+                    location.href = url + curr;
                 }
             }
         });
-
-
-
-        var total = {$list["total"]};
-        function page(t){
-            var page = location.search.match(/page=(\d+)/);
-            var curr = 1;
-            if(page && page.length>1){ //说明当前url上有page参数
-                curr = page[1]; // 当前页
-            }
-            var nuewurl = WST.splitURL("page"); // 当前url
-            var ulist = nuewurl.split("?"); // 将传递的参数与url分开
-            // 说明当前有参数. 需要带着参数一起传递
-            var url = (ulist.length>1)?nuewurl+'&page=':'?page=';
-
-            if(t=='prev'){ // 上一页
-                if(curr<=1)return;
-                curr = parseInt(curr)-1;
-                location.href = url+curr;
-            }else{ // 下一页
-                if(curr>=total)return;
-                curr = parseInt(curr)+1;
-                location.href = url+curr;
-            }
-
-        }
-    });
-
-
-</script>
-<script>
-    $(".st_del").on('click',function () {
-        var that = $(this);
-        //询问框
-        layer.confirm('您确定要删除此条记录？', {
-            btn: ['确定','取消'] //按钮
-        }, function(){
-            $("#layui-layer-shade1").hide();
-            $("#layui-layer1").hide();
-            del(that.attr("data-id"));
+    </script>
+    <script>
+        $(".st_edit").on('click',function(){
+            window.location.href = '/admin/roleEdit?id=' + $(this).attr("data-id");
+        })
+        $(".st_del").on('click', function () {
+            var scope = this;
+            //询问框
+            CB.confirm({
+                "title": "提示",
+                "text": "您确定要删除此条记录？",
+                "btn": true
+            }, function () {
+                $.post('/admin/roleDel', { "id": $(scope).attr("data-id") }, function (data) {
+                    if (data.status == 1) {
+                        CB.tips({
+                            "title": "提示",
+                            "text": "<img src='/images/admin/u933.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>" + data.msg
+                        }, function () {
+                            window.location.reload();
+                        });
+                    } else if (data.status == -999) {
+                        // 权限不够
+                        popupTip(data.msg, false);
+                    } else {
+                        // 删除失败
+                        CB.tips({
+                            "title": "提示",
+                            "text": "<img src='/images/admin/u951.png' style='margin-right: 10px;display: inline-block;vertical-align: middle;margin-top: -2px;'>" + data.msg
+                        }, function () {
+                            window.location.reload();
+                        });
+                    }
+                })
+            });
         });
-    });
-</script>
-<%- include ../common/base_bottom.ejs %>
+    </script>
+    <%- include ../common/base_bottom.ejs %>

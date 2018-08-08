@@ -1,6 +1,5 @@
 var multer = require('multer');
 var md5 = require('md5');
-var config = require('./config');
 
 var storage = multer.diskStorage({
     //设置上传文件路径,以后可以扩展成上传至七牛,文件服务器等等

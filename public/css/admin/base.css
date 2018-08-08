@@ -358,11 +358,15 @@ button {
 input {
     border: 1px solid #dbdbdb;
 }
-
+#wrapper{
+    height: 100%;
+}
 .st_container {
     min-width: 1200px;
     height: 100%;
     padding-top: 55px;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
 }
 
 /*表格样式*/
@@ -392,7 +396,9 @@ table thead tr th:last-child {
 table tbody tr {
     border-bottom: 1px solid #eaeaea;
 }
-
+table tbody tr:hover{
+    background-color: #f2f3f4;
+}
 table tbody tr.select {
     background-color: #FFFBBB;
 }
